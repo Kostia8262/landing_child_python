@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="My Computer Academy — онлайн та офлайн школа програмування для дітей від 6 до 16 років у Дніпрі. Курси Scratch, Python, Roblox, Веб-розробка. Перший урок безкоштовно!" />
+  <meta name="keywords" content="курси програмування для дітей, школа програмування Дніпро, Python для дітей, Scratch для дітей, Roblox Studio, веб-розробка HTML CSS JS, онлайн курси програмування, курси программирования для детей, детская школа программирования, программирование для детей Днепр, IT курси для дітей, комп'ютерні курси для дітей" />
+  <meta name="author" content="My Computer Academy" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="My Computer Academy — Школа програмування для дітей від 6 до 16 років" />
+  <meta property="og:description" content="Онлайн та офлайн курси програмування для дітей у Дніпрі. Scratch, Python, Roblox, Веб-розробка. Групи до 6 осіб. Перший урок безкоштовно!" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://mycomputer.education/" />
+  <meta property="og:locale" content="uk_UA" />
+  <meta property="og:site_name" content="My Computer Academy" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="My Computer Academy — Школа програмування для дітей" />
+  <meta name="twitter:description" content="Онлайн та офлайн курси програмування для дітей від 6 до 16 років у Дніпрі." />
+  <link rel="canonical" href="https://mycomputer.education/" />
+  <title>My Computer Academy — Школа програмування для дітей | Дніпро</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header" id="header">
+  <nav class="nav container">
+
+    <a href="#" class="nav__logo">
+      <div class="nav__logo-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#6C47FF"/><path d="M8 11L13 16L8 21" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 21H24" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </div>
+      <span>My Computer <strong>Academy</strong></span>
+    </a>
+
+    <ul class="nav__menu" id="navMenu">
+      <li><a href="#courses"      class="nav__link" data-ru="Курсы">Курси</a></li>
+      <li><a href="#how-it-works" class="nav__link" data-ru="Как это работает">Як це працює</a></li>
+      <li><a href="#about"        class="nav__link" data-ru="О нас">Про нас</a></li>
+      <li><a href="#reviews"      class="nav__link" data-ru="Отзывы">Відгуки</a></li>
+      <li><a href="#faq"          class="nav__link" data-ru="FAQ">FAQ</a></li>
+    </ul>
+
+    <div class="nav__actions">
+      <a href="tel:+380954624672" class="nav__phone">+38 (095) 462-46-72</a>
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-btn active" data-lang="ua">UA</button>
+        <span class="lang-divider"></span>
+        <button class="lang-btn" data-lang="ru">RU</button>
+      </div>
+      <a href="#" class="btn btn--primary btn--sm nav__cta open-modal" data-ru="Записаться">Записатись</a>
+    </div>
+
+    <button class="nav__burger" id="navBurger" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+  </nav>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__inner">
+
+      <div class="hero__content">
+        <div class="hero__badge">
+          <span class="badge-dot"></span>
+          <span data-ru="Онлайн и офлайн обучение в Днепре">Онлайн та офлайн навчання у Дніпрі</span>
+        </div>
+        <h1 class="hero__title">
+          <span data-ru="Твой ребёнок научится">Твоя дитина навчиться</span><br/>
+          <span class="gradient-text" data-ru="программировать">програмувати</span><br/>
+          <span data-ru="с нуля до проекта">з нуля до проекту</span>
+        </h1>
+        <p class="hero__subtitle" data-ru="Интерактивные курсы для детей от 6 до 16 лет. Scratch, Python, Roblox, Web-разработка — выбирай направление и начни уже сегодня.">
+          Інтерактивні курси для дітей від 6 до 16 років. Scratch, Python, Roblox, Веб-розробка — обирай напрямок і починай вже сьогодні.
+        </p>
+        <div class="hero__actions">
+          <a href="#" class="btn btn--primary btn--lg open-modal" data-ru="Записаться на пробный урок">
+            Записатися на пробний урок
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#courses" class="btn btn--ghost btn--lg" data-ru="Смотреть курсы">Дивитися курси</a>
+        </div>
+        <div class="hero__trust">
+          <div class="trust-item">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1L11.09 6.26L17 7.27L13 11.14L14.18 17L9 14.27L3.82 17L5 11.14L1 7.27L6.91 6.26L9 1Z" fill="#6C47FF" stroke="#6C47FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-ru="Более 500 выпускников">Понад 500 випускників</span>
+          </div>
+          <div class="trust-item">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#6C47FF" stroke-width="1.5"/><path d="M9 5V9L12 11" stroke="#6C47FF" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span data-ru="Пробный урок бесплатно">Пробний урок безкоштовно</span>
+          </div>
+          <div class="trust-item">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M15 7H3C1.89543 7 1 7.89543 1 9V15C1 16.1046 1.89543 17 3 17H15C16.1046 17 17 16.1046 17 15V9C17 7.89543 16.1046 7 15 7Z" stroke="#6C47FF" stroke-width="1.5"/><path d="M5 7V5C5 2.79086 6.79086 1 9 1C11.2091 1 13 2.79086 13 5V7" stroke="#6C47FF" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span data-ru="Сертификат по окончании">Сертифікат після навчання</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+        <div class="hero__mockup">
+          <div class="mockup-window">
+            <div class="mockup-bar">
+              <span class="dot dot--red"></span>
+              <span class="dot dot--yellow"></span>
+              <span class="dot dot--green"></span>
+              <span class="mockup-title">student_project.py</span>
+            </div>
+            <div class="mockup-code">
+              <div class="code-line"><span class="c-keyword">import</span> <span class="c-module">turtle</span></div>
+              <div class="code-line"><span class="c-comment"># Малюємо зірку!</span></div>
+              <div class="code-line"><span class="c-var">t</span> <span class="c-op">=</span> turtle<span class="c-op">.</span><span class="c-func">Turtle</span><span class="c-punc">()</span></div>
+              <div class="code-line"><span class="c-keyword">for</span> i <span class="c-keyword">in</span> <span class="c-func">range</span><span class="c-punc">(</span><span class="c-num">5</span><span class="c-punc">):</span></div>
+              <div class="code-line indent"><span class="c-var">t</span><span class="c-op">.</span><span class="c-func">forward</span><span class="c-punc">(</span><span class="c-num">100</span><span class="c-punc">)</span></div>
+              <div class="code-line indent"><span class="c-var">t</span><span class="c-op">.</span><span class="c-func">right</span><span class="c-punc">(</span><span class="c-num">144</span><span class="c-punc">)</span></div>
+              <div class="code-line"><span class="c-comment"># ⭐ Готово!</span></div>
+              <div class="code-cursor"></div>
+            </div>
+          </div>
+          <div class="mockup-stats">
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--purple">🚀</div>
+              <div class="stat-info">
+                <div class="stat-value">147</div>
+                <div class="stat-label" data-ru="Проектов создано">Проектів створено</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon stat-icon--green">🎓</div>
+              <div class="stat-info">
+                <div class="stat-value">98%</div>
+                <div class="stat-label" data-ru="Довольных родителей">Задоволених батьків</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="hero__bg-shapes" aria-hidden="true">
+    <div class="shape shape--1"></div>
+    <div class="shape shape--2"></div>
+    <div class="shape shape--3"></div>
+  </div>
+</section>
+
+<!-- ========== TECH LOGOS ========== -->
+<section class="partners">
+  <div class="container">
+    <p class="partners__label" data-ru="Технологии, которым мы обучаем">Технології, яким ми навчаємо</p>
+    <div class="partners__logos">
+      <div class="partner-logo"><span class="partner-logo__icon">🧩</span><span>Scratch</span></div>
+      <div class="partner-logo">
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#3776AB"/><path d="M16 6C11 6 11.3 8.2 11.3 8.2L11.3 10.5H16.1V11.2H9.4C9.4 11.2 6 10.8 6 16C6 21.2 9 21 9 21H10.7V18.6C10.7 18.6 10.6 15.7 13.6 15.7H18.4C18.4 15.7 21.2 15.7 21.2 13V9C21.2 9 21.6 6 16 6ZM13.4 7.8C14 7.3 15.4 7.3 16 8.5C16 9.2 15.4 9.8 14.7 9.8C14 9.8 13.4 9.2 13.4 8.5V7.8Z" fill="white"/><path d="M16 26C21 26 20.7 23.8 20.7 23.8L20.7 21.5H15.9V20.8H22.6C22.6 20.8 26 21.2 26 16C26 10.8 23 11 23 11H21.3V13.4C21.3 13.4 21.4 16.3 18.4 16.3H13.6C13.6 16.3 10.8 16.3 10.8 19V23C10.8 23 10.4 26 16 26Z" fill="#FFE873"/></svg>
+        <span>Python</span>
+      </div>
+      <div class="partner-logo"><span class="partner-logo__icon">🎮</span><span>Roblox</span></div>
+      <div class="partner-logo">
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#E34F26"/><path d="M7 4L9.2 28L16 30L22.8 28L25 4H7Z" fill="#EF652A"/><path d="M16 27.5V9H9L9.9 20H16V15H12L11.7 12H16V9" fill="white"/><path d="M16 9V12H19.5L19.3 15H16V20L20 18.8L20.3 15H16" fill="#EBEBEB"/></svg>
+        <span>HTML/CSS</span>
+      </div>
+      <div class="partner-logo">
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#F7DF1E"/><path d="M19 21.7C19.3 22.4 19.8 22.9 20.8 22.9C21.6 22.9 22.1 22.5 22.1 21.9C22.1 21.2 21.6 21 20.6 20.5L20.1 20.3C18.6 19.6 17.6 18.8 17.6 17.1C17.6 15.5 18.8 14.3 20.7 14.3C22.1 14.3 23.1 14.8 23.7 15.9L22.1 16.9C21.8 16.4 21.4 16.1 20.7 16.1C20 16.1 19.5 16.5 19.5 17.1C19.5 17.8 20 18.1 20.9 18.5L21.4 18.7C23.2 19.5 24.2 20.3 24.2 22C24.2 23.9 22.7 25 20.7 25C18.8 25 17.5 24.1 16.9 22.7L19 21.7ZM10.5 21.9C10.8 22.5 11.1 22.9 11.9 22.9C12.7 22.9 13.1 22.6 13.1 21.4V14.4H15.2V21.5C15.2 23.7 13.9 24.8 12 24.8C10.3 24.8 9.3 23.9 8.8 22.8L10.5 21.9Z" fill="#323330"/></svg>
+        <span>JavaScript</span>
+      </div>
+      <div class="partner-logo"><span class="partner-logo__icon">🤖</span><span>AI / ML</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BENEFITS ========== -->
+<section class="benefits" id="about">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge" data-ru="Почему My Computer Academy">Чому My Computer Academy</div>
+      <h2 class="section-title" data-ru="Всё, что нужно для старта в мире технологий">Все, що потрібно для старту у світі технологій</h2>
+      <p class="section-subtitle" data-ru="Мы не просто учим синтаксису — мы растим мыслителей, решающих реальные задачи с помощью кода.">Ми не просто вчимо синтаксису — ми виховуємо мислителів, що вирішують реальні задачі за допомогою коду.</p>
+    </div>
+    <div class="benefits__grid">
+
+      <div class="benefit-card benefit-card--featured">
+        <div class="benefit-card__icon">🎯</div>
+        <h3 data-ru="Индивидуальный темп">Індивідуальний темп</h3>
+        <p data-ru="Каждый ребёнок учится в своём ритме. Никакого давления — только интерес и прогресс.">Кожна дитина навчається у своєму ритмі. Ніякого тиску — тільки інтерес і прогрес.</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-card__icon">👨‍💻</div>
+        <h3 data-ru="Опытные преподаватели">Досвідчені викладачі</h3>
+        <p data-ru="Практикующие разработчики, влюблённые в своё дело и умеющие объяснять сложное просто.">Практикуючі розробники, закохані у свою справу та вміють пояснити складне просто.</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-card__icon">🏆</div>
+        <h3 data-ru="Реальные проекты">Реальні проекти</h3>
+        <p data-ru="Ученики создают игры, сайты и приложения — настоящие продукты, а не упражнения.">Учні створюють ігри, сайти та додатки — справжні продукти, а не вправи.</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-card__icon">📱</div>
+        <h3 data-ru="Онлайн и офлайн">Онлайн та офлайн</h3>
+        <p data-ru="Занимайся из любой точки онлайн или приходи в студию в Днепре — выбор за тобой.">Займайся з будь-якої точки онлайн або приходь до студії у Дніпрі — вибір за тобою.</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-card__icon">🎓</div>
+        <h3 data-ru="Сертификат">Сертифікат</h3>
+        <p data-ru="Официальный сертификат об окончании курса — первый шаг к профессиональному портфолио.">Офіційний сертифікат про закінчення курсу — перший крок до портфоліо.</p>
+      </div>
+
+      <div class="benefit-card">
+        <div class="benefit-card__icon">💬</div>
+        <h3 data-ru="Поддержка 24/7">Підтримка 24/7</h3>
+        <p data-ru="Чат с преподавателем, помощь с заданиями и разбор ошибок в любое время.">Чат з викладачем, допомога із завданнями та розбір помилок у будь-який час.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== COURSES (DARK) ========== -->
+<section class="courses" id="courses">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge" data-ru="Наши программы">Наші програми</div>
+      <h2 class="section-title" data-ru="Выбери направление">Обери напрямок</h2>
+      <p class="section-subtitle" data-ru="Курсы разработаны с учётом возраста и уровня подготовки ребёнка.">Курси розроблені з урахуванням віку та рівня підготовки дитини.</p>
+    </div>
+    <div class="courses__grid">
+
+      <div class="course-card">
+        <div class="course-card__header course-card__header--scratch">
+          <div class="course-card__emoji">🧩</div>
+          <div class="course-card__age-badge" data-ru="6–10 лет">6–10 років</div>
+        </div>
+        <div class="course-card__body">
+          <h3 class="course-card__title" data-ru="Scratch: визуальное программирование">Scratch: візуальне програмування</h3>
+          <p class="course-card__desc" data-ru="Первый шаг в программирование через игру. Дети создают анимации, интерактивные истории и простые игры с помощью блочного кода.">Перший крок у програмування через гру. Діти створюють анімації, інтерактивні історії та прості ігри за допомогою блочного коду.</p>
+          <ul class="course-card__features">
+            <li data-ru="✓ Создание персонажей и сцен">✓ Створення персонажів і сцен</li>
+            <li data-ru="✓ Логика и алгоритмы через игру">✓ Логіка та алгоритми через гру</li>
+            <li data-ru="✓ Собственная игра в финале курса">✓ Власна гра у фіналі курсу</li>
+          </ul>
+          <div class="course-card__footer">
+            <div class="course-card__info">
+              <span data-ru="⏱ 3 месяца">⏱ 3 місяці</span>
+              <span data-ru="👥 Группа до 6 человек">👥 Група до 6 осіб</span>
+            </div>
+            <a href="#" class="btn btn--primary btn--sm open-modal" data-ru="Записаться">Записатись</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card course-card--popular">
+        <div class="course-card__header course-card__header--python">
+          <div class="course-card__emoji">🐍</div>
+          <div class="course-card__age-badge" data-ru="10–14 лет">10–14 років</div>
+        </div>
+        <div class="course-card__body">
+          <h3 class="course-card__title" data-ru="Python: настоящее программирование">Python: справжнє програмування</h3>
+          <p class="course-card__desc" data-ru="Один из самых популярных языков в мире. Дети пишут реальный код: игры, боты, автоматизацию — и начинают думать как разработчики.">Один з найпопулярніших мов у світі. Діти пишуть реальний код: ігри, боти, автоматизацію — і починають думати як розробники.</p>
+          <ul class="course-card__features">
+            <li data-ru="✓ Переменные, функции, циклы">✓ Змінні, функції, цикли</li>
+            <li data-ru="✓ Pygame — разработка игр">✓ Pygame — розробка ігор</li>
+            <li data-ru="✓ Telegram-бот в финале курса">✓ Telegram-бот у фіналі курсу</li>
+          </ul>
+          <div class="course-card__footer">
+            <div class="course-card__info">
+              <span data-ru="⏱ 4 месяца">⏱ 4 місяці</span>
+              <span data-ru="👥 Группа до 5 человек">👥 Група до 5 осіб</span>
+            </div>
+            <a href="#" class="btn btn--primary btn--sm open-modal" data-ru="Записаться">Записатись</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-card__header course-card__header--roblox">
+          <div class="course-card__emoji">🎮</div>
+          <div class="course-card__age-badge" data-ru="9–14 лет">9–14 років</div>
+        </div>
+        <div class="course-card__body">
+          <h3 class="course-card__title" data-ru="Roblox: разработка игр">Roblox: розробка ігор</h3>
+          <p class="course-card__desc" data-ru="Любишь Roblox? Научись его создавать! Дети изучают Lua, строят собственные миры и публикуют игры для миллионов игроков.">Любиш Roblox? Навчись його створювати! Діти вивчають Lua, будують власні світи та публікують ігри для мільйонів гравців.</p>
+          <ul class="course-card__features">
+            <li data-ru="✓ Lua — язык для Roblox Studio">✓ Lua — мова для Roblox Studio</li>
+            <li data-ru="✓ 3D-дизайн и физика игр">✓ 3D-дизайн та фізика ігор</li>
+            <li data-ru="✓ Публикация игры в Roblox">✓ Публікація гри в Roblox</li>
+          </ul>
+          <div class="course-card__footer">
+            <div class="course-card__info">
+              <span data-ru="⏱ 3 месяца">⏱ 3 місяці</span>
+              <span data-ru="👥 Группа до 6 человек">👥 Група до 6 осіб</span>
+            </div>
+            <a href="#" class="btn btn--primary btn--sm open-modal" data-ru="Записаться">Записатись</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-card__header course-card__header--web">
+          <div class="course-card__emoji">🌐</div>
+          <div class="course-card__age-badge" data-ru="12–16 лет">12–16 років</div>
+        </div>
+        <div class="course-card__body">
+          <h3 class="course-card__title" data-ru="Web-разработка: HTML, CSS, JS">Веб-розробка: HTML, CSS, JS</h3>
+          <p class="course-card__desc" data-ru="Создавай сайты с нуля. От первой страницы до полноценного адаптивного проекта — всё по шагам с реальными задачами из индустрии.">Створюй сайти з нуля. Від першої сторінки до повноцінного адаптивного проекту — все покроково з реальними задачами.</p>
+          <ul class="course-card__features">
+            <li data-ru="✓ HTML5, CSS3, Flexbox/Grid">✓ HTML5, CSS3, Flexbox/Grid</li>
+            <li data-ru="✓ JavaScript — интерактивность">✓ JavaScript — інтерактивність</li>
+            <li data-ru="✓ Персональный сайт-портфолио">✓ Персональний сайт-портфоліо</li>
+          </ul>
+          <div class="course-card__footer">
+            <div class="course-card__info">
+              <span data-ru="⏱ 5 месяцев">⏱ 5 місяців</span>
+              <span data-ru="👥 Группа до 5 человек">👥 Група до 5 осіб</span>
+            </div>
+            <a href="#" class="btn btn--primary btn--sm open-modal" data-ru="Записаться">Записатись</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== HOW IT WORKS ========== -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge" data-ru="Процесс">Процес</div>
+      <h2 class="section-title" data-ru="Как начать учиться">Як розпочати навчання</h2>
+      <p class="section-subtitle" data-ru="Всего 4 шага от заявки до первого проекта.">Всього 4 кроки від заявки до першого проекту.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step__number">01</div>
+        <div class="step__content">
+          <h3 data-ru="Оставь заявку">Залиш заявку</h3>
+          <p data-ru="Заполни форму ниже — мы перезвоним в течение 30 минут и подберём подходящий курс.">Заповни форму нижче — ми передзвонимо протягом 30 хвилин і підберемо відповідний курс.</p>
+        </div>
+      </div>
+      <div class="step__connector"></div>
+      <div class="step">
+        <div class="step__number">02</div>
+        <div class="step__content">
+          <h3 data-ru="Бесплатный пробный урок">Безкоштовний пробний урок</h3>
+          <p data-ru="Ребёнок попробует занятие без обязательств. Увидите формат, познакомитесь с преподавателем.">Дитина спробує заняття без зобов'язань. Побачиш формат, познайомишся з викладачем.</p>
+        </div>
+      </div>
+      <div class="step__connector"></div>
+      <div class="step">
+        <div class="step__number">03</div>
+        <div class="step__content">
+          <h3 data-ru="Старт обучения">Старт навчання</h3>
+          <p data-ru="Оплачиваете курс, получаете доступ к материалам и расписанию. Занятия 2 раза в неделю по 60 минут.">Оплачуєш курс, отримуєш доступ до матеріалів і розкладу. Заняття 2 рази на тиждень по 60 хвилин.</p>
+        </div>
+      </div>
+      <div class="step__connector"></div>
+      <div class="step">
+        <div class="step__number">04</div>
+        <div class="step__content">
+          <h3 data-ru="Создаёшь проект">Створюєш проект</h3>
+          <p data-ru="В конце курса ребёнок представляет собственный проект и получает сертификат.">Наприкінці курсу дитина представляє власний проект і отримує сертифікат.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STATS ========== -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="stats__header">
+      <div class="section-badge" data-ru="Академия в цифрах">Академія в цифрах</div>
+      <h2 class="stats__title" data-ru="Результаты, которыми гордимся">Результати, якими пишаємося</h2>
+    </div>
+    <div class="stats__grid">
+      <div class="stats__card">
+        <div class="stats__card-top"><div class="stats__card-icon stats__card-icon--purple">🎓</div></div>
+        <div class="stats__card-body">
+          <div class="stats__card-number"><span class="stats__number" data-target="500">0</span><span class="stats__unit">+</span></div>
+          <div class="stats__card-label" data-ru="Выпускников">Випускників</div>
+          <div class="stats__card-desc" data-ru="Детей успешно завершили обучение">Дітей успішно завершили навчання</div>
+        </div>
+        <div class="stats__card-bar"><div class="stats__card-bar-fill" style="width:83%"></div></div>
+      </div>
+      <div class="stats__card">
+        <div class="stats__card-top"><div class="stats__card-icon stats__card-icon--blue">📚</div></div>
+        <div class="stats__card-body">
+          <div class="stats__card-number"><span class="stats__number" data-target="4">0</span></div>
+          <div class="stats__card-label" data-ru="Направления обучения">Напрямки навчання</div>
+          <div class="stats__card-desc" data-ru="Scratch, Python, Roblox, Web">Scratch, Python, Roblox, Веб</div>
+        </div>
+        <div class="stats__card-tags"><span>Scratch</span><span>Python</span><span>Roblox</span><span>Web</span></div>
+      </div>
+      <div class="stats__card">
+        <div class="stats__card-top"><div class="stats__card-icon stats__card-icon--green">❤️</div></div>
+        <div class="stats__card-body">
+          <div class="stats__card-number"><span class="stats__number" data-target="98">0</span><span class="stats__unit">%</span></div>
+          <div class="stats__card-label" data-ru="Довольных семей">Задоволених сімей</div>
+          <div class="stats__card-desc" data-ru="Родители рекомендуют нас друзьям">Батьки рекомендують нас друзям</div>
+        </div>
+        <div class="stats__card-bar"><div class="stats__card-bar-fill stats__card-bar-fill--green" style="width:98%"></div></div>
+      </div>
+      <div class="stats__card">
+        <div class="stats__card-top"><div class="stats__card-icon stats__card-icon--orange">⭐</div></div>
+        <div class="stats__card-body">
+          <div class="stats__card-number"><span class="stats__number" data-target="5">0</span></div>
+          <div class="stats__card-label" data-ru="Лет на рынке">Років на ринку</div>
+          <div class="stats__card-desc" data-ru="Надёжная школа с опытной командой">Надійна школа з досвідченою командою</div>
+        </div>
+        <div class="stats__card-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== REVIEWS ========== -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge" data-ru="Отзывы">Відгуки</div>
+      <h2 class="section-title" data-ru="Что говорят наши семьи">Що кажуть наші сім'ї</h2>
+    </div>
+    <div class="reviews__track" id="reviewsTrack">
+      <div class="reviews__grid">
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text" data-ru='"Сын 9 лет начал с нуля на курсе Scratch. Через 3 месяца сделал игру и показывал друзьям!"'>"Син 9 років почав з нуля на курсі Scratch. Через 3 місяці зробив гру і показував друзям!"</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">МК</div>
+            <div>
+              <div class="review-card__name" data-ru="Марина К.">Марина К.</div>
+              <div class="review-card__meta" data-ru="мама Арсения, 9 лет · Scratch">мама Арсенія, 9 років · Scratch</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text" data-ru='"Дочь хотела создавать сайты. За 5 месяцев сделала настоящий сайт-портфолио. Преподаватели объясняют понятно!"'>"Донька хотіла створювати сайти. За 5 місяців зробила справжній сайт-портфоліо. Викладачі пояснюють зрозуміло!"</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">ОМ</div>
+            <div>
+              <div class="review-card__name" data-ru="Олег М.">Олег М.</div>
+              <div class="review-card__meta" data-ru="папа Дарины, 14 лет · Web">тато Дарини, 14 років · Web</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text" data-ru='"Сын фанат Roblox — записали на курс. Теперь строит свои миры. Говорит, хочет стать геймдевом!"'>"Син фанат Roblox — записали на курс. Тепер будує свої світи. Каже, хоче стати геймдевом!"</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">ТВ</div>
+            <div>
+              <div class="review-card__name" data-ru="Татьяна В.">Тетяна В.</div>
+              <div class="review-card__meta" data-ru="мама Матвея, 11 лет · Roblox">мама Матвія, 11 років · Roblox</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text" data-ru='"Python — сложно, казалось бы. Но ребёнок сам тянул нас к компьютеру. Telegram-бот работает до сих пор!"'>"Python — складно, здавалося б. Але дитина сама тягнула нас до комп'ютера. Telegram-бот працює досі!"</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">НС</div>
+            <div>
+              <div class="review-card__name" data-ru="Наталья С.">Наталя С.</div>
+              <div class="review-card__meta" data-ru="мама Никиты, 12 лет · Python">мама Микити, 12 років · Python</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile dots -->
+    <div class="reviews__dots" id="reviewsDots" aria-hidden="true">
+      <span class="reviews__dot active"></span>
+      <span class="reviews__dot"></span>
+      <span class="reviews__dot"></span>
+      <span class="reviews__dot"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FAQ ========== -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="faq__inner">
+      <div class="section-header section-header--left">
+        <div class="section-badge" data-ru="Часто спрашивают">Часті питання</div>
+        <h2 class="section-title" data-ru="Ответы на ваши вопросы">Відповіді на ваші запитання</h2>
+      </div>
+      <div class="faq__list">
+        <div class="faq-item">
+          <button class="faq-item__question">
+            <span data-ru="С какого возраста можно начинать?">З якого віку можна починати?</span>
+            <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer"><p data-ru="Принимаем детей от 6 лет. Для малышей — Scratch, для детей постарше (10+) — Python, Roblox, Web. Конкретный курс подберём на бесплатной консультации.">Приймаємо дітей від 6 років. Для малюків — Scratch, для дітей старшого віку (10+) — Python, Roblox, Web. Конкретний курс підберемо на безкоштовній консультації.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__question">
+            <span data-ru="Нужны ли знания программирования?">Чи потрібні знання програмування?</span>
+            <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer"><p data-ru="Абсолютно никаких. Все курсы начинаются с нуля. Нужен только компьютер с интернетом.">Абсолютно ніяких. Всі курси починаються з нуля. Потрібен тільки комп'ютер з інтернетом.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__question">
+            <span data-ru="Как проходят онлайн-занятия?">Як проходять онлайн-заняття?</span>
+            <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer"><p data-ru="Занятия в Zoom или Google Meet. Преподаватель видит экран ребёнка, помогает в реальном времени. Группы до 6 человек — каждый получает внимание.">Заняття у Zoom або Google Meet. Викладач бачить екран дитини, допомагає в реальному часі. Групи до 6 осіб — кожен отримує увагу.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__question">
+            <span data-ru="Сколько времени нужно в неделю?">Скільки часу потрібно на тиждень?</span>
+            <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer"><p data-ru="2 занятия в неделю по 60 минут + домашнее задание 15–20 минут. Итого около 2,5–3 часов.">2 заняття на тиждень по 60 хвилин + домашнє завдання 15–20 хвилин. Разом близько 2,5–3 годин.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__question">
+            <span data-ru="Что если ребёнок пропустит занятие?">Що якщо дитина пропустить заняття?</span>
+            <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer"><p data-ru="Все занятия записываются. Пропущенный урок можно посмотреть в записи, а преподаватель ответит на вопросы в чате.">Всі заняття записуються. Пропущений урок можна переглянути в записі, а викладач відповість на питання в чаті.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-item__question">
+            <span data-ru="Сколько стоят курсы?">Скільки коштують курси?</span>
+            <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer"><p data-ru="Стоимость зависит от курса и формата. Оставьте заявку — менеджер пришлёт прайс и расскажет о скидках. Первый урок бесплатно.">Вартість залежить від курсу та формату. Залиш заявку — менеджер надішле прайс та розповість про знижки. Перший урок безкоштовно.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact__grid">
+
+      <!-- LEFT: intro -->
+      <div class="contact__intro">
+        <div class="section-badge" data-ru="Бесплатная консультация">Безкоштовна консультація</div>
+        <h2 class="contact__title">
+          <span data-ru="Запишитесь на">Запишіться на</span><br/>
+          <span class="gradient-text" data-ru="пробный урок">пробний урок</span>
+        </h2>
+        <p class="contact__subtitle" data-ru="Оставьте заявку — перезвоним в течение 30 минут, запишем ребёнка на бесплатное первое занятие.">Залиш заявку — передзвонимо протягом 30 хвилин, запишемо дитину на безкоштовне перше заняття.</p>
+        <div class="contact__features">
+          <div class="contact__feature"><span class="feature-check">✓</span><span data-ru="Бесплатно и без обязательств">Безкоштовно та без зобов'язань</span></div>
+          <div class="contact__feature"><span class="feature-check">✓</span><span data-ru="Подберём курс под возраст и интересы">Підберемо курс під вік та інтереси</span></div>
+          <div class="contact__feature"><span class="feature-check">✓</span><span data-ru="Ответим в WhatsApp, Telegram или по телефону">Відповімо у WhatsApp, Telegram або телефоном</span></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: form -->
+      <div class="contact__form-wrap">
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" data-ru="Имя ребёнка">Ім'я дитини</label>
+              <input type="text" class="form-input" name="child_name" placeholder="Наприклад: Артем" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" data-ru="Возраст">Вік</label>
+              <select class="form-input form-select" name="age" required>
+                <option value="" disabled selected>—</option>
+                <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+                <option value="9">9</option><option value="10">10</option><option value="11">11</option>
+                <option value="12">12</option><option value="13">13</option><option value="14">14</option>
+                <option value="15">15</option><option value="16">16</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-ru="Курс">Курс</label>
+            <select class="form-input form-select" name="course">
+              <option value="" disabled selected data-ru="Какой курс интересует?">Який курс цікавить?</option>
+              <option value="scratch" data-ru="Scratch (6–10 лет)">Scratch (6–10 років)</option>
+              <option value="python"  data-ru="Python (10–14 лет)">Python (10–14 років)</option>
+              <option value="roblox"  data-ru="Roblox (9–14 лет)">Roblox (9–14 років)</option>
+              <option value="web"     data-ru="Web-разработка (12–16 лет)">Веб-розробка (12–16 років)</option>
+              <option value="help"    data-ru="Помогите выбрать">Допоможіть обрати</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-ru="Ваш телефон">Ваш телефон</label>
+            <input type="tel" class="form-input" name="phone" placeholder="+38 (___) ___-__-__" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" data-ru="Имя родителя">Ім'я батьків</label>
+            <input type="text" class="form-input" name="parent_name" placeholder="Як до вас звертатися?" />
+          </div>
+          <button type="submit" class="btn btn--primary btn--full btn--lg" id="submitBtn">
+            <span class="btn-text" data-ru="Записаться на пробный урок бесплатно">Записатися на пробний урок безкоштовно</span>
+            <span class="btn-loading" style="display:none" data-ru="Отправка...">Відправка...</span>
+          </button>
+          <p class="form-note">
+            <span data-ru="Нажимая кнопку, вы соглашаетесь с">Натискаючи кнопку, ви погоджуєтесь з</span>
+            <a href="/docs/privacy-policy.docx" target="_blank" rel="noopener" data-ru="политикой конфиденциальности">політикою конфіденційності</a>.
+          </p>
+        </form>
+        <div class="form-success" id="formSuccess" style="display:none">
+          <div class="form-success__icon">🎉</div>
+          <h3 data-ru="Заявка принята!">Заявку прийнято!</h3>
+          <p data-ru="Перезвоним в течение 30 минут. Ребёнка ждёт бесплатный пробный урок!">Передзвонимо протягом 30 хвилин. Дитину чекає безкоштовний пробний урок!</p>
+        </div>
+      </div>
+
+      <!-- CONTACTS BLOCK (desktop: grid area, mobile: separate block after form) -->
+      <div class="contact__details" id="contactDetails">
+        <h4 class="contact__info-title" data-ru="Телефоны">Телефони</h4>
+        <div class="contact__phones">
+          <div class="contact__phone-row">
+            <a href="tel:+380954624672" class="contact__phone-number">+38 (095) 462-46-72</a>
+            <div class="contact__phone-links">
+              <a href="viber://chat?number=380954624672" class="messenger-btn messenger-btn--viber" title="Viber">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.4.2C5.5.4.3 5.7 0 11.6c-.2 3.2.7 6.3 2.6 8.8L.8 23.7c-.2.6.4 1.2 1 1l3.4-1.8c2.4 1.7 5.3 2.6 8.3 2.3 5.9-.5 10.8-5.5 11.4-11.4C25.7 5.8 19.4-.1 11.4.2zm5.4 16.2c-.4.4-.9.6-1.4.6-.3 0-.6-.1-.9-.2-1.5-.7-3-1.7-4.2-2.9-1.2-1.2-2.2-2.7-2.9-4.2-.3-.7-.2-1.6.4-2.1l.8-.8c.3-.3.8-.3 1.1 0l1.7 1.7c.3.3.3.8 0 1.1l-.7.7c-.1.1-.1.3 0 .4.4.8.9 1.5 1.6 2.1.6.6 1.3 1.2 2.1 1.6.1.1.3 0 .4 0l.7-.7c.3-.3.8-.3 1.1 0l1.7 1.7c.3.3.3.8 0 1.1l-.5.9z"/></svg>
+              </a>
+              <a href="https://api.whatsapp.com/send?phone=380954624672" target="_blank" rel="noopener" class="messenger-btn messenger-btn--whatsapp" title="WhatsApp">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a9.87 9.87 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </a>
+              <a href="https://t.me/380954624672" target="_blank" rel="noopener" class="messenger-btn messenger-btn--telegram" title="Telegram">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="contact__phone-row">
+            <a href="tel:+380682522876" class="contact__phone-number">+38 (068) 252-28-76</a>
+            <div class="contact__phone-links">
+              <a href="https://api.whatsapp.com/send?phone=380682522876" target="_blank" rel="noopener" class="messenger-btn messenger-btn--whatsapp" title="WhatsApp">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a9.87 9.87 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="contact__info-title" data-ru="Почта">Пошта</h4>
+        <a href="mailto:my.computer.academy25@gmail.com" class="contact__email">my.computer.academy25@gmail.com</a>
+
+        <h4 class="contact__info-title" data-ru="Следите за нами">Слідкуйте за нами</h4>
+        <div class="contact__social">
+          <a href="https://www.facebook.com/MyComputerAcademy.Dnipro" target="_blank" rel="noopener" class="contact__social-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2H15C13.3431 2 12 3.34315 12 5V8H18L17 12H12V22H8V12H5V8H8V5C8 2.79086 9.79086 1 12 1H18V2Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Facebook</span>
+          </a>
+          <a href="https://www.instagram.com/my_computer_academy_/" target="_blank" rel="noopener" class="contact__social-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            <span>Instagram</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== SEO CONTENT BLOCK ========== -->
+<!-- SEO text: hidden visually, visible to search engines -->
+<div class="visually-hidden" aria-hidden="true">
+  <h2>Школа програмування для дітей у Дніпрі — My Computer Academy</h2>
+  <p>My Computer Academy — це онлайн та офлайн школа програмування для дітей від 6 до 16 років у Дніпрі. Scratch, Python, Roblox Studio, Веб-розробка HTML CSS JS. Перший пробний урок безкоштовно.</p>
+</div>
+
+<!-- ========== COOKIE BANNER ========== -->
+<div class="cookie-banner" id="cookieBanner" role="region" aria-label="Cookie consent" style="display:none">
+  <div class="cookie-banner__inner">
+    <div class="cookie-banner__text">
+      <svg class="cookie-banner__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
+      <p>
+        <strong data-ru="Мы используем файлы cookie.">Ми використовуємо файли cookie.</strong>
+        <span data-ru=" Они помогают улучшить сайт и персонализировать опыт."> Вони допомагають покращити сайт та персоналізувати досвід.</span>
+        <a href="/docs/cookie-policy.docx" target="_blank" rel="noopener" data-ru="Подробнее">Детальніше</a>
+      </p>
+    </div>
+    <div class="cookie-banner__actions">
+      <button class="cookie-btn cookie-btn--secondary" id="cookieDecline" data-ru="Только необходимые">Тільки необхідні</button>
+      <button class="cookie-btn cookie-btn--primary"   id="cookieAccept"  data-ru="Принять все">Прийняти всі</button>
+    </div>
+  </div>
+</div>
+
+<!-- JSON-LD Structured Data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOrganization",
+      "@id": "https://mycomputer.education/#organization",
+      "name": "My Computer Academy",
+      "alternateName": "Академія My Computer",
+      "description": "Онлайн та офлайн школа програмування для дітей від 6 до 16 років у Дніпрі. Курси Scratch, Python, Roblox, Веб-розробка.",
+      "url": "https://mycomputer.education",
+      "logo": "https://mycomputer.education/logo192.png",
+      "telephone": ["+380954624672", "+380682522876"],
+      "email": "my.computer.academy25@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Дніпро",
+        "addressCountry": "UA"
+      },
+      "sameAs": [
+        "https://www.instagram.com/my_computer_academy_/",
+        "https://www.facebook.com/MyComputerAcademy.Dnipro"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Курси програмування для дітей",
+        "itemListElement": [
+          {
+            "@type": "Course",
+            "name": "Scratch: візуальне програмування",
+            "description": "Курс програмування для дітей 6–10 років. Створення ігор та анімацій за допомогою блочного коду Scratch.",
+            "provider": {"@id": "https://mycomputer.education/#organization"},
+            "educationalLevel": "Початковий",
+            "audience": {"@type": "Audience", "audienceType": "Діти 6–10 років"},
+            "timeRequired": "P3M"
+          },
+          {
+            "@type": "Course",
+            "name": "Python для дітей",
+            "description": "Курс Python для дітей 10–14 років. Навчання програмуванню через ігри, Pygame та Telegram-боти.",
+            "provider": {"@id": "https://mycomputer.education/#organization"},
+            "educationalLevel": "Середній",
+            "audience": {"@type": "Audience", "audienceType": "Діти 10–14 років"},
+            "timeRequired": "P4M"
+          },
+          {
+            "@type": "Course",
+            "name": "Roblox Studio: розробка ігор",
+            "description": "Курс розробки ігор у Roblox Studio для дітей 9–14 років. Мова програмування Lua, 3D-дизайн.",
+            "provider": {"@id": "https://mycomputer.education/#organization"},
+            "educationalLevel": "Початковий",
+            "audience": {"@type": "Audience", "audienceType": "Діти 9–14 років"},
+            "timeRequired": "P3M"
+          },
+          {
+            "@type": "Course",
+            "name": "Веб-розробка: HTML, CSS, JavaScript",
+            "description": "Курс веб-розробки для дітей 12–16 років. Створення сайтів з нуля — HTML5, CSS3, JavaScript.",
+            "provider": {"@id": "https://mycomputer.education/#organization"},
+            "educationalLevel": "Середній",
+            "audience": {"@type": "Audience", "audienceType": "Діти 12–16 років"},
+            "timeRequired": "P5M"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "З якого віку можна починати програмування?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Приймаємо дітей від 6 років. Для малюків — Scratch, для дітей 10+ — Python, Roblox, Web-розробка."}
+        },
+        {
+          "@type": "Question",
+          "name": "Чи потрібні знання програмування для початку?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Ні. Всі курси починаються з нуля. Потрібен тільки комп'ютер з інтернетом."}
+        },
+        {
+          "@type": "Question",
+          "name": "Скільки коштує перший урок програмування?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Перший пробний урок безкоштовно та без зобов'язань."}
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <a href="#" class="nav__logo footer__logo">
+          <div class="nav__logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#6C47FF"/><path d="M8 11L13 16L8 21" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 21H24" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          <span>My Computer <strong>Academy</strong></span>
+        </a>
+        <p class="footer__desc" data-ru="Онлайн школа программирования для детей от 6 до 16 лет. Днепр, Украина.">Онлайн школа програмування для дітей від 6 до 16 років. Дніпро, Україна.</p>
+        <div class="footer__social">
+          <a href="https://www.instagram.com/my_computer_academy_/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.facebook.com/MyComputerAcademy.Dnipro" target="_blank" rel="noopener" class="social-link" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2H15C13.3431 2 12 3.34315 12 5V8H18L17 12H12V22H8V12H5V8H8V5C8 2.79086 9.79086 1 12 1H18V2Z" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="https://t.me/380954624672" target="_blank" class="social-link" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+      <div class="footer__links">
+        <div class="footer__col">
+          <h4 data-ru="Курсы">Курси</h4>
+          <ul>
+            <li><a href="#courses" data-ru="Scratch (6–10 лет)">Scratch (6–10 років)</a></li>
+            <li><a href="#courses" data-ru="Python (10–14 лет)">Python (10–14 років)</a></li>
+            <li><a href="#courses" data-ru="Roblox (9–14 лет)">Roblox (9–14 років)</a></li>
+            <li><a href="#courses" data-ru="Web-разработка">Веб-розробка</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 data-ru="Академия">Академія</h4>
+          <ul>
+            <li><a href="#about"        data-ru="О нас">Про нас</a></li>
+            <li><a href="#how-it-works" data-ru="Как это работает">Як це працює</a></li>
+            <li><a href="#reviews"      data-ru="Отзывы">Відгуки</a></li>
+            <li><a href="#faq"          data-ru="FAQ">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 data-ru="Контакты">Контакти</h4>
+          <ul>
+            <li><a href="tel:+380954624672">+38 (095) 462-46-72</a></li>
+            <li><a href="tel:+380682522876">+38 (068) 252-28-76</a></li>
+            <li><a href="mailto:my.computer.academy25@gmail.com">my.computer.academy25@gmail.com</a></li>
+            <li><a href="https://mycomputer.education" target="_blank">mycomputer.education</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Legal links row -->
+    <div class="footer__legal">
+      <a href="/docs/privacy-policy.docx" target="_blank" rel="noopener" data-ru="Политика конфиденциальности">Політика конфіденційності</a>
+      <a href="/docs/public-offer.docx"   target="_blank" rel="noopener" data-ru="Публичная оферта">Публічна оферта</a>
+      <a href="/docs/terms.docx"          target="_blank" rel="noopener" data-ru="Правила и условия">Правила та умови</a>
+      <a href="/docs/refund-policy.docx"  target="_blank" rel="noopener" data-ru="Правила возврата">Правила повернення</a>
+      <a href="/docs/cookie-policy.docx"  target="_blank" rel="noopener" data-ru="Политика куки">Політика куків</a>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__bottom-left">
+        <p data-ru="© 2026 My Computer Academy. Все права защищены.">© 2026 My Computer Academy. Всі права захищені.</p>
+        <p class="footer__fop">ФОП Піменов К.Ю., ІПН 3498404577, м. Дніпро, пр. О. Поля 28а,
+          <a href="tel:+380954624672">+38 (095) 462-46-72</a>,
+          <a href="mailto:my.computer.academy25@gmail.com">my.computer.academy25@gmail.com</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== MODAL ========== -->
+<div class="modal" id="signupModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal__backdrop" id="modalBackdrop"></div>
+  <div class="modal__dialog">
+    <button class="modal__close" id="modalClose" aria-label="Закрити">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M14 4L4 14M4 4L14 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="modal__header">
+      <div class="modal__badge">
+        <span class="badge-dot"></span>
+        <span data-ru="Пробный урок бесплатно">Пробний урок безкоштовно</span>
+      </div>
+      <h3 class="modal__title" id="modalTitle" data-ru="Записаться на урок">Записатися на урок</h3>
+      <p class="modal__subtitle" data-ru="Перезвоним в течение 30 минут и подберём удобное время.">Передзвонимо протягом 30 хвилин і підберемо зручний час.</p>
+    </div>
+
+    <form class="modal-form" id="modalForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" data-ru="Имя ребёнка">Ім'я дитини</label>
+          <input type="text" class="form-input" name="child_name" placeholder="Артем" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-ru="Возраст">Вік</label>
+          <select class="form-input form-select" name="age" required>
+            <option value="" disabled selected>—</option>
+            <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+            <option value="9">9</option><option value="10">10</option><option value="11">11</option>
+            <option value="12">12</option><option value="13">13</option><option value="14">14</option>
+            <option value="15">15</option><option value="16">16</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-ru="Курс">Курс</label>
+        <select class="form-input form-select" name="course">
+          <option value="" disabled selected data-ru="Какой курс интересует?">Який курс цікавить?</option>
+          <option value="scratch" data-ru="Scratch (6–10 лет)">Scratch (6–10 років)</option>
+          <option value="python"  data-ru="Python (10–14 лет)">Python (10–14 років)</option>
+          <option value="roblox"  data-ru="Roblox (9–14 лет)">Roblox (9–14 років)</option>
+          <option value="web"     data-ru="Web-разработка (12–16 лет)">Веб-розробка (12–16 років)</option>
+          <option value="help"    data-ru="Помогите выбрать">Допоможіть обрати</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-ru="Ваш телефон">Ваш телефон</label>
+        <input type="tel" class="form-input" name="phone" placeholder="+38 (___) ___-__-__" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-ru="Имя родителя">Ім'я батьків</label>
+        <input type="text" class="form-input" name="parent_name" placeholder="Як до вас звертатися?" />
+      </div>
+      <button type="submit" class="btn btn--primary btn--full btn--lg" id="modalSubmitBtn">
+        <span class="btn-text" data-ru="Записаться бесплатно">Записатися безкоштовно</span>
+        <span class="btn-loading" style="display:none" data-ru="Отправка...">Відправка...</span>
+      </button>
+      <p class="form-note">
+        <span data-ru="Нажимая кнопку, вы соглашаетесь с">Натискаючи кнопку, ви погоджуєтесь з</span>
+        <a href="#" data-ru="политикой конфиденциальности">політикою конфіденційності</a>.
+      </p>
+    </form>
+
+    <div class="form-success modal-success" id="modalSuccess" style="display:none">
+      <div class="form-success__icon">🎉</div>
+      <h3 data-ru="Заявка принята!">Заявку прийнято!</h3>
+      <p data-ru="Перезвоним в течение 30 минут!">Передзвонимо протягом 30 хвилин!</p>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

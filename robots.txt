@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block admin API from indexing
+Disallow: /api/
+
+Sitemap: https://mycomputer.education/sitemap.xml
