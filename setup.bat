@@ -1,33 +1,29 @@
 @echo off
 REM =====================================================
-REM  My Computer Academy — Git setup + v1.0 commit
-REM  Запусти ОДИН РАЗ после копирования docx-файлов в docs\
+REM  My Computer Academy — install.bat
+REM  Запусти для установки зависимостей на Windows
+REM  Работает без Visual Studio / Build Tools
 REM =====================================================
 
 echo.
-echo [1/3] Инициализация Git...
-git init
-git config user.email "sosca17@gmail.com"
-git config user.name "My Computer Academy"
+echo [1/3] Удаляем старые node_modules (если есть)...
+if exist node_modules (
+    rmdir /s /q node_modules
+    echo     Удалено.
+) else (
+    echo     Нет старых модулей, пропускаем.
+)
 
 echo.
-echo [2/3] Добавляем все файлы...
-git add -A
+echo [2/3] Устанавливаем зависимости (ignore-scripts)...
+npm install
 
 echo.
-echo [3/3] Коммит v1.0...
-git commit -m "v1.0: My Computer Academy — production-ready landing"
-git tag -a v1.0 -m "Version 1.0 — Launch. Лендинг + Node.js backend + политики + cookie banner"
-
+echo [3/3] Запускаем сервер...
 echo.
 echo ====================================================
-echo  ГОТОВО. Версия v1.0 сохранена.
-echo.
-echo  Для следующих правок в рамках v1 используй:
-echo    git add -A
-echo    git commit -m "v1.x: описание изменений"
-echo.
-echo  Для перехода на v2 — скопируй папку рядом
-echo  под именем: "лендинг ... v2"
+echo  Сервер запущен: http://localhost:3000
+echo  Для остановки нажми Ctrl+C
 echo ====================================================
-pause
+echo.
+npm start
