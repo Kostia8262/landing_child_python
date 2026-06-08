@@ -44,9 +44,10 @@ app.use(helmet({
       styleSrc:    ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
       fontSrc:     ["'self'", "https://fonts.gstatic.com"],
       imgSrc:      ["'self'", "data:", "https:"],
-      connectSrc:  ["'self'"],
-      frameSrc:    ["'none'"],
-      objectSrc:   ["'none'"],
+      connectSrc:     ["'self'"],
+      frameSrc:       ["'none'"],
+      objectSrc:      ["'none'"],
+      scriptSrcAttr:  ["'unsafe-inline'"], // allow onclick/onchange in admin panel
       upgradeInsecureRequests: [],
     },
   },
