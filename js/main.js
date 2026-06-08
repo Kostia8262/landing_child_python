@@ -161,22 +161,165 @@ const _closeBtn = document.getElementById('resultNotifyClose');
 if (_closeBtn) _closeBtn.addEventListener('click', () => { clearTimeout(_notifyTimer); hideResultNotify(); });
 
 /* ===================================================
+   FORM VALIDATION
+   =================================================== */
+const ERR = {
+  ua: {
+    name_req:    "Введіть ім'я дитини",
+    name_short:  "Мінімум 2 символи",
+    phone_req:   'Введіть номер телефону',
+    phone_short: 'Занадто короткий номер',
+    age_range:   'Вік від 5 до 18 років',
+    email_fmt:   'Невірний формат email',
+  },
+  ru: {
+    name_req:    'Введите имя ребёнка',
+    name_short:  'Минимум 2 символа',
+    phone_req:   'Введите номер телефона',
+    phone_short: 'Слишком короткий номер',
+    age_range:   'Возраст от 5 до 18 лет',
+    email_fmt:   'Неверный формат email',
+  },
+};
+
+function t(key) { return (ERR[currentLang] || ERR.ua)[key] || key; }
+
+function setFieldError(inputEl, msg) {
+  inputEl.classList.add('form-input--error');
+  const wrap = inputEl.closest('.phone-wrap') || inputEl.parentElement;
+  const errEl = wrap.parentElement.querySelector('.field-error') || wrap.querySelector('.field-error');
+  if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
+}
+
+function clearFieldError(inputEl) {
+  inputEl.classList.remove('form-input--error');
+  const wrap = inputEl.closest('.phone-wrap') || inputEl.parentElement;
+  const errEl = wrap.parentElement.querySelector('.field-error') || wrap.querySelector('.field-error');
+  if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
+}
+
+function clearAllErrors(formEl) {
+  formEl.querySelectorAll('.form-input--error').forEach(el => el.classList.remove('form-input--error'));
+  formEl.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.style.display = 'none'; });
+}
+
+function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+
+function validateForm(formEl) {
+  clearAllErrors(formEl);
+  let ok = true;
+
+  const nameEl = formEl.querySelector('[name="child_name"]');
+  if (nameEl) {
+    const v = nameEl.value.trim();
+    if (!v) { setFieldError(nameEl, t('name_req'));   ok = false; }
+    else if (v.length < 2) { setFieldError(nameEl, t('name_short')); ok = false; }
+  }
+
+  const phoneEl = formEl.querySelector('[name="phone"]');
+  if (phoneEl) {
+    const digits = phoneEl.value.replace(/\D/g, '');
+    if (!digits) { setFieldError(phoneEl, t('phone_req'));   ok = false; }
+    else if (digits.length < 7) { setFieldError(phoneEl, t('phone_short')); ok = false; }
+  }
+
+  const ageEl = formEl.querySelector('[name="age"]');
+  if (ageEl && ageEl.value !== '') {
+    const a = parseInt(ageEl.value);
+    if (isNaN(a) || a < 5 || a > 18) { setFieldError(ageEl, t('age_range')); ok = false; }
+  }
+
+  const emailEl = formEl.querySelector('[name="email"]');
+  if (emailEl && emailEl.value.trim() && !isValidEmail(emailEl.value.trim())) {
+    setFieldError(emailEl, t('email_fmt')); ok = false;
+  }
+
+  return ok;
+}
+
+// Clear error on change
+document.querySelectorAll('#contactForm, #modalForm').forEach(form => {
+  if (!form) return;
+  form.addEventListener('input', e => {
+    const el = e.target;
+    if (el.classList.contains('form-input')) clearFieldError(el);
+  });
+  form.addEventListener('change', e => {
+    const el = e.target;
+    if (el.classList.contains('form-input')) clearFieldError(el);
+  });
+});
+
+/* ===================================================
+   PHONE MASK + COUNTRY CODE
+   =================================================== */
+function applyUkrMask(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.startsWith('380')) v = v.slice(3);
+  else if (v.startsWith('38')) v = v.slice(2);
+  else if (v.startsWith('8'))  v = v.slice(1);
+  let f = '';
+  if (v.length > 0) f = '(' + v.substring(0, 3);
+  if (v.length >= 3) f += ') ' + v.substring(3, 6);
+  if (v.length >= 6) f += '-' + v.substring(6, 8);
+  if (v.length >= 8) f += '-' + v.substring(8, 10);
+  input.value = f;
+}
+
+document.querySelectorAll('.phone-wrap').forEach(wrap => {
+  const codeEl  = wrap.querySelector('.phone-code-sel');
+  const phoneEl = wrap.querySelector('[name="phone"]');
+  if (!codeEl || !phoneEl) return;
+
+  function updatePlaceholder() {
+    if (codeEl.value === '+380') {
+      phoneEl.placeholder = '(0__) ___-__-__';
+    } else {
+      phoneEl.placeholder = 'XXX XXX XXXX';
+    }
+  }
+  updatePlaceholder();
+
+  codeEl.addEventListener('change', () => {
+    phoneEl.value = '';
+    updatePlaceholder();
+    phoneEl.focus();
+  });
+
+  phoneEl.addEventListener('input', () => {
+    if (codeEl.value === '+380') applyUkrMask(phoneEl);
+  });
+});
+
+/* ===================================================
    FORM SUBMIT — shared handler for both forms
    =================================================== */
 async function submitLeadForm(formEl, submitBtnEl) {
+  if (!validateForm(formEl)) {
+    // Scroll to first error
+    const firstErr = formEl.querySelector('.form-input--error');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
   const btnText    = submitBtnEl.querySelector('.btn-text');
   const btnLoading = submitBtnEl.querySelector('.btn-loading');
-
   submitBtnEl.disabled     = true;
   btnText.style.display    = 'none';
   btnLoading.style.display = 'inline';
 
+  // Build full phone: code + digits
+  const codeEl   = formEl.querySelector('[name="phone_code"]');
+  const code     = codeEl ? codeEl.value : '+380';
+  const rawPhone = (formEl.querySelector('[name="phone"]')?.value || '').replace(/\D/g, '');
+  const fullPhone = code + rawPhone;
+
   const data = {
-    child_name:  formEl.child_name?.value.trim()  || '',
-    age:         formEl.age?.value                 || '',
-    course:      formEl.course?.value              || '',
-    phone:       formEl.phone?.value.trim()        || '',
-    email:       formEl.email?.value.trim()        || '',
+    child_name: formEl.querySelector('[name="child_name"]')?.value.trim() || '',
+    age:        formEl.querySelector('[name="age"]')?.value || '',
+    course:     formEl.querySelector('[name="course"]')?.value || '',
+    phone:      fullPhone,
+    email:      formEl.querySelector('[name="email"]')?.value.trim() || '',
   };
 
   try {
@@ -189,6 +332,12 @@ async function submitLeadForm(formEl, submitBtnEl) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     formEl.reset();
+    clearAllErrors(formEl);
+    // Reset phone placeholder after reset
+    formEl.querySelectorAll('.phone-wrap').forEach(wrap => {
+      const p = wrap.querySelector('[name="phone"]');
+      if (p) p.placeholder = '(0__) ___-__-__';
+    });
     showResultNotify(
       'success',
       currentLang === 'ua' ? 'Заявку прийнято!' : 'Заявка принята!',
@@ -198,7 +347,7 @@ async function submitLeadForm(formEl, submitBtnEl) {
     console.error('Lead submit error:', err);
     showResultNotify(
       'error',
-      currentLang === 'ua' ? 'Помилка відправки' : 'Ошибка отправки',
+      currentLang === 'ua' ? 'Помилка зв\'язку' : 'Ошибка связи',
       currentLang === 'ua' ? 'Зателефонуйте нам: +38 (095) 462-46-72' : 'Позвоните нам: +38 (095) 462-46-72'
     );
   } finally {
@@ -227,24 +376,6 @@ if (modalForm) {
     submitLeadForm(modalForm, modalSubmit);
   });
 }
-
-/* ===================================================
-   PHONE MASK — applied to all phone inputs
-   =================================================== */
-document.querySelectorAll('input[name="phone"]').forEach(input => {
-  input.addEventListener('input', function () {
-    let v = this.value.replace(/\D/g, '');
-    if (v.startsWith('380')) v = v.slice(3);
-    else if (v.startsWith('38')) v = v.slice(2);
-    else if (v.startsWith('8'))  v = v.slice(1);
-    let f = '+38 ';
-    if (v.length > 0) f += '(' + v.substring(0, 3);
-    if (v.length >= 3) f += ') ' + v.substring(3, 6);
-    if (v.length >= 6) f += '-' + v.substring(6, 8);
-    if (v.length >= 8) f += '-' + v.substring(8, 10);
-    this.value = f;
-  });
-});
 
 /* ===================================================
    FAQ ACCORDION

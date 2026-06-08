@@ -22,6 +22,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="theme-color" content="#6C47FF" />
 </head>
 <body>
 
@@ -30,9 +35,7 @@
   <nav class="nav container">
 
     <a href="#" class="nav__logo">
-      <div class="nav__logo-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#6C47FF"/><path d="M8 11L13 16L8 21" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 21H24" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
-      </div>
+      <img src="/android-chrome-192x192.png" alt="My Computer Academy" class="nav__logo-img" width="38" height="38" />
       <span>My Computer <strong>Academy</strong></span>
     </a>
 
@@ -568,12 +571,14 @@
         <form class="contact-form" id="contactForm" novalidate>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label" data-ru="Имя ребёнка">Ім'я дитини</label>
-              <input type="text" class="form-input" name="child_name" placeholder="Наприклад: Артем" required />
+              <label class="form-label" data-ru="Имя ребёнка">Ім'я дитини *</label>
+              <input type="text" class="form-input" name="child_name" placeholder="Наприклад: Артем" autocomplete="off" />
+              <span class="field-error" aria-live="polite"></span>
             </div>
             <div class="form-group">
               <label class="form-label" data-ru="Возраст">Вік</label>
               <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18" />
+              <span class="field-error" aria-live="polite"></span>
             </div>
           </div>
           <div class="form-group">
@@ -589,11 +594,37 @@
           </div>
           <div class="form-group">
             <label class="form-label" data-ru="Ваш телефон">Ваш телефон *</label>
-            <input type="tel" class="form-input" name="phone" placeholder="+38 (___) ___-__-__" required />
+            <div class="phone-wrap">
+              <select class="form-input phone-code-sel" name="phone_code" aria-label="Код країни">
+                <option value="+380">🇺🇦 +380</option>
+                <option value="+48">🇵🇱 +48</option>
+                <option value="+49">🇩🇪 +49</option>
+                <option value="+420">🇨🇿 +420</option>
+                <option value="+421">🇸🇰 +421</option>
+                <option value="+43">🇦🇹 +43</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+972">🇮🇱 +972</option>
+                <option value="+375">🇧🇾 +375</option>
+                <option value="+373">🇲🇩 +373</option>
+                <option value="+995">🇬🇪 +995</option>
+                <option value="+7">🇷🇺 +7</option>
+                <option value="+33">🇫🇷 +33</option>
+                <option value="+39">🇮🇹 +39</option>
+                <option value="+34">🇪🇸 +34</option>
+                <option value="+31">🇳🇱 +31</option>
+                <option value="+41">🇨🇭 +41</option>
+                <option value="+46">🇸🇪 +46</option>
+                <option value="+47">🇳🇴 +47</option>
+              </select>
+              <input type="tel" class="form-input" name="phone" placeholder="(0__) ___-__-__" autocomplete="tel" />
+            </div>
+            <span class="field-error" aria-live="polite"></span>
           </div>
           <div class="form-group">
             <label class="form-label" data-ru="Ваш email">Ваш email</label>
-            <input type="email" class="form-input" name="email" placeholder="example@gmail.com" />
+            <input type="email" class="form-input" name="email" placeholder="example@gmail.com" autocomplete="email" />
+            <span class="field-error" aria-live="polite"></span>
           </div>
           <button type="submit" class="btn btn--primary btn--full btn--lg" id="submitBtn">
             <span class="btn-text" data-ru="Записаться на пробный урок бесплатно">Записатися на пробний урок безкоштовно</span>
@@ -861,12 +892,14 @@
     <form class="modal-form" id="modalForm" novalidate>
       <div class="form-row">
         <div class="form-group">
-          <label class="form-label" data-ru="Имя ребёнка">Ім'я дитини</label>
-          <input type="text" class="form-input" name="child_name" placeholder="Артем" required />
+          <label class="form-label" data-ru="Имя ребёнка">Ім'я дитини *</label>
+          <input type="text" class="form-input" name="child_name" placeholder="Артем" autocomplete="off" />
+          <span class="field-error" aria-live="polite"></span>
         </div>
         <div class="form-group">
           <label class="form-label" data-ru="Возраст">Вік</label>
           <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18" />
+          <span class="field-error" aria-live="polite"></span>
         </div>
       </div>
       <div class="form-group">
@@ -882,11 +915,37 @@
       </div>
       <div class="form-group">
         <label class="form-label" data-ru="Ваш телефон">Ваш телефон *</label>
-        <input type="tel" class="form-input" name="phone" placeholder="+38 (___) ___-__-__" required />
+        <div class="phone-wrap">
+          <select class="form-input phone-code-sel" name="phone_code" aria-label="Код країни">
+            <option value="+380">🇺🇦 +380</option>
+            <option value="+48">🇵🇱 +48</option>
+            <option value="+49">🇩🇪 +49</option>
+            <option value="+420">🇨🇿 +420</option>
+            <option value="+421">🇸🇰 +421</option>
+            <option value="+43">🇦🇹 +43</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+972">🇮🇱 +972</option>
+            <option value="+375">🇧🇾 +375</option>
+            <option value="+373">🇲🇩 +373</option>
+            <option value="+995">🇬🇪 +995</option>
+            <option value="+7">🇷🇺 +7</option>
+            <option value="+33">🇫🇷 +33</option>
+            <option value="+39">🇮🇹 +39</option>
+            <option value="+34">🇪🇸 +34</option>
+            <option value="+31">🇳🇱 +31</option>
+            <option value="+41">🇨🇭 +41</option>
+            <option value="+46">🇸🇪 +46</option>
+            <option value="+47">🇳🇴 +47</option>
+          </select>
+          <input type="tel" class="form-input" name="phone" placeholder="(0__) ___-__-__" autocomplete="tel" />
+        </div>
+        <span class="field-error" aria-live="polite"></span>
       </div>
       <div class="form-group">
         <label class="form-label" data-ru="Ваш email">Ваш email</label>
-        <input type="email" class="form-input" name="email" placeholder="example@gmail.com" />
+        <input type="email" class="form-input" name="email" placeholder="example@gmail.com" autocomplete="email" />
+        <span class="field-error" aria-live="polite"></span>
       </div>
       <button type="submit" class="btn btn--primary btn--full btn--lg" id="modalSubmitBtn">
         <span class="btn-text" data-ru="Записаться бесплатно">Записатися безкоштовно</span>

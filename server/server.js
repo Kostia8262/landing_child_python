@@ -226,9 +226,27 @@ app.get('/admin.html', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'admin.html'));
 });
 
-// SPA fallback
-app.get('*', (req, res) => {
+// Known single-page routes → index.html
+const SPA_ROUTES = ['/', '/index.html'];
+SPA_ROUTES.forEach(r => app.get(r, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
+}));
+
+// 404 — everything else that wasn't caught by static files or API
+app.use((req, res) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Endpoint not found' });
+  }
+  res.status(404).sendFile(path.join(__dirname, '..', '404.html'));
+});
+
+// 500 — unhandled server errors
+app.use((err, req, res, _next) => {
+  console.error('[SERVER ERROR]', err);
+  if (req.path.startsWith('/api/')) {
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+  res.status(500).sendFile(path.join(__dirname, '..', '500.html'));
 });
 
 // ── START ─────────────────────────────────────────────────────────────────────

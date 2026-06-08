@@ -708,3 +708,36 @@ body.modal-open{overflow:hidden}
   .benefit-card--featured{display:block;padding:20px}
   .benefit-card--featured .benefit-card__icon{font-size:28px;margin-bottom:10px}
 }
+
+/* ===================================================
+   FORM FIELD VALIDATION ERRORS
+   =================================================== */
+.field-error{
+  display:none;
+  font-size:12px;color:#e53e3e;margin-top:5px;
+  padding-left:2px;line-height:1.4;
+}
+.form-input--error{
+  border-color:#e53e3e !important;
+  box-shadow:0 0 0 3px rgba(229,62,62,.15) !important;
+}
+.form-input--error:focus{border-color:#e53e3e !important}
+
+/* PHONE WRAP — code selector + input */
+.phone-wrap{display:flex;gap:0;border-radius:var(--r-md);overflow:hidden;border:1.5px solid var(--color-border)}
+.phone-wrap:focus-within{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(108,71,255,.15)}
+.phone-wrap .form-input{border:none !important;box-shadow:none !important;border-radius:0 !important}
+.phone-code-sel{
+  flex-shrink:0;width:auto;min-width:90px;max-width:108px;
+  background:var(--color-bg-soft);border-right:1.5px solid var(--color-border) !important;
+  border-radius:0 !important;padding:0 8px;font-size:13px;cursor:pointer;
+}
+.phone-wrap .form-input--error,
+.phone-wrap:has(.form-input--error){border-color:#e53e3e !important;box-shadow:0 0 0 3px rgba(229,62,62,.15) !important}
+
+/* NAV LOGO IMAGE */
+.nav__logo-img{
+  width:38px;height:38px;border-radius:50%;
+  object-fit:cover;flex-shrink:0;
+}
+.nav__logo{display:flex;align-items:center;gap:10px}
