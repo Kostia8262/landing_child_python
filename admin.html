@@ -323,7 +323,13 @@ tr:hover td{background:#faf9ff}
       <button class="sidebar-item" id="sideNav-modules" onclick="showTab('modules')">
         <span class="sidebar-icon">🔲</span><span>Модулі</span>
       </button>
+      <button class="sidebar-item" id="sideNav-articles" onclick="showTab('articles')">
+        <span class="sidebar-icon">📰</span><span>Статті</span>
+      </button>
       <div class="sidebar-section">Налаштування</div>
+      <button class="sidebar-item superadmin-only" id="sideNav-dashboard" onclick="showTab('dashboard')" style="display:none">
+        <span class="sidebar-icon">📊</span><span>Дашборд</span>
+      </button>
       <button class="sidebar-item superadmin-only" id="sideNav-admins" onclick="showTab('admins')" style="display:none">
         <span class="sidebar-icon">👥</span><span>Адміни</span>
       </button>
@@ -541,6 +547,81 @@ tr:hover td{background:#faf9ff}
       <div style="background:#fff;border-radius:14px;border:1px solid #e8e4ff;padding:24px;max-width:560px">
         <p style="font-size:13px;color:#888;margin-bottom:20px">Вимкнені блоки не будуть відображатися на головній сторінці.</p>
         <div id="moduleVisibilityList"></div>
+      </div>
+    </div>
+
+    <!-- ARTICLES TAB -->
+    <div id="articlesTab" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <h2 style="font-size:18px;font-weight:800">📰 Статті / Блог</h2>
+        <button class="btn btn-primary btn-sm" onclick="openArticleModal(null)">+ Нова стаття</button>
+      </div>
+      <div class="table-wrap">
+        <table style="min-width:700px">
+          <thead><tr>
+            <th style="width:50px">#</th>
+            <th>Заголовок</th>
+            <th>Категорія</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th></th>
+          </tr></thead>
+          <tbody id="articlesBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ARTICLES MODAL -->
+    <div class="modal-overlay" id="articleModal" style="display:none" onclick="if(event.target===this)closeArticleModal()">
+      <div class="modal-box" style="max-width:720px">
+        <h3><span id="articleModalTitle">Нова стаття</span><button class="btn btn-ghost btn-sm" onclick="closeArticleModal()">✕</button></h3>
+        <div class="modal-grid">
+          <div class="modal-group full"><label class="modal-label">Заголовок *</label><input class="modal-input" id="art_title" placeholder="Чому навчити дитину програмуванню"/></div>
+          <div class="modal-group"><label class="modal-label">Slug (URL)</label><input class="modal-input" id="art_slug" placeholder="chomu-vchyty-dytynu"/></div>
+          <div class="modal-group"><label class="modal-label">Категорія</label><input class="modal-input" id="art_category" placeholder="для батьків"/></div>
+          <div class="modal-group"><label class="modal-label">Emoji</label><input class="modal-input" id="art_emoji" placeholder="💡"/></div>
+          <div class="modal-group"><label class="modal-label">Дата публікації</label><input class="modal-input" id="art_date" type="date"/></div>
+          <div class="modal-group"><label class="modal-label">Активна</label>
+            <select class="modal-input" id="art_active">
+              <option value="1">✅ Так</option>
+              <option value="0">❌ Ні</option>
+            </select>
+          </div>
+          <div class="modal-group full"><label class="modal-label">Короткий опис (excerpt)</label><textarea class="modal-input" id="art_excerpt" rows="3" placeholder="Короткий опис для прев'ю..."></textarea></div>
+          <div class="modal-group full"><label class="modal-label">Повний текст (HTML)</label><textarea class="modal-input" id="art_content" rows="10" placeholder="&lt;p&gt;Текст статті...&lt;/p&gt;" style="font-family:monospace;font-size:12px"></textarea></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="closeArticleModal()">Скасувати</button>
+          <button class="btn btn-primary" onclick="saveArticle()">💾 Зберегти</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD TAB (superadmin only) -->
+    <div id="dashboardTab" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <h2 style="font-size:18px;font-weight:800">📊 Дашборд школи</h2>
+        <button class="btn btn-ghost btn-sm" onclick="loadDashboardTab()">🔄 Оновити</button>
+      </div>
+      <!-- Red Alerts -->
+      <div id="dashAlerts" style="margin-bottom:24px"></div>
+      <!-- KPI Row -->
+      <div class="stats" id="dashStats" style="margin-bottom:24px"></div>
+      <!-- Charts Row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px" id="dashCharts">
+        <div style="background:#fff;border-radius:14px;border:1px solid #e8e4ff;padding:20px">
+          <div style="font-size:14px;font-weight:700;margin-bottom:14px">💰 Збори за місяць (грн)</div>
+          <div id="dashRevenueChart" style="min-height:180px"></div>
+        </div>
+        <div style="background:#fff;border-radius:14px;border:1px solid #e8e4ff;padding:20px">
+          <div style="font-size:14px;font-weight:700;margin-bottom:14px">📋 Заявки за статусом</div>
+          <div id="dashLeadsChart" style="min-height:180px"></div>
+        </div>
+      </div>
+      <!-- Unpaid students table -->
+      <div style="background:#fff;border-radius:14px;border:1px solid #e8e4ff;padding:20px">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px">⚠️ Несплачені учні цього місяця</div>
+        <div id="dashUnpaidTable"></div>
       </div>
     </div>
 
@@ -902,12 +983,12 @@ let _currentTab = 'leads';
 
 function showTab(tab) {
   _currentTab = tab;
-  ['leads','admins','content','clients','courses','curriculum','modules'].forEach(t => {
+  ['leads','admins','content','clients','courses','curriculum','modules','articles','dashboard'].forEach(t => {
     const el = document.getElementById(t + 'Tab');
     if (el) el.style.display = t === tab ? '' : 'none';
   });
   // Sidebar active state
-  ['leads','admins','content','clients','courses','curriculum','modules'].forEach(t => {
+  ['leads','admins','content','clients','courses','curriculum','modules','articles','dashboard'].forEach(t => {
     const btn = document.getElementById('sideNav-' + t);
     if (btn) btn.classList.toggle('active', t === tab);
   });
@@ -925,6 +1006,8 @@ function showTab(tab) {
   if (tab === 'courses')    loadCoursesTab();
   if (tab === 'curriculum') loadCurriculumTab();
   if (tab === 'modules')    loadModulesTab();
+  if (tab === 'articles')   loadArticlesTab();
+  if (tab === 'dashboard')  loadDashboardTab();
 }
 
 function reloadCurrentTab() {
@@ -2565,6 +2648,7 @@ const SITE_SECTIONS = [
   { key: 'how-it-works', label: '⚙️ Як це працює' },
   { key: 'about',        label: '👥 Про нас' },
   { key: 'reviews',      label: '⭐ Відгуки' },
+  { key: 'articles',     label: '📰 Корисні статті (блог)' },
   { key: 'faq',          label: '❓ FAQ' },
   { key: 'contact',      label: '📞 Форма запису' },
 ];
@@ -2608,6 +2692,302 @@ async function saveModuleVisibility() {
     _modulesVisibility = visibility;
     showToast('Налаштування збережено ✓', 'success');
   } catch { showToast('Помилка сервера', 'error'); }
+}
+
+// ── ARTICLES TAB ─────────────────────────────────────────────────────────────
+let _articles = [];
+let _articleEditId = null;
+
+async function loadArticlesTab() {
+  try {
+    const res = await fetch('/api/articles?all=1', { headers: { 'x-admin-token': token } });
+    const data = await res.json();
+    _articles = data.articles || [];
+    renderArticlesTable();
+  } catch { showToast('Помилка завантаження статей', 'error'); }
+}
+
+function renderArticlesTable() {
+  const tbody = document.getElementById('articlesBody');
+  if (!tbody) return;
+  if (!_articles.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty">Статей ще немає. Натисніть "+ Нова стаття"</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = _articles.map((a, i) => `
+    <tr>
+      <td style="color:#888;font-size:12px">${i+1}</td>
+      <td>
+        <div style="font-weight:600;font-size:13px">${a.coverEmoji || ''} ${esc(a.title)}</div>
+        <div style="font-size:11px;color:#aaa">/articles/${esc(a.slug)}</div>
+      </td>
+      <td><span class="chip">${esc(a.category || '')}</span></td>
+      <td style="font-size:12px;color:#888">${a.publishedAt || ''}</td>
+      <td>
+        <span class="badge ${a.active !== false ? 'badge-enrolled' : 'badge-rejected'}">
+          ${a.active !== false ? 'Активна' : 'Архів'}
+        </span>
+      </td>
+      <td style="white-space:nowrap">
+        <button class="btn btn-ghost btn-sm" onclick="openArticleModal(${a.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteArticle(${a.id})">🗑</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openArticleModal(id) {
+  _articleEditId = id;
+  const modal = document.getElementById('articleModal');
+  const titleEl = document.getElementById('articleModalTitle');
+  if (id) {
+    const a = _articles.find(x => x.id === id);
+    if (!a) return;
+    titleEl.textContent = 'Редагувати статтю';
+    document.getElementById('art_title').value    = a.title || '';
+    document.getElementById('art_slug').value     = a.slug || '';
+    document.getElementById('art_category').value = a.category || '';
+    document.getElementById('art_emoji').value    = a.coverEmoji || '';
+    document.getElementById('art_date').value     = a.publishedAt || '';
+    document.getElementById('art_active').value   = a.active !== false ? '1' : '0';
+    document.getElementById('art_excerpt').value  = a.excerpt || '';
+    document.getElementById('art_content').value  = a.content || '';
+  } else {
+    titleEl.textContent = 'Нова стаття';
+    document.getElementById('art_title').value    = '';
+    document.getElementById('art_slug').value     = '';
+    document.getElementById('art_category').value = '';
+    document.getElementById('art_emoji').value    = '📄';
+    document.getElementById('art_date').value     = new Date().toISOString().slice(0,10);
+    document.getElementById('art_active').value   = '1';
+    document.getElementById('art_excerpt').value  = '';
+    document.getElementById('art_content').value  = '';
+  }
+  modal.style.display = 'flex';
+}
+
+function closeArticleModal() {
+  document.getElementById('articleModal').style.display = 'none';
+  _articleEditId = null;
+}
+
+async function saveArticle() {
+  const title   = document.getElementById('art_title').value.trim();
+  const excerpt = document.getElementById('art_excerpt').value.trim();
+  if (!title) { showToast('Вкажіть заголовок', 'error'); return; }
+  const body = {
+    title,
+    slug:        document.getElementById('art_slug').value.trim() || undefined,
+    category:    document.getElementById('art_category').value.trim(),
+    coverEmoji:  document.getElementById('art_emoji').value.trim() || '📄',
+    publishedAt: document.getElementById('art_date').value,
+    active:      document.getElementById('art_active').value === '1',
+    excerpt,
+    content:     document.getElementById('art_content').value.trim(),
+  };
+  try {
+    const method = _articleEditId ? 'PATCH' : 'POST';
+    const url    = _articleEditId ? `/api/articles/${_articleEditId}` : '/api/articles';
+    const res    = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error || 'Помилка', 'error'); return; }
+    showToast(_articleEditId ? 'Статтю оновлено ✓' : 'Статтю створено ✓', 'success');
+    closeArticleModal();
+    loadArticlesTab();
+  } catch { showToast('Помилка сервера', 'error'); }
+}
+
+async function deleteArticle(id) {
+  const a = _articles.find(x => x.id === id);
+  if (!a || !confirm(`Видалити статтю "${a.title}"?`)) return;
+  try {
+    const res = await fetch(`/api/articles/${id}`, { method: 'DELETE', headers: { 'x-admin-token': token } });
+    if (!res.ok) { showToast('Помилка видалення', 'error'); return; }
+    showToast('Статтю видалено', 'success');
+    loadArticlesTab();
+  } catch { showToast('Помилка сервера', 'error'); }
+}
+
+// ── DASHBOARD TAB (superadmin) ────────────────────────────────────────────────
+async function loadDashboardTab() {
+  const alertsEl    = document.getElementById('dashAlerts');
+  const statsEl     = document.getElementById('dashStats');
+  const revenueEl   = document.getElementById('dashRevenueChart');
+  const leadsChEl   = document.getElementById('dashLeadsChart');
+  const unpaidEl    = document.getElementById('dashUnpaidTable');
+  if (!statsEl) return;
+
+  statsEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#888;padding:20px">Завантаження...</div>';
+
+  try {
+    const [clientsRes, leadsRes, alertsRes] = await Promise.all([
+      fetch('/api/clients?limit=9999',  { headers: { 'x-admin-token': token } }),
+      fetch('/api/leads?limit=9999',    { headers: { 'x-admin-token': token } }),
+      fetch('/api/alerts',              { headers: { 'x-admin-token': token } }),
+    ]);
+    const clientsData = await clientsRes.json();
+    const leadsData   = await leadsRes.json();
+    const alertsData  = await alertsRes.json();
+
+    const clients = clientsData.clients || [];
+    const leads   = leadsData.leads || [];
+    const alerts  = alertsData.alerts || [];
+
+    // ── Red alerts panel ──────────────────────────────────────────────────────
+    const highAlerts = alerts.filter(a => a.severity === 'high' || a.severity === 'medium');
+    if (alertsEl) {
+      if (highAlerts.length) {
+        alertsEl.innerHTML = highAlerts.map(a => `
+          <div style="background:${a.severity==='high'?'#fff5f5':'#fffbeb'};border:1.5px solid ${a.severity==='high'?'#fecaca':'#fde68a'};border-radius:12px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px">
+            <span style="font-size:22px;flex-shrink:0">${a.severity==='high'?'🚨':'⚠️'}</span>
+            <div style="flex:1">
+              <div style="font-weight:700;font-size:14px;color:${a.severity==='high'?'#dc2626':'#b45309'};margin-bottom:4px">${esc(a.message)}</div>
+              <div style="font-size:12px;color:#666">${esc(a.hint)}</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="showTab('${a.tab}')" style="flex-shrink:0">Переглянути →</button>
+          </div>`).join('');
+      } else {
+        alertsEl.innerHTML = '<div style="background:#f0fdf4;border:1.5px solid #a7f3d0;border-radius:12px;padding:14px 20px;margin-bottom:10px;font-weight:600;color:#15803d">✅ Всі заявки оброблено, прострочених немає</div>';
+      }
+    }
+
+    // ── KPI stats ─────────────────────────────────────────────────────────────
+    const activeStudents  = clients.filter(c => c.status === 'active').length;
+    const trialStudents   = clients.filter(c => c.status === 'trial').length;
+    const totalStudents   = clients.filter(c => ['active','trial'].includes(c.status)).length;
+    const newLeadsToday   = leads.filter(l => l.created_at && l.created_at.startsWith(new Date().toLocaleDateString('uk-UA').split('.').reverse().join('-'))).length;
+    const newLeadsWeek    = leads.filter(l => {
+      if (!l.created_at) return false;
+      const d = new Date(l.created_at.split('.').reverse().join('-'));
+      return !isNaN(d) && (Date.now() - d.getTime()) < 7*24*60*60*1000;
+    }).length;
+    const unprocessed     = leads.filter(l => l.status === 'new').length;
+
+    // Revenue this month from totalPaid sums
+    const ym = new Date().toISOString().slice(0,7);
+    let monthRevenue = 0;
+    try {
+      const mpRes = await fetch(`/api/monthly-payments/${ym}`, { headers: { 'x-admin-token': token } });
+      if (mpRes.ok) {
+        const mpData = await mpRes.json();
+        const records = mpData.records || [];
+        monthRevenue = records.filter(r => r.status === 'paid' || r.status === 'partial')
+          .reduce((s, r) => s + (parseFloat(r.amount) || 0), 0);
+      }
+    } catch {}
+
+    const unpaidCount = await (async () => {
+      try {
+        const mpRes = await fetch(`/api/monthly-payments/${ym}`, { headers: { 'x-admin-token': token } });
+        if (!mpRes.ok) return 0;
+        const d = await mpRes.json();
+        return (d.records || []).filter(r => r.status === 'pending').length;
+      } catch { return 0; }
+    })();
+
+    statsEl.innerHTML = [
+      { icon:'🎓', num: activeStudents, label:'Активних учнів', color:'#6C47FF' },
+      { icon:'🔵', num: trialStudents,  label:'На пробному',    color:'#7c3aed' },
+      { icon:'📋', num: unprocessed,    label:'Нових заявок',   color: unprocessed > 0 ? '#dc2626' : '#15803d' },
+      { icon:'💰', num: monthRevenue.toLocaleString('uk-UA') + ' ₴', label:`Збори ${ym}`, color:'#15803d', raw:true },
+      { icon:'⚠️', num: unpaidCount,   label:'Несплачено',     color: unpaidCount > 0 ? '#dc2626' : '#15803d' },
+      { icon:'📥', num: newLeadsWeek,  label:'Заявок за тиждень', color:'#2563eb' },
+    ].map(s => `
+      <div class="stat" style="border-left:3px solid ${s.color}">
+        <div style="font-size:22px;margin-bottom:4px">${s.icon}</div>
+        <div class="stat-num" style="color:${s.color}">${s.raw ? s.num : s.num}</div>
+        <div class="stat-label">${s.label}</div>
+      </div>`).join('');
+
+    // ── Leads by status chart (bar) ───────────────────────────────────────────
+    if (leadsChEl) {
+      const statusGroups = {};
+      const STATUS_LABELS = {new:'Нові',contacted:'Зв\'язались',trial_scheduled:'Пробний',enrolled:'Записані',rejected:'Відмовили'};
+      leads.forEach(l => { statusGroups[l.status] = (statusGroups[l.status]||0) + 1; });
+      const maxV = Math.max(1, ...Object.values(statusGroups));
+      leadsChEl.innerHTML = Object.entries(statusGroups).map(([st,cnt]) => `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="min-width:110px;font-size:12px;color:#666">${STATUS_LABELS[st]||st}</div>
+          <div style="flex:1;background:#f0eeff;border-radius:6px;height:22px;position:relative">
+            <div style="background:#6C47FF;border-radius:6px;height:100%;width:${Math.round(cnt/maxV*100)}%;transition:width .4s"></div>
+          </div>
+          <div style="min-width:28px;font-size:13px;font-weight:700;color:#1a1a2e">${cnt}</div>
+        </div>`).join('');
+    }
+
+    // ── Monthly revenue chart (last 6 months) ─────────────────────────────────
+    if (revenueEl) {
+      const months = [];
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(); d.setMonth(d.getMonth() - i);
+        months.push(d.toISOString().slice(0,7));
+      }
+      const revenues = await Promise.all(months.map(async m => {
+        try {
+          const r = await fetch(`/api/monthly-payments/${m}`, { headers: { 'x-admin-token': token } });
+          if (!r.ok) return { m, v: 0 };
+          const d = await r.json();
+          const v = (d.records||[]).filter(r => r.status==='paid'||r.status==='partial')
+            .reduce((s,r) => s+(parseFloat(r.amount)||0), 0);
+          return { m, v };
+        } catch { return { m, v: 0 }; }
+      }));
+      const maxR = Math.max(1, ...revenues.map(x=>x.v));
+      revenueEl.innerHTML = `<div style="display:flex;align-items:flex-end;gap:8px;height:140px;padding-top:10px">` +
+        revenues.map(({m,v}) => {
+          const h = Math.round(v/maxR*120);
+          const label = m.slice(5); // MM
+          const months = ['','Січ','Лют','Бер','Кві','Тра','Чер','Лип','Сер','Вер','Жов','Лис','Гру'];
+          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div style="font-size:10px;color:#888">${v>0?(v/1000).toFixed(0)+'к':''}</div>
+            <div style="background:${m===ym?'#6C47FF':'#c4b5fd'};border-radius:4px 4px 0 0;width:100%;height:${h}px;min-height:4px;transition:height .4s"></div>
+            <div style="font-size:10px;color:#888">${months[parseInt(label)]||label}</div>
+          </div>`;
+        }).join('') + '</div>';
+    }
+
+    // ── Unpaid students table ─────────────────────────────────────────────────
+    if (unpaidEl) {
+      try {
+        const mpRes = await fetch(`/api/monthly-payments/${ym}`, { headers: { 'x-admin-token': token } });
+        if (mpRes.ok) {
+          const mpData = await mpRes.json();
+          const unpaid = (mpData.records||[]).filter(r => r.status === 'pending');
+          if (!unpaid.length) {
+            unpaidEl.innerHTML = '<div style="color:#15803d;font-size:13px;font-weight:600">✅ Всі учні сплатили за цей місяць</div>';
+          } else {
+            unpaidEl.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px">
+              <thead><tr>
+                <th style="text-align:left;padding:8px 12px;border-bottom:1px solid #f0eeff;color:#888;font-size:11px;text-transform:uppercase">Учень</th>
+                <th style="text-align:left;padding:8px 12px;border-bottom:1px solid #f0eeff;color:#888;font-size:11px;text-transform:uppercase">Сума</th>
+                <th style="text-align:left;padding:8px 12px;border-bottom:1px solid #f0eeff;color:#888;font-size:11px;text-transform:uppercase">Курс</th>
+                <th style="text-align:left;padding:8px 12px;border-bottom:1px solid #f0eeff;color:#888;font-size:11px;text-transform:uppercase">Дія</th>
+              </tr></thead>
+              <tbody>${unpaid.map(r => `
+                <tr style="background:#fff5f5">
+                  <td style="padding:10px 12px;border-bottom:1px solid #f0eeff">
+                    <span style="color:#dc2626;font-weight:700">⚠️</span> ${esc(r.name||r.clientName||'—')}
+                  </td>
+                  <td style="padding:10px 12px;border-bottom:1px solid #f0eeff;font-weight:700;color:#dc2626">${(r.amount||0).toLocaleString('uk-UA')} ₴</td>
+                  <td style="padding:10px 12px;border-bottom:1px solid #f0eeff;color:#888">${esc(r.course||'—')}</td>
+                  <td style="padding:10px 12px;border-bottom:1px solid #f0eeff">
+                    <button class="btn btn-ghost btn-sm" onclick="showTab('clients')">Відкрити →</button>
+                  </td>
+                </tr>`).join('')}
+              </tbody>
+            </table>`;
+          }
+        }
+      } catch {}
+    }
+
+  } catch(e) {
+    if (statsEl) statsEl.innerHTML = '<div style="color:#e53e3e;padding:20px">Помилка завантаження дашборду</div>';
+  }
 }
 
 // ── AUTO LOGIN if token saved ─────────────────────────────────────────────────

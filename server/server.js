@@ -29,6 +29,7 @@ const paymentsDb     = require('./payments');
 const attendanceDb   = require('./attendance');
 const monthlyPayDb   = require('./monthly-payments');
 const coursesDb      = require('./courses');
+const articlesDb     = require('./articles');
 const { sendLeadNotification } = require('./mailer');
 
 const CONTENT_FILE = path.join(__dirname, '..', 'data', 'content.json');
@@ -610,6 +611,49 @@ app.delete('/api/courses/:id', adminLimiter, requireAdmin, (req, res) => {
   const ok = coursesDb.delete(req.params.id);
   if (!ok) return res.status(404).json({ error: 'Курс не знайдено' });
   res.json({ success: true });
+});
+
+// ── ARTICLES API ─────────────────────────────────────────────────────────────
+// Public: latest active articles (for homepage + article pages)
+app.get('/api/articles', (req, res) => {
+  const all = req.query.all === '1';
+  const list = all ? articlesDb.getAll() : articlesDb.getActive();
+  res.json({ success: true, articles: list });
+});
+
+app.get('/api/articles/:id', (req, res) => {
+  const id = parseInt(req.params.id) || 0;
+  const all = articlesDb.getAll();
+  const article = all.find(a => a.id === id);
+  if (!article) return res.status(404).json({ error: 'Not found' });
+  res.json({ success: true, article });
+});
+
+app.post('/api/articles', adminLimiter, requireAdmin, (req, res) => {
+  const article = articlesDb.create(req.body);
+  if (!article) return res.status(409).json({ error: 'Slug вже існує' });
+  res.status(201).json({ success: true, article });
+});
+
+app.patch('/api/articles/:id', adminLimiter, requireAdmin, (req, res) => {
+  const id = parseInt(req.params.id) || 0;
+  const article = articlesDb.update(id, req.body);
+  if (!article) return res.status(404).json({ error: 'Статтю не знайдено' });
+  res.json({ success: true, article });
+});
+
+app.delete('/api/articles/:id', adminLimiter, requireAdmin, (req, res) => {
+  const id = parseInt(req.params.id) || 0;
+  const ok = articlesDb.delete(id);
+  if (!ok) return res.status(404).json({ error: 'Статтю не знайдено' });
+  res.json({ success: true });
+});
+
+// ── ARTICLE PAGES ─────────────────────────────────────────────────────────────
+app.get('/articles/:slug', (req, res) => {
+  const { slug } = req.params;
+  if (!SAFE_ID_RE.test(slug)) return res.status(404).sendFile(path.join(__dirname, '..', '404.html'));
+  res.sendFile(path.join(__dirname, '..', 'article.html'));
 });
 
 // ── COURSE PAGES ──────────────────────────────────────────────────────────────

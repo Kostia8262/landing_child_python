@@ -50,6 +50,38 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.education/courses/web"/>
   </url>
 
+  <!-- Blog / Articles -->
+  <url>
+    <loc>https://mycomputer.education/articles/chomu-vchyty-dytynu-prohramuvanniu-2026</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mycomputer.education/articles/scratch-dlia-ditei-6-10-rokiv</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mycomputer.education/articles/python-dlia-pidlitkiv-vid-nulia-do-bota</loc>
+    <lastmod>2026-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mycomputer.education/articles/roblox-studio-yak-hra-peretvoriuietsia-na-navchannia</loc>
+    <lastmod>2026-06-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://mycomputer.education/articles/onlain-chy-oflain-yake-navchannia-krasche</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Legal / policy pages -->
   <url>
     <loc>https://mycomputer.education/docs/privacy-policy.html</loc>

@@ -425,6 +425,7 @@ function applyModuleVisibility(modules) {
     'how-it-works': 'how-it-works',
     'about':        'about',
     'reviews':      'reviews',
+    'articles':     'articles',
     'faq':          'faq',
     'contact':      'contact',
   };
@@ -513,6 +514,54 @@ function renderFaq(items) {
 
 // Load content on page start (after lang is applied)
 loadSiteContent();
+
+/* ===================================================
+   ARTICLES — loads from /api/articles
+   =================================================== */
+async function loadArticles() {
+  const slider = document.getElementById('articlesSlider');
+  const dotsEl = document.getElementById('articlesDots');
+  if (!slider) return;
+  try {
+    const res = await fetch('/api/articles');
+    if (!res.ok) return;
+    const { articles } = await res.json();
+    const active = (articles || []).filter(a => a.active !== false).slice(0, 6);
+    if (!active.length) { document.getElementById('articles')?.style.setProperty('display','none'); return; }
+
+    slider.innerHTML = active.map(a => `
+      <a class="article-card" href="/articles/${a.slug}" aria-label="${esc(a.title)}">
+        <div class="article-card__top">
+          <span class="article-card__emoji">${a.coverEmoji || '📄'}</span>
+          <span class="article-card__cat">${esc(a.category || '')}</span>
+        </div>
+        <div class="article-card__body">
+          <h3 class="article-card__title">${esc(a.title)}</h3>
+          <p class="article-card__excerpt">${esc(a.excerpt)}</p>
+        </div>
+        <div class="article-card__footer">
+          <span class="article-card__date">${formatDate(a.publishedAt)}</span>
+          <span class="article-card__read">Читати →</span>
+        </div>
+      </a>
+    `).join('');
+
+    // Mobile dots
+    if (dotsEl && active.length > 1) {
+      dotsEl.innerHTML = active.map((_, i) => `<span class="articles-dot${i===0?' active':''}"></span>`).join('');
+      slider.addEventListener('scroll', () => {
+        const card = slider.querySelector('.article-card');
+        if (!card) return;
+        const idx = Math.round(slider.scrollLeft / (card.offsetWidth + 16));
+        dotsEl.querySelectorAll('.articles-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+      }, { passive: true });
+    }
+  } catch(e) { /* silent fail */ }
+}
+
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function formatDate(d) { if (!d) return ''; try { return new Date(d).toLocaleDateString('uk-UA', {day:'numeric',month:'long',year:'numeric'}); } catch { return d; } }
+loadArticles();
 
 /* ===================================================
    FAQ ACCORDION
