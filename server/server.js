@@ -220,13 +220,25 @@ app.get('*', (req, res) => {
 });
 
 // ── START ─────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`\n  ╔═══════════════════════════════════╗`);
   console.log(`  ║  My Computer Academy              ║`);
   console.log(`  ║  http://localhost:${PORT}             ║`);
   console.log(`  ╚═══════════════════════════════════╝\n`);
   console.log(`  Admin: GET /api/leads?token=YOUR_TOKEN`);
   console.log(`  Leads: POST /api/leads\n`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n  ❌ Порт ${PORT} уже занят другим процессом.`);
+    console.error(`  Завершите его командой:`);
+    console.error(`  PowerShell: Get-Process -Id (Get-NetTCPConnection -LocalPort ${PORT}).OwningProcess | Stop-Process -Force`);
+    console.error(`  Затем запустите npm start снова.\n`);
+    process.exit(1);
+  } else {
+    throw err;
+  }
 });
 
 process.on('SIGINT',  () => { db.close(); process.exit(0); });
