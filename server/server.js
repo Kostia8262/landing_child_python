@@ -214,6 +214,11 @@ app.delete('/api/leads/:id', adminLimiter, requireAdmin, (req, res) => {
   }
 });
 
+// Admin panel
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'admin.html'));
+});
+
 // SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
@@ -225,7 +230,7 @@ const server = app.listen(PORT, () => {
   console.log(`  ║  My Computer Academy              ║`);
   console.log(`  ║  http://localhost:${PORT}             ║`);
   console.log(`  ╚═══════════════════════════════════╝\n`);
-  console.log(`  Admin: GET /api/leads?token=YOUR_TOKEN`);
+  console.log(`  Admin UI: http://localhost:${PORT}/admin`);
   console.log(`  Leads: POST /api/leads\n`);
 });
 
