@@ -38,16 +38,16 @@ module.exports = {
   insertLead(data) {
     const leads = load();
     const lead = {
-      id:          nextId(leads),
-      child_name:  data.child_name,
-      age:         data.age   ?? null,
-      course:      data.course ?? null,
-      phone:       data.phone,
-      parent_name: data.parent_name ?? null,
-      status:      'new',
-      notes:       null,
-      created_at:  now(),
-      updated_at:  now(),
+      id:         nextId(leads),
+      child_name: data.child_name,
+      age:        data.age   ?? null,
+      course:     data.course ?? null,
+      phone:      data.phone,
+      email:      data.email ?? null,
+      status:     'new',
+      notes:      null,
+      created_at: now(),
+      updated_at: now(),
     };
     leads.unshift(lead);
     save(leads);

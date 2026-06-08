@@ -116,10 +116,54 @@ document.querySelectorAll('.open-modal').forEach(btn => {
 });
 
 /* ===================================================
-   FORM SUBMIT — shared handler for both forms
-   Fix 6: saves to /api/leads
+   RESULT NOTIFICATION — appears for 5s, then form stays visible
    =================================================== */
-async function submitLeadForm(formEl, successEl, submitBtnEl) {
+let _notifyTimer = null;
+
+function showResultNotify(type, title, sub) {
+  const wrap     = document.getElementById('resultNotify');
+  const inner    = document.getElementById('resultNotifyInner');
+  const icon     = document.getElementById('resultNotifyIcon');
+  const titleEl  = document.getElementById('resultNotifyTitle');
+  const subEl    = document.getElementById('resultNotifySub');
+  const progress = document.getElementById('resultNotifyProgress');
+  if (!wrap) return;
+
+  clearTimeout(_notifyTimer);
+  icon.textContent    = type === 'success' ? '🎉' : '❌';
+  titleEl.textContent = title;
+  subEl.textContent   = sub || '';
+  wrap.className      = 'result-notify result-notify--' + type;
+  wrap.style.display  = 'block';
+
+  // restart progress bar
+  progress.style.transition = 'none';
+  progress.style.width      = '100%';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    progress.style.transition = 'width 5s linear';
+    progress.style.width      = '0%';
+  }));
+
+  _notifyTimer = setTimeout(() => hideResultNotify(), 5000);
+}
+
+function hideResultNotify() {
+  const wrap = document.getElementById('resultNotify');
+  if (!wrap) return;
+  wrap.classList.add('result-notify--out');
+  setTimeout(() => {
+    wrap.style.display = 'none';
+    wrap.className = 'result-notify';
+  }, 350);
+}
+
+const _closeBtn = document.getElementById('resultNotifyClose');
+if (_closeBtn) _closeBtn.addEventListener('click', () => { clearTimeout(_notifyTimer); hideResultNotify(); });
+
+/* ===================================================
+   FORM SUBMIT — shared handler for both forms
+   =================================================== */
+async function submitLeadForm(formEl, submitBtnEl) {
   const btnText    = submitBtnEl.querySelector('.btn-text');
   const btnLoading = submitBtnEl.querySelector('.btn-loading');
 
@@ -132,7 +176,7 @@ async function submitLeadForm(formEl, successEl, submitBtnEl) {
     age:         formEl.age?.value                 || '',
     course:      formEl.course?.value              || '',
     phone:       formEl.phone?.value.trim()        || '',
-    parent_name: formEl.parent_name?.value.trim()  || '',
+    email:       formEl.email?.value.trim()        || '',
   };
 
   try {
@@ -144,22 +188,20 @@ async function submitLeadForm(formEl, successEl, submitBtnEl) {
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    formEl.style.display        = 'none';
-    successEl.style.display     = 'block';
-    showToast(
-      currentLang === 'ua'
-        ? '🎉 Заявку прийнято! Передзвонимо незабаром.'
-        : '🎉 Заявка принята! Перезвоним скоро.',
-      'success'
+    formEl.reset();
+    showResultNotify(
+      'success',
+      currentLang === 'ua' ? 'Заявку прийнято!' : 'Заявка принята!',
+      currentLang === 'ua' ? 'Передзвонимо протягом 30 хвилин. Дитину чекає безкоштовний пробний урок!' : 'Перезвоним в течение 30 минут. Ребёнка ждёт бесплатный пробный урок!'
     );
   } catch (err) {
     console.error('Lead submit error:', err);
-    showToast(
-      currentLang === 'ua'
-        ? '❌ Помилка. Зателефонуйте нам напряму.'
-        : '❌ Ошибка. Позвоните нам напрямую.',
-      'error'
+    showResultNotify(
+      'error',
+      currentLang === 'ua' ? 'Помилка відправки' : 'Ошибка отправки',
+      currentLang === 'ua' ? 'Зателефонуйте нам: +38 (095) 462-46-72' : 'Позвоните нам: +38 (095) 462-46-72'
     );
+  } finally {
     submitBtnEl.disabled     = false;
     btnText.style.display    = 'inline';
     btnLoading.style.display = 'none';
@@ -167,24 +209,22 @@ async function submitLeadForm(formEl, successEl, submitBtnEl) {
 }
 
 // Main contact form
-const contactForm    = document.getElementById('contactForm');
-const contactSuccess = document.getElementById('formSuccess');
-const contactSubmit  = document.getElementById('submitBtn');
+const contactForm   = document.getElementById('contactForm');
+const contactSubmit = document.getElementById('submitBtn');
 if (contactForm) {
   contactForm.addEventListener('submit', e => {
     e.preventDefault();
-    submitLeadForm(contactForm, contactSuccess, contactSubmit);
+    submitLeadForm(contactForm, contactSubmit);
   });
 }
 
 // Modal form
-const modalForm    = document.getElementById('modalForm');
-const modalSuccess = document.getElementById('modalSuccess');
-const modalSubmit  = document.getElementById('modalSubmitBtn');
+const modalForm   = document.getElementById('modalForm');
+const modalSubmit = document.getElementById('modalSubmitBtn');
 if (modalForm) {
   modalForm.addEventListener('submit', e => {
     e.preventDefault();
-    submitLeadForm(modalForm, modalSuccess, modalSubmit);
+    submitLeadForm(modalForm, modalSubmit);
   });
 }
 

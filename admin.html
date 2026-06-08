@@ -167,7 +167,7 @@ tr:hover td{background:#faf9ff}
             <th>Вік</th>
             <th>Курс</th>
             <th>Телефон</th>
-            <th>Батьки</th>
+            <th>Email</th>
             <th>Статус</th>
             <th>Нотатки</th>
             <th>Дата</th>
@@ -300,7 +300,7 @@ function renderTable() {
     if (status && l.status !== status) return false;
     if (course && l.course !== course) return false;
     if (q) {
-      const hay = [l.child_name, l.phone, l.parent_name, l.course, l.notes].join(' ').toLowerCase();
+      const hay = [l.child_name, l.phone, l.email, l.course, l.notes].join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -321,7 +321,7 @@ function renderTable() {
         <td>${l.age || '—'}</td>
         <td>${l.course ? `<span class="chip">${COURSE_LABELS[l.course] || l.course}</span>` : '—'}</td>
         <td><a href="tel:${esc(l.phone)}" class="phone-link">${esc(l.phone)}</a></td>
-        <td>${esc(l.parent_name || '—')}</td>
+        <td>${l.email ? `<a href="mailto:${esc(l.email)}" style="color:#6C47FF">${esc(l.email)}</a>` : '—'}</td>
         <td>
           <select class="status-sel" onchange="changeStatus(${l.id}, this.value)">
             ${Object.entries(STATUS_LABELS).map(([v,lbl]) =>
@@ -397,9 +397,9 @@ async function deleteLead(id) {
 // ── CSV EXPORT ────────────────────────────────────────────────────────────────
 function exportCSV() {
   const rows = [
-    ['#','Ім\'я дитини','Вік','Курс','Телефон','Батьки','Статус','Нотатки','Дата'],
+    ['#','Ім\'я дитини','Вік','Курс','Телефон','Email','Статус','Нотатки','Дата'],
     ...filtered.map(l => [
-      l.id, l.child_name, l.age||'', l.course||'', l.phone, l.parent_name||'',
+      l.id, l.child_name, l.age||'', l.course||'', l.phone, l.email||'',
       STATUS_LABELS[l.status]||l.status, l.notes||'', l.created_at||''
     ])
   ];

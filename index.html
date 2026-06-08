@@ -573,13 +573,7 @@
             </div>
             <div class="form-group">
               <label class="form-label" data-ru="Возраст">Вік</label>
-              <select class="form-input form-select" name="age" required>
-                <option value="" disabled selected>—</option>
-                <option value="6">6</option><option value="7">7</option><option value="8">8</option>
-                <option value="9">9</option><option value="10">10</option><option value="11">11</option>
-                <option value="12">12</option><option value="13">13</option><option value="14">14</option>
-                <option value="15">15</option><option value="16">16</option>
-              </select>
+              <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18" />
             </div>
           </div>
           <div class="form-group">
@@ -594,12 +588,12 @@
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label" data-ru="Ваш телефон">Ваш телефон</label>
+            <label class="form-label" data-ru="Ваш телефон">Ваш телефон *</label>
             <input type="tel" class="form-input" name="phone" placeholder="+38 (___) ___-__-__" required />
           </div>
           <div class="form-group">
-            <label class="form-label" data-ru="Имя родителя">Ім'я батьків</label>
-            <input type="text" class="form-input" name="parent_name" placeholder="Як до вас звертатися?" />
+            <label class="form-label" data-ru="Ваш email">Ваш email</label>
+            <input type="email" class="form-input" name="email" placeholder="example@gmail.com" />
           </div>
           <button type="submit" class="btn btn--primary btn--full btn--lg" id="submitBtn">
             <span class="btn-text" data-ru="Записаться на пробный урок бесплатно">Записатися на пробний урок безкоштовно</span>
@@ -872,13 +866,7 @@
         </div>
         <div class="form-group">
           <label class="form-label" data-ru="Возраст">Вік</label>
-          <select class="form-input form-select" name="age" required>
-            <option value="" disabled selected>—</option>
-            <option value="6">6</option><option value="7">7</option><option value="8">8</option>
-            <option value="9">9</option><option value="10">10</option><option value="11">11</option>
-            <option value="12">12</option><option value="13">13</option><option value="14">14</option>
-            <option value="15">15</option><option value="16">16</option>
-          </select>
+          <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18" />
         </div>
       </div>
       <div class="form-group">
@@ -893,12 +881,12 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label" data-ru="Ваш телефон">Ваш телефон</label>
+        <label class="form-label" data-ru="Ваш телефон">Ваш телефон *</label>
         <input type="tel" class="form-input" name="phone" placeholder="+38 (___) ___-__-__" required />
       </div>
       <div class="form-group">
-        <label class="form-label" data-ru="Имя родителя">Ім'я батьків</label>
-        <input type="text" class="form-input" name="parent_name" placeholder="Як до вас звертатися?" />
+        <label class="form-label" data-ru="Ваш email">Ваш email</label>
+        <input type="email" class="form-input" name="email" placeholder="example@gmail.com" />
       </div>
       <button type="submit" class="btn btn--primary btn--full btn--lg" id="modalSubmitBtn">
         <span class="btn-text" data-ru="Записаться бесплатно">Записатися безкоштовно</span>
@@ -916,6 +904,19 @@
       <p data-ru="Перезвоним в течение 30 минут!">Передзвонимо протягом 30 хвилин!</p>
     </div>
   </div>
+</div>
+
+<!-- Result notification modal -->
+<div id="resultNotify" class="result-notify" aria-live="polite" style="display:none">
+  <div class="result-notify__inner" id="resultNotifyInner">
+    <div class="result-notify__icon" id="resultNotifyIcon"></div>
+    <div class="result-notify__body">
+      <div class="result-notify__title" id="resultNotifyTitle"></div>
+      <div class="result-notify__sub" id="resultNotifySub"></div>
+    </div>
+    <button class="result-notify__close" id="resultNotifyClose">✕</button>
+  </div>
+  <div class="result-notify__bar"><div class="result-notify__progress" id="resultNotifyProgress"></div></div>
 </div>
 
 <script src="js/main.js"></script>

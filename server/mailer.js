@@ -71,7 +71,7 @@ async function sendLeadNotification(lead) {
         <tr><td style="padding:8px 0;color:#888">Вік</td><td style="padding:8px 0">${lead.age || '—'} років</td></tr>
         <tr><td style="padding:8px 0;color:#888">Курс</td><td style="padding:8px 0">${courseName}</td></tr>
         <tr><td style="padding:8px 0;color:#888">Телефон</td><td style="padding:8px 0"><strong><a href="tel:${lead.phone}" style="color:#6C47FF;text-decoration:none">${lead.phone}</a></strong></td></tr>
-        <tr><td style="padding:8px 0;color:#888">Батьки</td><td style="padding:8px 0">${lead.parent_name || '—'}</td></tr>
+        <tr><td style="padding:8px 0;color:#888">Email</td><td style="padding:8px 0">${lead.email ? `<a href="mailto:${lead.email}" style="color:#6C47FF">${lead.email}</a>` : '—'}</td></tr>
         <tr><td style="padding:8px 0;color:#888">Заявка №</td><td style="padding:8px 0">#${lead.id}</td></tr>
         <tr><td style="padding:8px 0;color:#888">Час</td><td style="padding:8px 0">${time}</td></tr>
       </table>
@@ -87,7 +87,7 @@ async function sendLeadNotification(lead) {
 Дитина: ${lead.child_name}, ${lead.age || '—'} років
 Курс: ${courseName}
 Телефон: ${lead.phone}
-Батьки: ${lead.parent_name || '—'}
+Email: ${lead.email || '—'}
 Час: ${time}`;
 
   try {

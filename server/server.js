@@ -127,7 +127,7 @@ app.get('/api/health', (req, res) => {
 
 // POST /api/leads — submit lead (rate-limited)
 app.post('/api/leads', leadsLimiter, (req, res) => {
-  const { child_name, age, course, phone, parent_name } = req.body;
+  const { child_name, age, course, phone } = req.body;
 
   const errors = validateLead({ child_name, phone, age });
   if (errors.length) {
@@ -135,12 +135,13 @@ app.post('/api/leads', leadsLimiter, (req, res) => {
   }
 
   try {
+    const { email } = req.body;
     const sanitized = {
-      child_name:  sanitize(child_name),
-      age:         age ? parseInt(age) : null,
-      course:      sanitize(course) || null,
-      phone:       sanitize(phone),
-      parent_name: sanitize(parent_name) || null,
+      child_name: sanitize(child_name),
+      age:        age ? parseInt(age) : null,
+      course:     sanitize(course) || null,
+      phone:      sanitize(phone),
+      email:      sanitize(email) || null,
     };
 
     const result = db.insertLead(sanitized);
