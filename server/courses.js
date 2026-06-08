@@ -47,12 +47,13 @@ module.exports = {
     const courses = load();
     const idx = courses.findIndex(c => c.id === id);
     if (idx === -1) return null;
-    const allowed = ['name','emoji','age','duration','lessonsCount','groupSize','price','description','color','active'];
+    const allowed = ['name','emoji','age','duration','lessonsCount','groupSize','price','description','color','active','curriculum'];
     const patch = {};
     allowed.forEach(k => { if (k in data) patch[k] = data[k]; });
     if ('lessonsCount' in patch) patch.lessonsCount = parseInt(patch.lessonsCount) || 0;
     if ('groupSize'    in patch) patch.groupSize    = parseInt(patch.groupSize) || 0;
     if ('price'        in patch) patch.price        = parseFloat(patch.price) || 0;
+    if ('curriculum'   in patch) patch.curriculum   = Array.isArray(patch.curriculum) ? patch.curriculum : [];
     courses[idx] = { ...courses[idx], ...patch };
     save(courses);
     return courses[idx];

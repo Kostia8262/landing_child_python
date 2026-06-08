@@ -414,7 +414,26 @@ async function loadSiteContent() {
     renderPricing(_siteContent.pricing || []);
     renderCourses(_siteContent.courses || []);
     renderFaq(_siteContent.faq || []);
+    applyModuleVisibility(_siteContent.modules || {});
   } catch(e) { /* keep static fallback */ }
+}
+
+function applyModuleVisibility(modules) {
+  const SECTION_MAP = {
+    'hero':         'hero',
+    'courses':      'courses',
+    'how-it-works': 'how-it-works',
+    'about':        'about',
+    'reviews':      'reviews',
+    'faq':          'faq',
+    'contact':      'contact',
+  };
+  Object.entries(SECTION_MAP).forEach(([key, sectionId]) => {
+    if (modules[key] === false) {
+      const el = document.getElementById(sectionId);
+      if (el) el.style.display = 'none';
+    }
+  });
 }
 
 function t2(obj) {

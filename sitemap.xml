@@ -1,13 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage -->
   <url>
     <loc>https://mycomputer.education/</loc>
-    <lastmod>2024-12-01</lastmod>
+    <lastmod>2026-06-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.education/"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://mycomputer.education/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.education/"/>
   </url>
+
+  <!-- Course pages (both URL formats supported) -->
+  <url>
+    <loc>https://mycomputer.education/courses/scratch</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.education/courses/scratch"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.education/courses/scratch"/>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.education/courses/python</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.education/courses/python"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.education/courses/python"/>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.education/courses/roblox</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.education/courses/roblox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.education/courses/roblox"/>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.education/courses/web</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.education/courses/web"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.education/courses/web"/>
+  </url>
+
+  <!-- Legal / policy pages -->
+  <url>
+    <loc>https://mycomputer.education/docs/privacy-policy.html</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.education/docs/public-offer.html</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.education/docs/terms.html</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.education/docs/refund-policy.html</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.education/docs/cookie-policy.html</loc>
+    <lastmod>2026-06-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
 </urlset>

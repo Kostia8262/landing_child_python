@@ -66,15 +66,15 @@
     .course-for__card h4{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--color-text)}
     .course-for__card p{font-size:13px;color:var(--color-text-2);line-height:1.55}
 
-    /* Info block */
-    .course-info{padding:64px 0}
+    /* Info block — dark theme */
+    .course-info{padding:64px 0;background:#0c0b18}
     .course-info__inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
-    .course-info-box{background:var(--color-bg-soft);border-radius:var(--r-xl);padding:32px}
-    .course-info-box h3{font-size:18px;font-weight:800;margin-bottom:20px;color:var(--color-text)}
-    .course-info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--color-border);font-size:14px}
+    .course-info-box{background:rgba(255,255,255,.06);border-radius:var(--r-xl);padding:32px;border:1px solid rgba(255,255,255,.1)}
+    .course-info-box h3{font-size:18px;font-weight:800;margin-bottom:20px;color:#fff}
+    .course-info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px}
     .course-info-row:last-child{border-bottom:none}
-    .course-info-row span:first-child{color:var(--color-text-muted);font-weight:500}
-    .course-info-row span:last-child{font-weight:700;color:var(--color-text)}
+    .course-info-row span:first-child{color:rgba(255,255,255,.55);font-weight:500}
+    .course-info-row span:last-child{font-weight:700;color:#fff}
 
     /* CTA */
     .course-cta{padding:72px 0;background:linear-gradient(135deg,#6C47FF 0%,#9B76FF 100%);text-align:center;color:#fff}
@@ -83,10 +83,19 @@
     .course-cta .btn--white{background:#fff;color:var(--color-primary);font-weight:700;font-size:16px;padding:14px 36px;border-radius:var(--r-full);display:inline-block;transition:transform .2s,box-shadow .2s}
     .course-cta .btn--white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
 
+    /* FAQ on course page */
+    .course-faq{padding:64px 0}
+    .course-contact{padding:64px 0;background:#f8f7ff}
+
     @media(max-width:768px){
+      .course-hero{padding:72px 0 40px}
       .course-hero__inner{grid-template-columns:1fr}
-      .course-hero__visual{width:140px;height:140px;font-size:60px;margin-bottom:20px;order:-1}
+      .course-hero__visual{display:none}
+      .course-curriculum{padding:40px 0}
+      .course-info{padding:40px 0}
       .course-info__inner{grid-template-columns:1fr}
+      .course-faq{padding:40px 0}
+      .course-contact{padding:40px 0}
     }
   </style>
 </head>
@@ -116,7 +125,7 @@
     </ul>
     <div class="nav__actions">
       <a href="tel:+380954624672" class="nav__phone">+38 (095) 462-46-72</a>
-      <a href="/#contact" class="btn btn--primary btn--sm">Записатись</a>
+      <a href="/#contact" class="btn btn--primary btn--sm nav__cta">Записатись</a>
     </div>
     <button class="nav__burger" id="navBurger" aria-label="Меню" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -395,6 +404,90 @@ function renderCourse(c) {
         <p>Переконайтесь, що курс підходить вашій дитині, без жодних ризиків і зобов'язань.</p>
         <button class="btn--white open-modal-btn">Записатися на пробний урок →</button>
       </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq course-faq">
+      <div class="container">
+        <div class="faq__inner">
+          <div class="section-header section-header--left">
+            <div class="section-badge">Часті питання</div>
+            <h2 class="section-title">Відповіді на ваші запитання</h2>
+          </div>
+          <div class="faq__list">
+            <div class="faq-item"><button class="faq-item__question"><span>З якого віку можна починати?</span><svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="faq-item__answer"><p>Приймаємо дітей від 6 років. Для малюків — Scratch, для дітей старшого віку (10+) — Python, Roblox, Web. Конкретний курс підберемо на безкоштовній консультації.</p></div></div>
+            <div class="faq-item"><button class="faq-item__question"><span>Чи потрібні знання програмування?</span><svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="faq-item__answer"><p>Абсолютно ніяких. Всі курси починаються з нуля. Потрібен тільки комп'ютер з інтернетом.</p></div></div>
+            <div class="faq-item"><button class="faq-item__question"><span>Як проходять онлайн-заняття?</span><svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="faq-item__answer"><p>Заняття у Zoom або Google Meet. Викладач бачить екран дитини, допомагає в реальному часі. Групи до 6 осіб — кожен отримує увагу.</p></div></div>
+            <div class="faq-item"><button class="faq-item__question"><span>Скільки часу потрібно на тиждень?</span><svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="faq-item__answer"><p>2 заняття на тиждень по 60 хвилин + домашнє завдання 15–20 хвилин. Разом близько 2,5–3 годин.</p></div></div>
+            <div class="faq-item"><button class="faq-item__question"><span>Що якщо дитина пропустить заняття?</span><svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="faq-item__answer"><p>Всі заняття записуються. Пропущений урок можна переглянути в записі, а викладач відповість на питання в чаті.</p></div></div>
+            <div class="faq-item"><button class="faq-item__question"><span>Скільки коштують курси?</span><svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="faq-item__answer"><p>Вартість залежить від курсу та формату. Залиш заявку — менеджер надішле прайс та розповість про знижки. Перший урок безкоштовно.</p></div></div>
+            <div class="faq-item"><button class="faq-item__question"><span>Які є форми навчання?</span><svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="faq-item__answer"><p>Ви можете обрати навчання онлайн (Zoom / Google Meet) або офлайн у нашому офісі в Дніпрі. Якість освіти однакова — всі теми вивчаються до повного засвоєння.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact course-contact" id="course-contact">
+      <div class="container">
+        <div class="contact__grid">
+          <div class="contact__intro">
+            <h2 class="contact__title">Запишіться на<br/><span class="gradient-text">пробний урок</span></h2>
+            <p class="contact__subtitle">Залиш заявку — передзвонимо протягом 30 хвилин, запишемо дитину на безкоштовне перше заняття.</p>
+            <div style="margin-top:24px">
+              <div style="margin-bottom:12px"><a href="tel:+380954624672" style="font-size:17px;font-weight:700;color:var(--color-text)">+38 (095) 462-46-72</a></div>
+              <div><a href="tel:+380682522876" style="font-size:17px;font-weight:700;color:var(--color-text)">+38 (068) 252-28-76</a></div>
+            </div>
+          </div>
+          <div class="contact__form-wrap">
+            <form class="contact-form" id="courseContactForm" novalidate>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Ім'я дитини *</label>
+                  <input type="text" class="form-input" name="child_name" placeholder="Наприклад: Артем" autocomplete="off"/>
+                  <span class="field-error" aria-live="polite"></span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Вік</label>
+                  <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Курс</label>
+                <select class="form-input form-select" name="course" id="contactCourseSelect">
+                  <option value="" disabled>Який курс цікавить?</option>
+                  <option value="scratch">Scratch (6–10 років)</option>
+                  <option value="python">Python (10–14 років)</option>
+                  <option value="roblox">Roblox (9–14 років)</option>
+                  <option value="web">Веб-розробка (12–16 років)</option>
+                  <option value="help">Допоможіть обрати</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ваш телефон *</label>
+                <div class="phone-wrap">
+                  <select class="form-input phone-code-sel" name="phone_code">
+                    <option value="+380">🇺🇦 +380</option><option value="+48">🇵🇱 +48</option>
+                    <option value="+49">🇩🇪 +49</option><option value="+44">🇬🇧 +44</option>
+                    <option value="+1">🇺🇸 +1</option>
+                  </select>
+                  <input type="tel" class="form-input" name="phone" placeholder="(95) ___-__-__" autocomplete="tel"/>
+                </div>
+                <span class="field-error" aria-live="polite"></span>
+              </div>
+              <button type="submit" class="btn btn--primary btn--full btn--lg" id="courseSubmitBtn">
+                <span class="btn-text">Записатися на пробний урок безкоштовно</span>
+                <span class="btn-loading" style="display:none">Відправка...</span>
+              </button>
+            </form>
+            <div class="form-success" id="courseFormSuccess" style="display:none">
+              <div class="form-success__icon">🎉</div>
+              <h3>Заявку прийнято!</h3>
+              <p>Передзвонимо протягом 30 хвилин. Дитину чекає безкоштовний пробний урок!</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>`;
 
   // Wire up open-modal buttons
@@ -405,11 +498,16 @@ function renderCourse(c) {
       document.body.style.overflow = 'hidden';
     });
   });
+  // Pre-select course in contact form
+  const contactSel = document.getElementById('contactCourseSelect');
+  if (contactSel) contactSel.value = c.id;
 }
 
 function init() {
+  // Support both /course.html?c=slug and /courses/slug URL formats
+  const pathMatch = window.location.pathname.match(/\/courses\/([^/?#]+)/);
   const params = new URLSearchParams(window.location.search);
-  const key = params.get('c') || 'scratch';
+  const key = pathMatch ? pathMatch[1] : (params.get('c') || 'scratch');
   const course = COURSES[key];
   if (!course) {
     document.getElementById('courseMain').innerHTML =
@@ -420,6 +518,38 @@ function init() {
 }
 
 init();
+
+/* ── FAQ ACCORDION ──────────────────────────────────────────────────────────── */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.faq-item__question');
+  if (!btn) return;
+  const item = btn.closest('.faq-item');
+  if (!item) return;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+});
+
+/* ── COURSE CONTACT FORM ────────────────────────────────────────────────────── */
+document.addEventListener('submit', async (e) => {
+  if (e.target.id !== 'courseContactForm') return;
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('courseSubmitBtn');
+  btn.querySelector('.btn-text').style.display = 'none';
+  btn.querySelector('.btn-loading').style.display = '';
+  btn.disabled = true;
+  const data = Object.fromEntries(new FormData(form));
+  try {
+    await fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: data.child_name, age: data.age, course: data.course, phone: (data.phone_code || '+380') + data.phone, source: 'website' }),
+    });
+  } catch {}
+  document.getElementById('courseFormSuccess').style.display = '';
+  form.style.display = 'none';
+});
 
 /* ── NAV: burger + dropdown ─────────────────────────────────────────────────── */
 const burger  = document.getElementById('navBurger');

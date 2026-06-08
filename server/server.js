@@ -130,8 +130,11 @@ function getRole(token) {
   return null;
 }
 
+// Safe ID pattern — prevents path traversal / injection
+const SAFE_ID_RE = /^[a-z0-9_-]{1,64}$/i;
+
 function requireAdmin(req, res, next) {
-  const token = req.headers['x-admin-token'] || req.query.token;
+  const token = req.headers['x-admin-token'];
   const role  = getRole(token);
   if (!role) return res.status(401).json({ error: 'Unauthorized' });
   req.role  = role;
@@ -140,7 +143,7 @@ function requireAdmin(req, res, next) {
 }
 
 function requireSuperAdmin(req, res, next) {
-  const token = req.headers['x-admin-token'] || req.query.token;
+  const token = req.headers['x-admin-token'];
   if (!SUPERADMIN_TOKEN || token !== SUPERADMIN_TOKEN) {
     return res.status(403).json({ error: 'Forbidden: superadmin only' });
   }
@@ -571,15 +574,15 @@ app.get('/api/content', (req, res) => {
   res.json(loadContent());
 });
 
-// Admin: update a section (pricing | faq | courses)
+// Admin: update a section (pricing | faq | courses | modules)
 app.put('/api/content/:section', adminLimiter, requireAdmin, (req, res) => {
   const { section } = req.params;
-  const allowed = ['pricing', 'faq', 'courses'];
+  const allowed = ['pricing', 'faq', 'courses', 'modules'];
   if (!allowed.includes(section)) return res.status(400).json({ error: 'Unknown section' });
   const data = loadContent();
   data[section] = req.body;
   saveContent(data);
-  res.json({ success: true, section, count: req.body.length });
+  res.json({ success: true, section });
 });
 
 // ── COURSES API ───────────────────────────────────────────────────────────────
@@ -596,25 +599,28 @@ app.post('/api/courses', adminLimiter, requireAdmin, (req, res) => {
 });
 
 app.patch('/api/courses/:id', adminLimiter, requireAdmin, (req, res) => {
+  if (!SAFE_ID_RE.test(req.params.id)) return res.status(400).json({ error: 'Invalid course ID' });
   const course = coursesDb.update(req.params.id, req.body);
   if (!course) return res.status(404).json({ error: 'Курс не знайдено' });
   res.json({ success: true, course });
 });
 
 app.delete('/api/courses/:id', adminLimiter, requireAdmin, (req, res) => {
+  if (!SAFE_ID_RE.test(req.params.id)) return res.status(400).json({ error: 'Invalid course ID' });
   const ok = coursesDb.delete(req.params.id);
   if (!ok) return res.status(404).json({ error: 'Курс не знайдено' });
   res.json({ success: true });
 });
 
 // ── COURSE PAGES ──────────────────────────────────────────────────────────────
+// Serve the single course.html for all /courses/:slug SEO URLs
 const COURSE_SLUGS = ['scratch', 'python', 'roblox', 'web'];
 app.get('/courses/:slug', (req, res) => {
   const { slug } = req.params;
-  if (!COURSE_SLUGS.includes(slug)) {
-    return res.status(404).sendFile(path.join(__dirname, '..', '404.html'));
-  }
-  res.sendFile(path.join(__dirname, '..', 'courses', `${slug}.html`));
+  if (!SAFE_ID_RE.test(slug)) return res.status(404).sendFile(path.join(__dirname, '..', '404.html'));
+  const known = COURSE_SLUGS.includes(slug) || coursesDb.getAll().some(c => c.id === slug);
+  if (!known) return res.status(404).sendFile(path.join(__dirname, '..', '404.html'));
+  res.sendFile(path.join(__dirname, '..', 'course.html'));
 });
 
 // ── TEST / DEBUG ROUTES ───────────────────────────────────────────────────────

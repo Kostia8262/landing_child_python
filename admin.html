@@ -314,8 +314,14 @@ tr:hover td{background:#faf9ff}
       <button class="sidebar-item" id="sideNav-courses" onclick="showTab('courses')">
         <span class="sidebar-icon">🎓</span><span>Курси</span>
       </button>
+      <button class="sidebar-item" id="sideNav-curriculum" onclick="showTab('curriculum')">
+        <span class="sidebar-icon">📝</span><span>Програми</span>
+      </button>
       <button class="sidebar-item" id="sideNav-content" onclick="showTab('content')">
         <span class="sidebar-icon">✏️</span><span>Контент</span>
+      </button>
+      <button class="sidebar-item" id="sideNav-modules" onclick="showTab('modules')">
+        <span class="sidebar-icon">🔲</span><span>Модулі</span>
       </button>
       <div class="sidebar-section">Налаштування</div>
       <button class="sidebar-item superadmin-only" id="sideNav-admins" onclick="showTab('admins')" style="display:none">
@@ -491,6 +497,50 @@ tr:hover td{background:#faf9ff}
           <button class="btn btn-ghost" onclick="closeCourseModal()">Скасувати</button>
           <button class="btn btn-primary" onclick="saveCourse()">💾 Зберегти</button>
         </div>
+      </div>
+    </div>
+
+    <!-- CURRICULUM TAB -->
+    <div id="curriculumTab" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+        <h2 style="font-size:18px;font-weight:800">📝 Програми курсів</h2>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <select id="curriculumCourseSelect" class="filter-select" style="min-width:200px" onchange="loadCurriculumForCourse(this.value)">
+            <option value="">— Оберіть курс —</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="openAddModuleModal()">+ Додати модуль</button>
+        </div>
+      </div>
+      <div id="curriculumContent">
+        <div class="empty" style="padding:60px 20px">Оберіть курс, щоб переглянути програму</div>
+      </div>
+    </div>
+
+    <!-- ADD/EDIT MODULE MODAL -->
+    <div class="modal-overlay" id="moduleModal" style="display:none" onclick="if(event.target===this)closeModuleModal()">
+      <div class="modal-box" style="max-width:500px">
+        <h3><span id="moduleModalTitle">Новий модуль</span><button class="btn btn-ghost btn-sm" onclick="closeModuleModal()">✕</button></h3>
+        <div class="modal-grid">
+          <div class="modal-group"><label class="modal-label">Номер (напр. "Модуль 1")</label><input class="modal-input" id="mod_num" placeholder="Модуль 1"/></div>
+          <div class="modal-group"><label class="modal-label">Назва *</label><input class="modal-input" id="mod_title" placeholder="Знайомство зі Scratch"/></div>
+          <div class="modal-group full"><label class="modal-label">Опис</label><textarea class="modal-input" id="mod_desc" rows="3" placeholder="Що вивчатимуть учні на цьому модулі..."></textarea></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="closeModuleModal()">Скасувати</button>
+          <button class="btn btn-primary" onclick="saveModule()">💾 Зберегти</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULES TAB -->
+    <div id="modulesTab" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h2 style="font-size:18px;font-weight:800">🔲 Модулі сайту</h2>
+        <button class="btn btn-primary btn-sm" onclick="saveModuleVisibility()">💾 Зберегти</button>
+      </div>
+      <div style="background:#fff;border-radius:14px;border:1px solid #e8e4ff;padding:24px;max-width:560px">
+        <p style="font-size:13px;color:#888;margin-bottom:20px">Вимкнені блоки не будуть відображатися на головній сторінці.</p>
+        <div id="moduleVisibilityList"></div>
       </div>
     </div>
 
@@ -852,12 +902,12 @@ let _currentTab = 'leads';
 
 function showTab(tab) {
   _currentTab = tab;
-  ['leads','admins','content','clients','courses'].forEach(t => {
+  ['leads','admins','content','clients','courses','curriculum','modules'].forEach(t => {
     const el = document.getElementById(t + 'Tab');
     if (el) el.style.display = t === tab ? '' : 'none';
   });
   // Sidebar active state
-  ['leads','admins','content','clients','courses'].forEach(t => {
+  ['leads','admins','content','clients','courses','curriculum','modules'].forEach(t => {
     const btn = document.getElementById('sideNav-' + t);
     if (btn) btn.classList.toggle('active', t === tab);
   });
@@ -869,10 +919,12 @@ function showTab(tab) {
   const canImport = ['superadmin','administrator','manager'].includes(currentRole);
   if (csvExportBtn) csvExportBtn.style.display = (showCsv && canExport) ? '' : 'none';
   if (csvImportBtn) csvImportBtn.style.display = (showCsv && canImport) ? '' : 'none';
-  if (tab === 'admins')  renderAdmins();
+  if (tab === 'admins')     renderAdmins();
   if (tab === 'content' && !_cmsData) loadContentData();
   if (tab === 'clients' && !_allClients) loadClients();
-  if (tab === 'courses') loadCoursesTab();
+  if (tab === 'courses')    loadCoursesTab();
+  if (tab === 'curriculum') loadCurriculumTab();
+  if (tab === 'modules')    loadModulesTab();
 }
 
 function reloadCurrentTab() {
@@ -2365,6 +2417,197 @@ function _populateCourseDropdowns() {
     sel.innerHTML = opts;
     if (cur) sel.value = cur;
   });
+}
+
+// ── CURRICULUM TAB ───────────────────────────────────────────────────────────
+let _curriculumCourseId = null;
+let _editingModuleIdx   = null;
+
+async function loadCurriculumTab() {
+  // Ensure courses are loaded
+  if (!_allCourses) {
+    try {
+      const res = await fetch('/api/courses?all=1', { headers: { 'x-admin-token': token } });
+      const d = await res.json();
+      _allCourses = d.courses || [];
+    } catch { showToast('Помилка завантаження курсів', 'error'); return; }
+  }
+  // Populate course select
+  const sel = document.getElementById('curriculumCourseSelect');
+  if (sel) {
+    sel.innerHTML = '<option value="">— Оберіть курс —</option>' +
+      _allCourses.map(c => `<option value="${c.id}">${c.emoji || ''} ${esc(c.name)}</option>`).join('');
+    if (_curriculumCourseId) {
+      sel.value = _curriculumCourseId;
+      renderCurriculumContent(_curriculumCourseId);
+    }
+  }
+}
+
+function loadCurriculumForCourse(courseId) {
+  _curriculumCourseId = courseId;
+  renderCurriculumContent(courseId);
+}
+
+function renderCurriculumContent(courseId) {
+  const el = document.getElementById('curriculumContent');
+  if (!el) return;
+  if (!courseId) { el.innerHTML = '<div class="empty" style="padding:60px 20px">Оберіть курс, щоб переглянути програму</div>'; return; }
+  const course = _allCourses?.find(c => c.id === courseId);
+  if (!course) { el.innerHTML = '<div class="empty" style="padding:40px">Курс не знайдено</div>'; return; }
+  const modules = course.curriculum || [];
+  if (!modules.length) {
+    el.innerHTML = '<div class="empty" style="padding:60px 20px"><p style="margin-bottom:12px">Програма порожня. Натисніть «+ Додати модуль» щоб розпочати.</p></div>';
+    return;
+  }
+  el.innerHTML = `
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:14px">
+        <thead><tr>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;border-bottom:1px solid #f0eeff;width:120px">Номер</th>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;border-bottom:1px solid #f0eeff">Назва</th>
+          <th style="padding:10px 14px;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;border-bottom:1px solid #f0eeff">Опис</th>
+          <th style="padding:10px 14px;border-bottom:1px solid #f0eeff;width:100px"></th>
+        </tr></thead>
+        <tbody>
+          ${modules.map((m, i) => `
+            <tr>
+              <td style="padding:10px 14px;font-weight:700;color:#6C47FF;font-size:12px;vertical-align:top">${esc(m.num || '')}</td>
+              <td style="padding:10px 14px;font-weight:600;vertical-align:top">${esc(m.title || '')}</td>
+              <td style="padding:10px 14px;font-size:13px;color:#666;vertical-align:top;line-height:1.5">${esc(m.desc || '')}</td>
+              <td style="padding:10px 14px;vertical-align:top">
+                <div style="display:flex;gap:6px">
+                  <button class="btn btn-ghost btn-sm" onclick="openEditModuleModal(${i})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteModule(${i})">✕</button>
+                </div>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function openAddModuleModal() {
+  if (!_curriculumCourseId) { showToast('Оберіть курс', 'error'); return; }
+  _editingModuleIdx = null;
+  document.getElementById('moduleModalTitle').textContent = 'Новий модуль';
+  document.getElementById('mod_num').value   = '';
+  document.getElementById('mod_title').value = '';
+  document.getElementById('mod_desc').value  = '';
+  document.getElementById('moduleModal').style.display = 'flex';
+}
+
+function openEditModuleModal(idx) {
+  const course = _allCourses?.find(c => c.id === _curriculumCourseId);
+  if (!course) return;
+  const m = (course.curriculum || [])[idx];
+  if (!m) return;
+  _editingModuleIdx = idx;
+  document.getElementById('moduleModalTitle').textContent = 'Редагувати модуль';
+  document.getElementById('mod_num').value   = m.num   || '';
+  document.getElementById('mod_title').value = m.title || '';
+  document.getElementById('mod_desc').value  = m.desc  || '';
+  document.getElementById('moduleModal').style.display = 'flex';
+}
+
+function closeModuleModal() { document.getElementById('moduleModal').style.display = 'none'; }
+
+async function saveModule() {
+  const num   = document.getElementById('mod_num')?.value.trim();
+  const title = document.getElementById('mod_title')?.value.trim();
+  const desc  = document.getElementById('mod_desc')?.value.trim();
+  if (!title) { showToast('Вкажіть назву модуля', 'error'); return; }
+  const course = _allCourses?.find(c => c.id === _curriculumCourseId);
+  if (!course) return;
+  const curriculum = [...(course.curriculum || [])];
+  if (_editingModuleIdx !== null) {
+    curriculum[_editingModuleIdx] = { ...curriculum[_editingModuleIdx], num, title, desc };
+  } else {
+    curriculum.push({ num, title, desc });
+  }
+  try {
+    const res = await fetch(`/api/courses/${_curriculumCourseId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify({ curriculum }),
+    });
+    if (!res.ok) { showToast('Помилка збереження', 'error'); return; }
+    course.curriculum = curriculum;
+    closeModuleModal();
+    renderCurriculumContent(_curriculumCourseId);
+    showToast(_editingModuleIdx !== null ? 'Модуль оновлено ✓' : 'Модуль додано ✓', 'success');
+  } catch { showToast('Помилка сервера', 'error'); }
+}
+
+async function deleteModule(idx) {
+  if (!confirm('Видалити модуль?')) return;
+  const course = _allCourses?.find(c => c.id === _curriculumCourseId);
+  if (!course) return;
+  const curriculum = [...(course.curriculum || [])];
+  curriculum.splice(idx, 1);
+  try {
+    const res = await fetch(`/api/courses/${_curriculumCourseId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify({ curriculum }),
+    });
+    if (!res.ok) { showToast('Помилка', 'error'); return; }
+    course.curriculum = curriculum;
+    renderCurriculumContent(_curriculumCourseId);
+    showToast('Модуль видалено ✓', 'success');
+  } catch { showToast('Помилка', 'error'); }
+}
+
+// ── SITE MODULES TAB ─────────────────────────────────────────────────────────
+const SITE_SECTIONS = [
+  { key: 'hero',         label: '🏠 Головний банер (hero)' },
+  { key: 'courses',      label: '🎓 Виберіть напрямок (курси)' },
+  { key: 'how-it-works', label: '⚙️ Як це працює' },
+  { key: 'about',        label: '👥 Про нас' },
+  { key: 'reviews',      label: '⭐ Відгуки' },
+  { key: 'faq',          label: '❓ FAQ' },
+  { key: 'contact',      label: '📞 Форма запису' },
+];
+
+let _modulesVisibility = null;
+
+async function loadModulesTab() {
+  try {
+    const res  = await fetch('/api/content', { headers: { 'x-admin-token': token } });
+    const data = await res.json();
+    _modulesVisibility = data.modules || {};
+    renderModulesList();
+  } catch { showToast('Помилка завантаження', 'error'); }
+}
+
+function renderModulesList() {
+  const el = document.getElementById('moduleVisibilityList');
+  if (!el) return;
+  el.innerHTML = SITE_SECTIONS.map(s => {
+    const checked = _modulesVisibility[s.key] !== false;
+    return `<label style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0eeff;cursor:pointer;font-size:14px;font-weight:600">
+      <input type="checkbox" id="modvis_${s.key}" ${checked ? 'checked' : ''} style="width:18px;height:18px;accent-color:#6C47FF;cursor:pointer"/>
+      <span>${s.label}</span>
+    </label>`;
+  }).join('');
+}
+
+async function saveModuleVisibility() {
+  const visibility = {};
+  SITE_SECTIONS.forEach(s => {
+    const cb = document.getElementById('modvis_' + s.key);
+    visibility[s.key] = cb ? cb.checked : true;
+  });
+  try {
+    const res = await fetch('/api/content/modules', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify(visibility),
+    });
+    if (!res.ok) { showToast('Помилка збереження', 'error'); return; }
+    _modulesVisibility = visibility;
+    showToast('Налаштування збережено ✓', 'success');
+  } catch { showToast('Помилка сервера', 'error'); }
 }
 
 // ── AUTO LOGIN if token saved ─────────────────────────────────────────────────
