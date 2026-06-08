@@ -146,10 +146,11 @@ app.get('/api/health', (req, res) => {
 
 // GET /api/me — returns current user role
 app.get('/api/me', adminLimiter, requireAdmin, (req, res) => {
-  const info = req.role === 'superadmin'
-    ? { role: 'superadmin', name: 'Супер-адмін' }
-    : (() => { const a = adminsDb.findByToken(req.token); return { role: 'admin', name: a?.name || 'Адмін' }; })();
-  res.json({ success: true, ...info });
+  if (req.role === 'superadmin') {
+    return res.json({ success: true, role: 'superadmin', name: 'Супер-адмін' });
+  }
+  const a = adminsDb.findByToken(req.token);
+  res.json({ success: true, role: a?.role || 'administrator', name: a?.name || 'Адмін' });
 });
 
 // ── ADMIN MANAGEMENT (superadmin only) ───────────────────────────────────────
@@ -159,8 +160,13 @@ app.get('/api/admins', adminLimiter, requireSuperAdmin, (req, res) => {
 
 app.post('/api/admins', adminLimiter, requireSuperAdmin, (req, res) => {
   const name = sanitize(req.body.name || '');
+  const role = sanitize(req.body.role || 'administrator');
   if (!name || name.length < 2) return res.status(400).json({ error: 'Вкажіть ім\'я адміністратора' });
-  const admin = adminsDb.create(name);
+  // Security: never allow creating superadmin via API
+  if (!adminsDb.ALLOWED_ROLES.includes(role)) {
+    return res.status(400).json({ error: 'Недійсна роль' });
+  }
+  const admin = adminsDb.create(name, role);
   res.status(201).json({ success: true, admin });
 });
 

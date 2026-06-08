@@ -143,19 +143,35 @@ tr:hover td{background:#faf9ff}
         <button class="btn btn-primary btn-sm" onclick="showCreateAdminForm()">+ Додати адміна</button>
       </div>
       <div id="createAdminForm" style="display:none;background:#fff;border:1px solid #e8e4ff;border-radius:12px;padding:20px;margin-bottom:20px">
-        <div style="display:flex;gap:10px;align-items:flex-end">
-          <div style="flex:1">
-            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#888">Ім'я адміністратора</label>
-            <input id="newAdminName" class="search" placeholder="Наприклад: Менеджер Ірина" style="margin:0"/>
+        <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
+          <div style="flex:2;min-width:180px">
+            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#888">Ім'я</label>
+            <input id="newAdminName" class="search" placeholder="Наприклад: Ірина" style="margin:0"/>
           </div>
-          <button class="btn btn-primary" onclick="createAdmin()">Створити</button>
-          <button class="btn btn-ghost" onclick="document.getElementById('createAdminForm').style.display='none'">Скасувати</button>
+          <div style="flex:1;min-width:160px">
+            <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#888">Роль</label>
+            <select id="newAdminRole" class="filter-select" style="width:100%">
+              <option value="administrator">👔 Адміністратор</option>
+              <option value="manager">📋 Менеджер</option>
+              <option value="teacher">📚 Викладач</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0">
+            <button class="btn btn-primary" onclick="createAdmin()">Створити</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('createAdminForm').style.display='none'">✕</button>
+          </div>
+        </div>
+        <div id="roleHint" style="margin-top:12px;padding:10px 14px;background:#f9f7ff;border-radius:8px;font-size:12px;color:#666">
+          <strong>👔 Адміністратор</strong> — перегляд + редагування статусів і нотаток<br/>
+          <strong>📋 Менеджер</strong> — перегляд + редагування + експорт CSV<br/>
+          <strong>📚 Викладач</strong> — лише перегляд заявок (без редагування)
         </div>
       </div>
       <div class="table-wrap">
         <table style="width:100%;border-collapse:collapse;font-size:14px">
           <thead><tr>
             <th style="padding:12px 14px;text-align:left;font-size:12px;font-weight:600;color:#888;text-transform:uppercase;border-bottom:1px solid #f0eeff">Ім'я</th>
+            <th style="padding:12px 14px;text-align:left;font-size:12px;font-weight:600;color:#888;text-transform:uppercase;border-bottom:1px solid #f0eeff">Роль</th>
             <th style="padding:12px 14px;text-align:left;font-size:12px;font-weight:600;color:#888;text-transform:uppercase;border-bottom:1px solid #f0eeff">Токен</th>
             <th style="padding:12px 14px;text-align:left;font-size:12px;font-weight:600;color:#888;text-transform:uppercase;border-bottom:1px solid #f0eeff">Статус</th>
             <th style="padding:12px 14px;text-align:left;font-size:12px;font-weight:600;color:#888;text-transform:uppercase;border-bottom:1px solid #f0eeff">Створено</th>
@@ -230,6 +246,25 @@ let filtered    = [];
 let currentPage = 1;
 let token       = localStorage.getItem(STORAGE_KEY) || '';
 let currentRole = '';
+
+const ROLE_LABELS = {
+  superadmin:    '⭐ Суперадмін',
+  administrator: '👔 Адміністратор',
+  manager:       '📋 Менеджер',
+  teacher:       '📚 Викладач',
+};
+const ROLE_COLORS = {
+  superadmin:    '#fef9c3',
+  administrator: '#e8f4ff',
+  manager:       '#e8fff2',
+  teacher:       '#f9f0ff',
+};
+const ROLE_TEXT_COLORS = {
+  superadmin:    '#854d0e',
+  administrator: '#2563eb',
+  manager:       '#15803d',
+  teacher:       '#7c3aed',
+};
 
 const STATUS_LABELS = {
   new:               '🔵 Новий',
@@ -310,9 +345,9 @@ async function loadMe() {
 
     const badge = document.getElementById('roleBadge');
     if (badge) {
-      badge.textContent       = currentRole === 'superadmin' ? '⭐ Суперадмін' : '🔹 Адмін';
-      badge.style.background  = currentRole === 'superadmin' ? '#fef9c3' : '#e8f4ff';
-      badge.style.color       = currentRole === 'superadmin' ? '#854d0e' : '#2563eb';
+      badge.textContent      = ROLE_LABELS[currentRole] || currentRole;
+      badge.style.background = ROLE_COLORS[currentRole]     || '#f0eeff';
+      badge.style.color      = ROLE_TEXT_COLORS[currentRole] || '#6C47FF';
     }
     const title = document.getElementById('panelTitle');
     if (title) title.textContent = data.name || 'Admin Panel';
@@ -502,19 +537,21 @@ function showCreateAdminForm() {
 
 async function createAdmin() {
   const nameEl = document.getElementById('newAdminName');
+  const roleEl = document.getElementById('newAdminRole');
   const name   = nameEl.value.trim();
-  if (!name) { showToast('Введіть ім\'я адміністратора', 'error'); nameEl.focus(); return; }
+  const role   = roleEl ? roleEl.value : 'administrator';
+  if (!name) { showToast('Введіть ім\'я', 'error'); nameEl.focus(); return; }
   try {
     const res  = await fetch('/api/admins', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
-      body:    JSON.stringify({ name }),
+      body:    JSON.stringify({ name, role }),
     });
     const data = await res.json();
     if (!res.ok) { showToast(data.error || 'Помилка', 'error'); return; }
     nameEl.value = '';
     document.getElementById('createAdminForm').style.display = 'none';
-    showToast(`Адміна "${name}" створено ✓`, 'success');
+    showToast(`"${name}" (${ROLE_LABELS[role]}) створено ✓`, 'success');
     await renderAdmins();
   } catch { showToast('Помилка сервера', 'error'); }
 }
@@ -530,9 +567,13 @@ async function renderAdmins() {
       tbody.innerHTML = `<tr><td colspan="5"><div class="empty" style="padding:40px 20px">Адмінів поки немає. Натисніть «+ Додати адміна».</div></td></tr>`;
       return;
     }
-    tbody.innerHTML = list.map(a => `
-      <tr>
+    tbody.innerHTML = list.map(a => {
+      const roleLbl = ROLE_LABELS[a.role] || a.role || '—';
+      const roleBg  = ROLE_COLORS[a.role]      || '#f0eeff';
+      const roleClr = ROLE_TEXT_COLORS[a.role] || '#6C47FF';
+      return `<tr>
         <td style="font-weight:600">${esc(a.name)}</td>
+        <td><span style="display:inline-block;background:${roleBg};color:${roleClr};font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px">${roleLbl}</span></td>
         <td>
           <code style="font-size:11px;background:#f0eeff;padding:2px 8px;border-radius:4px;word-break:break-all;user-select:all">${esc(a.token)}</code>
           <button class="btn btn-ghost btn-sm" style="margin-left:6px" onclick="copyToken('${esc(a.token)}')">📋</button>
@@ -545,8 +586,8 @@ async function renderAdmins() {
           ${a.active ? `<button class="btn btn-ghost btn-sm" onclick="revokeAdmin(${a.id})">🔒 Відкликати</button>` : ''}
           <button class="btn btn-danger btn-sm" onclick="deleteAdminUser(${a.id})">✕ Видалити</button>
         </td>
-      </tr>
-    `).join('');
+      </tr>`;
+    }).join('');
   } catch { showToast('Помилка завантаження адмінів', 'error'); }
 }
 

@@ -18,14 +18,18 @@ function now()      { return new Date().toLocaleString('uk-UA', { timeZone: 'Eur
 function genToken() { return crypto.randomBytes(24).toString('hex'); }
 function nextId(list) { return list.length > 0 ? Math.max(...list.map(a => a.id)) + 1 : 1; }
 
+const ALLOWED_ROLES = ['administrator', 'manager', 'teacher'];
+
 module.exports = {
+  ALLOWED_ROLES,
   getAll()        { return load(); },
   getById(id)     { return load().find(a => a.id === id) || null; },
   findByToken(t)  { return load().find(a => a.token === t && a.active) || null; },
 
-  create(name) {
+  create(name, role) {
+    const r = ALLOWED_ROLES.includes(role) ? role : 'administrator';
     const list  = load();
-    const admin = { id: nextId(list), name: String(name).trim(), token: genToken(), active: true, createdAt: now() };
+    const admin = { id: nextId(list), name: String(name).trim(), role: r, token: genToken(), active: true, createdAt: now() };
     list.push(admin);
     save(list);
     return admin;

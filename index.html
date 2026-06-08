@@ -20,7 +20,9 @@
   <title>My Computer Academy — Школа програмування для дітей | Дніпро</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -35,7 +37,7 @@
   <nav class="nav container">
 
     <a href="#" class="nav__logo">
-      <img src="/android-chrome-192x192.png" alt="" class="nav__logo-img" width="38" height="38" />
+      <img src="/android-chrome-192x192.png" alt="" class="nav__logo-img" width="38" height="38" fetchpriority="high" />
       <span>My Computer <strong>Academy</strong></span>
     </a>
 
@@ -91,7 +93,7 @@
         </div>
         <div class="hero__trust">
           <div class="trust-item">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1L11.09 6.26L17 7.27L13 11.14L14.18 17L9 14.27L3.82 17L5 11.14L1 7.27L6.91 6.26L9 1Z" fill="#6C47FF" stroke="#6C47FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1L11.09 6.26L17 7.27L13 11.14L14.18 17L9 14.27L3.82 17L5 11.14L1 7.27L6.91 6.26L9 1Z" fill="none" stroke="#6C47FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             <span data-ru="Более 500 выпускников">Понад 5500 випускників</span>
           </div>
           <div class="trust-item">
@@ -897,7 +899,7 @@
     <div class="footer__inner">
       <div class="footer__brand">
         <a href="#" class="nav__logo footer__logo">
-          <img src="/android-chrome-192x192.png" alt="" class="nav__logo-img" width="38" height="38" />
+          <img src="/android-chrome-192x192.png" alt="" class="nav__logo-img" width="38" height="38" loading="lazy" />
           <span>My Computer <strong>Academy</strong></span>
         </a>
         <p class="footer__desc" data-ru="Онлайн школа программирования для детей от 6 до 16 лет. Днепр, Украина.">Онлайн школа програмування для дітей від 6 до 16 років. Дніпро, Україна.</p>
@@ -1053,6 +1055,6 @@
   <div class="result-notify__bar"><div class="result-notify__progress" id="resultNotifyProgress"></div></div>
 </div>
 
-<script src="js/main.js"></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>
