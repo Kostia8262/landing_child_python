@@ -101,6 +101,35 @@ sudo certbot --nginx -d mycomputer.education -d www.mycomputer.education
 
 ---
 
+## Настройка email-уведомлений
+
+При каждой новой заявке сервер автоматически отправит письмо на `NOTIFY_EMAIL`.
+
+### Шаги:
+1. В Google-аккаунте `my.computer.academy25@gmail.com` включите **Двухэтапную аутентификацию**:
+   [myaccount.google.com → Безопасность → Двухэтапная аутентификация](https://myaccount.google.com/security)
+
+2. Создайте **App Password** (пароль приложения):
+   [myaccount.google.com → Безопасность → Пароли приложений](https://myaccount.google.com/apppasswords)
+   - Выберите «Другое» → введите «MCA Landing»
+   - Скопируйте 16-символьный код (например: `abcd efgh ijkl mnop`)
+
+3. В файле `.env` на сервере укажите:
+   ```
+   SMTP_USER=my.computer.academy25@gmail.com
+   SMTP_PASS=abcdefghijklmnop   # без пробелов!
+   NOTIFY_EMAIL=my.computer.academy25@gmail.com
+   ```
+
+4. После обновления `.env` перезапустите сервер:
+   ```bash
+   pm2 restart mycomputer
+   ```
+
+> **Примечание:** Если `SMTP_PASS` не задан, сервер продолжит работу — заявки сохраняются в БД, но письма не отправляются. Ошибка email не мешает работе формы.
+
+---
+
 ## Работа с заявками
 
 ### Просмотр всех заявок

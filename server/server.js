@@ -22,6 +22,7 @@ const helmet       = require('helmet');
 const rateLimit    = require('express-rate-limit');
 const path         = require('path');
 const db           = require('./database');
+const { sendLeadNotification } = require('./mailer');
 
 const app          = express();
 const PORT         = process.env.PORT || 3000;
@@ -143,6 +144,9 @@ app.post('/api/leads', leadsLimiter, (req, res) => {
 
     const result = db.insertLead(sanitized);
     console.log(`[LEAD #${result.id}] ${sanitized.child_name} | ${sanitized.phone} | ${sanitized.course || '—'}`);
+
+    // Send email notification (non-blocking — lead is saved regardless)
+    sendLeadNotification({ ...sanitized, id: result.id }).catch(() => {});
 
     res.status(201).json({
       success: true,
