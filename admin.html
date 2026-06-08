@@ -211,16 +211,37 @@ const COURSE_LABELS = {
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 async function doLogin() {
-  const t = document.getElementById('tokenInput').value.trim();
-  if (!t) return;
-  const res = await fetch('/api/leads', { headers: { 'x-admin-token': t } });
-  if (res.status === 401) {
-    document.getElementById('loginError').style.display = 'block';
-    return;
+  const t   = document.getElementById('tokenInput').value.trim();
+  const btn = document.querySelector('.login-box button');
+  const err = document.getElementById('loginError');
+  if (!t) { err.textContent = 'Введіть токен.'; err.style.display = 'block'; return; }
+
+  btn.textContent = 'Перевіряємо…';
+  btn.disabled    = true;
+  err.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/leads', { headers: { 'x-admin-token': t } });
+    if (res.status === 401) {
+      err.textContent   = 'Невірний токен. Перевірте значення ADMIN_TOKEN у файлі .env';
+      err.style.display = 'block';
+      return;
+    }
+    if (!res.ok) {
+      err.textContent   = `Помилка сервера: ${res.status}`;
+      err.style.display = 'block';
+      return;
+    }
+    token = t;
+    localStorage.setItem(STORAGE_KEY, token);
+    showApp();
+  } catch (e) {
+    err.textContent   = 'Не вдалося підключитися до сервера. Переконайтеся, що npm start запущено.';
+    err.style.display = 'block';
+  } finally {
+    btn.textContent = 'Увійти →';
+    btn.disabled    = false;
   }
-  token = t;
-  localStorage.setItem(STORAGE_KEY, token);
-  showApp();
 }
 
 function doLogout() {
