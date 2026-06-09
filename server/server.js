@@ -189,7 +189,7 @@ function requireNotTeacher(req, res, next) {
 
 // Teacher-role guard: allow only attendance + client read + me + alerts
 // req.path inside app.use('/api', ...) is relative to /api (e.g. '/me', '/clients')
-const TEACHER_ALLOWED = ['/me', '/health', '/attendance', '/clients', '/alerts'];
+const TEACHER_ALLOWED = ['/me', '/health', '/attendance', '/clients', '/alerts', '/teachers'];
 app.use('/api', (req, res, next) => {
   const token = req.headers['x-admin-token'];
   if (!token || (SUPERADMIN_TOKEN && token === SUPERADMIN_TOKEN)) return next();
@@ -222,6 +222,14 @@ app.get('/api/me', adminLimiter, requireAdmin, (req, res) => {
 // ── ADMIN MANAGEMENT (superadmin only) ───────────────────────────────────────
 app.get('/api/admins', adminLimiter, requireSuperAdmin, (req, res) => {
   res.json({ success: true, admins: adminsDb.getAll() });
+});
+
+// GET /api/teachers — list active teachers (any admin; no tokens exposed)
+app.get('/api/teachers', adminLimiter, requireAdmin, (req, res) => {
+  const teachers = adminsDb.getAll()
+    .filter(a => a.role === 'teacher' && a.active)
+    .map(a => ({ id: a.id, name: a.name }));
+  res.json({ success: true, teachers });
 });
 
 app.post('/api/admins', adminLimiter, requireSuperAdmin, (req, res) => {
@@ -459,6 +467,8 @@ app.patch('/api/leads/:id', adminLimiter, requireAdmin, (req, res) => {
                 source:       'website',
                 enrolledDate: today,
                 notes:        lead.notes || '',
+                teacher:      lead.teacher || null,
+                schedule:     lead.schedule || null,
               });
               const ym = new Date().toISOString().slice(0, 7);
               const monthData = monthlyPayDb.getMonth(ym);
@@ -484,8 +494,8 @@ app.patch('/api/leads/:id', adminLimiter, requireAdmin, (req, res) => {
     }
     if (notes !== undefined) db.updateNotes(id, sanitize(notes));
 
-    // Sync name/phone changes to matching client
-    if (fieldPatch.child_name || fieldPatch.phone) {
+    // Sync field changes from lead to matching client
+    if (fieldPatch.child_name || fieldPatch.phone || fieldPatch.teacher || fieldPatch.schedule) {
       try {
         const updatedLead = db.getLeadById(id);
         if (updatedLead) {
@@ -493,8 +503,10 @@ app.patch('/api/leads/:id', adminLimiter, requireAdmin, (req, res) => {
           const matchClient = matchPhone ? clientsDb.getAll().find(c => c.phone === matchPhone) : null;
           if (matchClient) {
             const clientPatch = {};
-            if (fieldPatch.child_name) clientPatch.name = fieldPatch.child_name;
-            if (fieldPatch.phone)      clientPatch.phone = fieldPatch.phone;
+            if (fieldPatch.child_name) clientPatch.name     = fieldPatch.child_name;
+            if (fieldPatch.phone)      clientPatch.phone    = fieldPatch.phone;
+            if (fieldPatch.teacher)    clientPatch.teacher  = fieldPatch.teacher;
+            if (fieldPatch.schedule)   clientPatch.schedule = fieldPatch.schedule;
             const updated = clientsDb.update(matchClient.id, clientPatch);
             if (updated && clientPatch.name) {
               monthlyPayDb.syncClientName(matchClient.id, clientPatch.name);

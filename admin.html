@@ -468,7 +468,11 @@ tr:hover td{background:#faf9ff}
           <div class="modal-group"><label class="modal-label">Останній контакт</label><input class="modal-input" id="cf_lastContact" type="date"/></div>
           <div class="modal-group"><label class="modal-label">Наступний дзвінок 📅</label><input class="modal-input" id="cf_nextContact" type="date"/></div>
           <div class="modal-group"><label class="modal-label">Менеджер</label><input class="modal-input" id="cf_manager" placeholder="Ім'я менеджера"/></div>
-          <div class="modal-group"><label class="modal-label">Викладач</label><input class="modal-input" id="cf_teacher" placeholder="Андрій, Ростислав…"/></div>
+          <div class="modal-group"><label class="modal-label">Викладач</label>
+            <select class="modal-input" id="cf_teacher">
+              <option value="">— Не вказано —</option>
+            </select>
+          </div>
           <div class="modal-group"><label class="modal-label">Формат</label>
             <select class="modal-input" id="cf_lessonType" onchange="onLessonTypeChange(this.value)">
               <option value="group">👥 Група (1×/тиж)</option>
@@ -1050,14 +1054,16 @@ tr:hover td{background:#faf9ff}
 <script>
 'use strict';
 
-const STORAGE_KEY = 'mca_admin_token';
-const PAGE_SIZE   = 20;
+const STORAGE_KEY     = 'mca_admin_token';
+const STORAGE_TAB_KEY = 'mca_admin_tab';
+const PAGE_SIZE       = 20;
 
-let allLeads    = [];
-let filtered    = [];
-let currentPage = 1;
-let token       = localStorage.getItem(STORAGE_KEY) || '';
-let currentRole = '';
+let allLeads      = [];
+let filtered      = [];
+let currentPage   = 1;
+let token         = localStorage.getItem(STORAGE_KEY) || '';
+let currentRole   = '';
+let _teachersList = []; // [{id, name}] loaded on init
 
 const ROLE_LABELS = {
   superadmin:    '⭐ Суперадмін',
@@ -1134,15 +1140,38 @@ document.getElementById('tokenInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
 });
 
+// ── TEACHERS LIST ─────────────────────────────────────────────────────────────
+async function loadTeachersList() {
+  try {
+    const res = await fetch('/api/teachers', { headers: { 'x-admin-token': token } });
+    if (!res.ok) return;
+    const data = await res.json();
+    _teachersList = data.teachers || [];
+  } catch { /* non-fatal */ }
+}
+
+function buildTeacherSelect(currentVal, extraStyle) {
+  const opts = [
+    `<option value="">— Не вказано —</option>`,
+    ..._teachersList.map(t => `<option value="${esc(t.name)}" ${currentVal === t.name ? 'selected' : ''}>${esc(t.name)}</option>`),
+  ].join('');
+  const style = extraStyle ? ` style="${extraStyle}"` : '';
+  return `<select class="status-sel"${style}>${opts}</select>`;
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function showApp() {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('app').style.display       = 'flex';
-  await loadMe();
+  const ok = await loadMe();
+  if (!ok) return; // token invalid — doLogout() already fired inside loadMe
+  await loadTeachersList();
   // Teachers go straight to attendance — skip leads init
   if (currentRole !== 'teacher') {
     await loadLeads();
-    showTab('leads');
+    // Restore last-used tab (or default to leads)
+    const savedTab = localStorage.getItem(STORAGE_TAB_KEY) || 'leads';
+    showTab(savedTab);
   }
   loadAlerts();
   setInterval(loadAlerts, 5 * 60 * 1000); // refresh alerts every 5 min
@@ -1151,7 +1180,7 @@ async function showApp() {
 async function loadMe() {
   try {
     const res = await fetch('/api/me', { headers: { 'x-admin-token': token } });
-    if (!res.ok) { doLogout(); return; }
+    if (!res.ok) { doLogout(); return false; }
     const data = await res.json();
     currentRole = data.role;
 
@@ -1188,13 +1217,15 @@ async function loadMe() {
       });
       showClientsSubTab('attendance');
     }
-  } catch (e) { console.error('loadMe', e); }
+    return true;
+  } catch (e) { console.error('loadMe', e); return false; }
 }
 
 let _currentTab = 'leads';
 
 function showTab(tab) {
   _currentTab = tab;
+  localStorage.setItem(STORAGE_TAB_KEY, tab);
   ['leads','admins','content','clients','courses','curriculum','modules','articles','reviews','dashboard'].forEach(t => {
     const el = document.getElementById(t + 'Tab');
     if (el) el.style.display = t === tab ? '' : 'none';
@@ -1305,7 +1336,7 @@ function renderTable() {
         </td>
         <td><input class="notes-input" value="${esc(l.phone)}" onblur="saveLeadFields(${l.id},{phone:this.value})" onkeydown="if(event.key==='Enter')this.blur()"/></td>
         <td><input class="notes-input" value="${esc(l.email||'')}" placeholder="email" onblur="saveLeadFields(${l.id},{email:this.value})" onkeydown="if(event.key==='Enter')this.blur()"/></td>
-        <td><input class="notes-input" value="${esc(l.teacher||'')}" placeholder="Викладач…" onblur="saveLeadFields(${l.id},{teacher:this.value})" onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td><select class="status-sel" style="min-width:100px" onchange="saveLeadFields(${l.id},{teacher:this.value})">${[`<option value="">— —</option>`,..._teachersList.map(t=>`<option value="${esc(t.name)}"${l.teacher===t.name?' selected':''}>${esc(t.name)}</option>`)].join('')}</select></td>
         <td><input class="notes-input" style="min-width:100px" value="${esc(l.schedule||'')}" placeholder="Пн 15:00…" onblur="saveLeadFields(${l.id},{schedule:this.value})" onkeydown="if(event.key==='Enter')this.blur()"/></td>
         <td>
           <select class="status-sel" onchange="changeStatus(${l.id}, this.value)">
@@ -1654,7 +1685,7 @@ function renderClients() {
           <span style="display:inline-flex;align-items:center;gap:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle">${esc(c.schedule || '')}</span>
           <button class="btn btn-ghost btn-sm" style="padding:2px 6px;font-size:11px;vertical-align:middle" onclick="openSchedPopup(event,${c.id})" title="Редагувати розклад">🕐</button>
         </td>
-        <td><input class="notes-input" style="min-width:90px" value="${esc(c.teacher||'')}" placeholder="Викладач…" onblur="saveClientField(${c.id},'teacher',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td><select class="status-sel" style="min-width:100px" onchange="saveClientField(${c.id},'teacher',this.value)">${[`<option value="">— —</option>`,..._teachersList.map(t=>`<option value="${esc(t.name)}"${c.teacher===t.name?' selected':''}>${esc(t.name)}</option>`)].join('')}</select></td>
         <td><input class="notes-input" style="width:72px" type="number" value="${esc(String(c.monthlyFee||''))}" placeholder="0" onblur="saveClientField(${c.id},'monthlyFee',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
         <td><input class="notes-input" style="width:72px" type="number" value="${esc(String(c.totalPaid||''))}" placeholder="0" onblur="saveClientField(${c.id},'totalPaid',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
         <td><input class="notes-input" style="width:100px" type="date" value="${esc(c.nextContact||'')}" onblur="saveClientField(${c.id},'nextContact',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
@@ -1684,6 +1715,12 @@ function openClientModal(id) {
   document.getElementById('clientModalTitle').textContent = id ? 'Редагувати клієнта' : 'Новий клієнт';
   const fields = ['name','age','course','phone','email','status','source','monthlyFee','totalPaid','enrolledDate','trialDate','lastContact','nextContact','manager','teacher','lessonType','city','notes'];
   fields.forEach(f => { const el = document.getElementById('cf_' + f); if (el) el.value = ''; });
+  // Populate teacher dropdown
+  const teacherSel = document.getElementById('cf_teacher');
+  if (teacherSel) {
+    teacherSel.innerHTML = `<option value="">— Не вказано —</option>` +
+      _teachersList.map(t => `<option value="${esc(t.name)}">${esc(t.name)}</option>`).join('');
+  }
   // Reset schedule pickers
   ['cf_day1','cf_time1','cf_day2','cf_time2'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const noteEl = document.getElementById('cf_scheduleNote');
@@ -2171,22 +2208,33 @@ function renderAttCalendar() {
 // ── SCHEDULE QUICK-EDIT POPUP ────────────────────────────────────────────────
 let _schedPopupClientId = null;
 
+function onSpLessonTypeChange(val) {
+  const isFree = val === 'individual' || val === 'adult';
+  document.getElementById('sp_daysWrap').style.display   = isFree ? 'none' : '';
+  document.getElementById('sp_manualWrap').style.display = isFree ? '' : 'none';
+  document.getElementById('sp_slot2Row').style.display   = val === 'group2' ? '' : 'none';
+}
+
 function openSchedPopup(event, clientId) {
   event.stopPropagation();
   _schedPopupClientId = clientId;
   const client = _allClients?.find(c => c.id === clientId);
   const days = client?.scheduleDays || [];
   const d0 = days[0], d1 = days[1];
+  const lt = client?.lessonType || 'group';
+  document.getElementById('sp_lessonType').value = lt;
   document.getElementById('sp_day1').value  = d0?.day  || '';
   document.getElementById('sp_time1').value = d0?.time || '';
   document.getElementById('sp_day2').value  = d1?.day  || '';
   document.getElementById('sp_time2').value = d1?.time || '';
+  document.getElementById('sp_manualNote').value = (lt === 'individual' || lt === 'adult') ? (client?.schedule || '') : '';
+  onSpLessonTypeChange(lt);
   const pop = document.getElementById('schedPopup');
   pop.style.display = 'block';
   const r = event.target.getBoundingClientRect();
   let left = r.left, top = r.bottom + 4;
-  if (left + 270 > window.innerWidth) left = window.innerWidth - 275;
-  if (top + 220 > window.innerHeight) top = r.top - 225;
+  if (left + 280 > window.innerWidth) left = window.innerWidth - 285;
+  if (top + 280 > window.innerHeight) top = r.top - 285;
   pop.style.left = left + 'px';
   pop.style.top  = top  + 'px';
 }
@@ -2198,24 +2246,30 @@ function closeSchedPopup() {
 async function saveSchedPopup() {
   const clientId = _schedPopupClientId;
   if (!clientId) return;
-  const day1 = document.getElementById('sp_day1').value;
-  const time1 = document.getElementById('sp_time1').value;
-  const day2 = document.getElementById('sp_day2').value;
-  const time2 = document.getElementById('sp_time2').value;
-  const scheduleDays = [];
-  if (day1) scheduleDays.push({ day: parseInt(day1), time: time1 });
-  if (day2) scheduleDays.push({ day: parseInt(day2), time: time2 });
-  const schedule = buildScheduleText(scheduleDays, '');
+  const lt = document.getElementById('sp_lessonType').value;
+  const isFree = lt === 'individual' || lt === 'adult';
+  let scheduleDays = [], schedule = '';
+  if (isFree) {
+    schedule = document.getElementById('sp_manualNote').value.trim();
+  } else {
+    const day1 = document.getElementById('sp_day1').value;
+    const time1 = document.getElementById('sp_time1').value;
+    const day2 = document.getElementById('sp_day2').value;
+    const time2 = document.getElementById('sp_time2').value;
+    if (day1) scheduleDays.push({ day: parseInt(day1), time: time1 });
+    if (day2) scheduleDays.push({ day: parseInt(day2), time: time2 });
+    schedule = buildScheduleText(scheduleDays, '');
+  }
   closeSchedPopup();
   try {
     const res = await fetch(`/api/clients/${clientId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
-      body: JSON.stringify({ scheduleDays, schedule }),
+      body: JSON.stringify({ lessonType: lt, scheduleDays, schedule }),
     });
     if (!res.ok) { showToast('Помилка збереження', 'error'); return; }
     const client = _allClients?.find(c => c.id === clientId);
-    if (client) { client.scheduleDays = scheduleDays; client.schedule = schedule; }
+    if (client) { client.lessonType = lt; client.scheduleDays = scheduleDays; client.schedule = schedule; }
     renderClients();
     showToast('Розклад збережено ✓', 'success');
   } catch { showToast('Помилка', 'error'); }
@@ -4070,13 +4124,27 @@ if (token) showApp();
 <!-- Schedule quick-edit popup (singleton) -->
 <div id="schedPopup" class="sched-popup" style="display:none">
   <h5>Розклад занять</h5>
-  <div class="sched-popup-row"><label>День 1</label>
-    <select id="sp_day1"><option value="">— —</option><option value="1">Пн</option><option value="2">Вт</option><option value="3">Ср</option><option value="4">Чт</option><option value="5">Пт</option><option value="6">Сб</option><option value="7">Нд</option></select>
-    <select id="sp_time1"><option value="">— —</option><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option></select>
+  <div class="sched-popup-row"><label>Формат</label>
+    <select id="sp_lessonType" onchange="onSpLessonTypeChange(this.value)" style="flex:1;padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px">
+      <option value="group">👥 Група (1×/тиж)</option>
+      <option value="group2">👥 Група (2×/тиж)</option>
+      <option value="individual">👤 Індивідуально</option>
+      <option value="adult">🧑 Дорослий</option>
+    </select>
   </div>
-  <div class="sched-popup-row"><label>День 2</label>
-    <select id="sp_day2"><option value="">— —</option><option value="1">Пн</option><option value="2">Вт</option><option value="3">Ср</option><option value="4">Чт</option><option value="5">Пт</option><option value="6">Сб</option><option value="7">Нд</option></select>
-    <select id="sp_time2"><option value="">— —</option><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option></select>
+  <div id="sp_daysWrap">
+    <div class="sched-popup-row"><label>День 1</label>
+      <select id="sp_day1"><option value="">— —</option><option value="1">Пн</option><option value="2">Вт</option><option value="3">Ср</option><option value="4">Чт</option><option value="5">Пт</option><option value="6">Сб</option><option value="7">Нд</option></select>
+      <select id="sp_time1"><option value="">— —</option><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option></select>
+    </div>
+    <div class="sched-popup-row" id="sp_slot2Row"><label>День 2</label>
+      <select id="sp_day2"><option value="">— —</option><option value="1">Пн</option><option value="2">Вт</option><option value="3">Ср</option><option value="4">Чт</option><option value="5">Пт</option><option value="6">Сб</option><option value="7">Нд</option></select>
+      <select id="sp_time2"><option value="">— —</option><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option></select>
+    </div>
+  </div>
+  <div id="sp_manualWrap" style="display:none" class="sched-popup-row">
+    <label>Вручну</label>
+    <input id="sp_manualNote" placeholder="Пн 15:00, Ср 15:00…" style="flex:1;padding:5px 8px;border:1px solid #ddd;border-radius:6px;font-size:12px;outline:none"/>
   </div>
   <div class="sched-popup-footer">
     <button class="btn btn-ghost btn-sm" onclick="closeSchedPopup()">Скасувати</button>
