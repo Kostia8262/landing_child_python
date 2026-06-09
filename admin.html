@@ -330,11 +330,11 @@ tr:hover td{background:#faf9ff}
         <span class="sidebar-icon">⭐</span><span>Відгуки</span>
       </button>
       <div class="sidebar-section">Налаштування</div>
-      <button class="sidebar-item superadmin-only" id="sideNav-dashboard" onclick="showTab('dashboard')" style="display:none">
+      <button class="sidebar-item management-visible" id="sideNav-dashboard" onclick="showTab('dashboard')" style="display:none">
         <span class="sidebar-icon">📊</span><span>Дашборд</span>
       </button>
       <button class="sidebar-item superadmin-only" id="sideNav-admins" onclick="showTab('admins')" style="display:none">
-        <span class="sidebar-icon">👥</span><span>Адміни</span>
+        <span class="sidebar-icon">👥</span><span>Співробітники</span>
       </button>
     </nav>
   </div>
@@ -344,8 +344,8 @@ tr:hover td{background:#faf9ff}
     <!-- ADMINS TAB (superadmin only) -->
     <div id="adminsTab" style="display:none">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-        <h2 style="font-size:18px;font-weight:800">👥 Управління адміністраторами</h2>
-        <button class="btn btn-primary btn-sm" onclick="showCreateAdminForm()">+ Додати адміна</button>
+        <h2 style="font-size:18px;font-weight:800">👥 Співробітники</h2>
+        <button class="btn btn-primary btn-sm" onclick="showCreateAdminForm()">+ Додати співробітника</button>
       </div>
       <div id="createAdminForm" style="display:none;background:#fff;border:1px solid #e8e4ff;border-radius:12px;padding:20px;margin-bottom:20px">
         <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
@@ -667,6 +667,9 @@ tr:hover td{background:#faf9ff}
       <!-- ① RED ALERTS (critical ops issues) -->
       <div id="dashAlerts" style="margin-bottom:20px"></div>
 
+      <!-- ① LATE PAYMENT CRITICAL LIST (after 10th of month) -->
+      <div id="dashLatePayments" style="margin-bottom:20px"></div>
+
       <!-- ② FINANCIAL KPIs -->
       <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#888;margin-bottom:10px">💰 Фінанси</div>
       <div class="stats" id="dashFinancials" style="margin-bottom:24px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"></div>
@@ -987,14 +990,9 @@ async function doLogin() {
   err.style.display = 'none';
 
   try {
-    const res = await fetch('/api/leads', { headers: { 'x-admin-token': t } });
-    if (res.status === 401) {
-      err.textContent   = 'Невірний токен. Перевірте значення ADMIN_TOKEN у файлі .env';
-      err.style.display = 'block';
-      return;
-    }
-    if (!res.ok) {
-      err.textContent   = `Помилка сервера: ${res.status}`;
+    const res = await fetch('/api/me', { headers: { 'x-admin-token': t } });
+    if (res.status === 401 || !res.ok) {
+      err.textContent   = 'Невірний токен. Перевірте значення у файлі .env або у розділі Співробітники';
       err.style.display = 'block';
       return;
     }
@@ -1026,8 +1024,11 @@ async function showApp() {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('app').style.display       = 'flex';
   await loadMe();
-  await loadLeads();
-  showTab('leads');
+  // Teachers go straight to attendance — skip leads init
+  if (currentRole !== 'teacher') {
+    await loadLeads();
+    showTab('leads');
+  }
   loadAlerts();
   setInterval(loadAlerts, 5 * 60 * 1000); // refresh alerts every 5 min
 }
@@ -1048,14 +1049,18 @@ async function loadMe() {
     const title = document.getElementById('panelTitle');
     if (title) title.textContent = data.name || 'Admin Panel';
 
-    // Show admins nav item only for superadmin
+    // superadmin-only items (Співробітники tab)
     document.querySelectorAll('.superadmin-only').forEach(el => {
       el.style.display = currentRole === 'superadmin' ? '' : 'none';
+    });
+    // Dashboard visible to superadmin, administrator, manager
+    document.querySelectorAll('.management-visible').forEach(el => {
+      el.style.display = ['superadmin','administrator','manager'].includes(currentRole) ? '' : 'none';
     });
 
     if (currentRole === 'teacher') {
       // Hide all sidebar items except clients
-      ['leads','admins','content','courses','curriculum','modules','articles','dashboard'].forEach(t => {
+      ['leads','admins','content','courses','curriculum','modules','articles','reviews','dashboard'].forEach(t => {
         const btn = document.getElementById('sideNav-' + t);
         if (btn) btn.style.display = 'none';
       });
@@ -3189,6 +3194,47 @@ async function loadDashboardTab() {
           }).join('') + '</div>';
       } else {
         alertsEl.innerHTML = `<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;color:#15803d;margin-bottom:4px">✅ Критичних проблем немає — всі заявки оброблено, прострочень не виявлено</div>`;
+      }
+    }
+
+    // ── ① LATE PAYMENTS CRITICAL LIST ───────────────────────────────────────
+    const lateEl   = document.getElementById('dashLatePayments');
+    if (lateEl) {
+      const today    = new Date();
+      const dayOfMonth = today.getDate();
+      if (dayOfMonth >= 10) {
+        const clientMap2 = {};
+        clients.forEach(c => { clientMap2[c.id] = c; });
+        const overdue = mpRecords.filter(r => r.status === 'pending' || r.status === 'partial');
+        if (overdue.length) {
+          lateEl.innerHTML = `
+            <div style="background:#fff5f5;border:2px solid #fca5a5;border-radius:14px;padding:20px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+                <span style="font-size:22px">🚨</span>
+                <div>
+                  <div style="font-size:14px;font-weight:800;color:#dc2626">Прострочені оплати — сьогодні ${dayOfMonth} число</div>
+                  <div style="font-size:12px;color:#b91c1c;margin-top:2px">${overdue.length} учнів не сплатили після 10-го числа</div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px">
+                ${overdue.map(r => {
+                  const cl = clientMap2[r.clientId] || {};
+                  return `<div style="background:#fff;border:1px solid #fecaca;border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+                    <div>
+                      <div style="font-weight:700;font-size:13px;color:#1a1a2e">${esc(r.clientName || cl.name || '—')}</div>
+                      <div style="font-size:11px;color:#dc2626;font-weight:600;margin-top:2px">${(parseFloat(r.expectedAmount)||0).toLocaleString('uk-UA')} ₴ · ${r.status === 'partial' ? 'часткова' : 'не сплатив'}</div>
+                    </div>
+                    <a href="tel:${esc(cl.phone||'')}" style="font-size:12px;color:#6C47FF;font-weight:600;white-space:nowrap;text-decoration:none">${esc(cl.phone||'—')}</a>
+                  </div>`;
+                }).join('')}
+              </div>
+              <div style="margin-top:12px;font-size:12px;color:#888">Загальна сума боргу: <strong style="color:#dc2626">${overdue.reduce((s,r)=>s+(parseFloat(r.expectedAmount)||0),0).toLocaleString('uk-UA')} ₴</strong></div>
+            </div>`;
+        } else {
+          lateEl.innerHTML = `<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;color:#15803d;margin-bottom:4px">✅ Після 10-го числа — всі учні сплатили цей місяць</div>`;
+        }
+      } else {
+        lateEl.innerHTML = `<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;color:#92400e">⏳ Термін оплати до 10-го числа. Сьогодні ${dayOfMonth}-е — ще ${10 - dayOfMonth} дн. до дедлайну</div>`;
       }
     }
 

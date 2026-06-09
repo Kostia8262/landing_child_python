@@ -164,9 +164,9 @@ function requireNotTeacher(req, res, next) {
   next();
 }
 
-// Teacher-role guard: allow only attendance + client read + me
+// Teacher-role guard: allow only attendance + client read + me + alerts
 // req.path inside app.use('/api', ...) is relative to /api (e.g. '/me', '/clients')
-const TEACHER_ALLOWED = ['/me', '/health', '/attendance', '/clients'];
+const TEACHER_ALLOWED = ['/me', '/health', '/attendance', '/clients', '/alerts'];
 app.use('/api', (req, res, next) => {
   const token = req.headers['x-admin-token'];
   if (!token || (SUPERADMIN_TOKEN && token === SUPERADMIN_TOKEN)) return next();
