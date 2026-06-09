@@ -741,44 +741,65 @@ tr:hover td{background:#faf9ff}
     </div>
 
     <!-- CLIENTS TAB -->
+    <!-- ═══════════════════════════════════════════════════════
+         CLIENTS TAB  —  clean rewrite
+         ═══════════════════════════════════════════════════════ -->
     <div id="clientsTab" style="display:none">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <h2 style="font-size:18px;font-weight:800">🗂 База клієнтів</h2>
-      </div>
+
+      <!-- Stats row -->
       <div class="stats" id="clientStatsRow" style="margin-bottom:16px"></div>
 
-      <!-- SUB-TABS -->
+      <!-- Sub-tab navigation -->
       <div class="client-subtabs">
-        <button class="csub-btn active" id="csub-base" onclick="showClientsSubTab('base')">📋 База заявок</button>
-        <button class="csub-btn" id="csub-payments" onclick="showClientsSubTab('payments')">💰 Оплати</button>
-        <button class="csub-btn" id="csub-attendance" onclick="showClientsSubTab('attendance')">📅 Відвідування</button>
-        <button class="csub-btn" id="csub-schedule" onclick="showClientsSubTab('schedule')">🗓 Розклад</button>
+        <button class="csub-btn active" id="csub-base"       onclick="showClientsSubTab('base')">📋 База заявок</button>
+        <button class="csub-btn"        id="csub-payments"   onclick="showClientsSubTab('payments')">💰 Оплати</button>
+        <button class="csub-btn"        id="csub-attendance" onclick="showClientsSubTab('attendance')">📅 Відвідування</button>
+        <button class="csub-btn"        id="csub-schedule"   onclick="showClientsSubTab('schedule')">📆 Розклад</button>
       </div>
 
-      <!-- ── SUB-TAB: BASE (full clients list) ── -->
+      <!-- ── SUB-TAB: BASE ── -->
       <div id="csubBase">
+        <!-- Toolbar -->
         <div class="toolbar">
-          <input class="search" id="clientSearch" placeholder="🔍 Пошук по імені, телефону, курсу..." oninput="renderClients()"/>
+          <input  class="search"        id="clientSearch"       placeholder="🔍 Пошук по імені, телефону, курсу..." oninput="renderClients()"/>
           <select class="filter-select" id="clientStatusFilter" onchange="renderClients()">
             <option value="">Всі статуси</option>
-            <option value="new">🔵 Новий</option><option value="trial">🟣 Пробний</option>
-            <option value="active">🟢 Активний</option><option value="paused">🟡 Пауза</option>
-            <option value="completed">✅ Завершив</option><option value="churned">🔴 Відмовився</option>
+            <option value="new">🔵 Новий</option>
+            <option value="trial">🟣 Пробний</option>
+            <option value="active">🟢 Активний</option>
+            <option value="paused">🟡 Пауза</option>
+            <option value="completed">✅ Завершив</option>
+            <option value="churned">🔴 Відмовився</option>
           </select>
           <select class="filter-select" id="clientCourseFilter" onchange="renderClients()">
             <option value="">Всі курси</option>
-            <option value="scratch">Scratch</option><option value="python">Python</option>
-            <option value="roblox">Roblox</option><option value="web">Веб</option>
+            <option value="scratch">Scratch</option>
+            <option value="python">Python</option>
+            <option value="roblox">Roblox</option>
+            <option value="web">Веб</option>
+            <option value="other">Інше</option>
           </select>
           <button class="btn btn-primary btn-sm" onclick="openClientModal(null)">+ Додати клієнта</button>
-          <button class="btn btn-ghost btn-sm" id="archiveToggleBtn" onclick="toggleArchive()" title="Архів відрахованих учнів">📦 Архів</button>
+          <button class="btn btn-ghost   btn-sm" id="archiveToggleBtn" onclick="toggleArchive()">📦 Архів</button>
         </div>
+
+        <!-- Client table -->
         <div class="table-wrap" style="overflow-x:auto">
-          <table id="clientsTable" style="min-width:960px">
+          <table id="clientsTable" style="min-width:980px">
             <thead><tr>
-              <th>#</th><th>Ім'я</th><th>Вік</th><th>Курс</th><th>Телефон</th>
-              <th>Статус</th><th>Розклад</th><th>Викладач</th><th>Внесок</th><th>Сплачено</th>
-              <th>Наст. дзвінок</th><th>Нотатки</th><th></th>
+              <th style="width:36px">#</th>
+              <th>Ім'я</th>
+              <th style="width:56px">Вік</th>
+              <th>Курс</th>
+              <th>Телефон</th>
+              <th>Статус</th>
+              <th>Розклад</th>
+              <th>Викладач</th>
+              <th style="width:82px">Внесок</th>
+              <th style="width:82px">Сплачено</th>
+              <th style="width:110px">Наст. дзвінок</th>
+              <th>Нотатки</th>
+              <th style="width:60px"></th>
             </tr></thead>
             <tbody id="clientsBody"></tbody>
           </table>
@@ -1615,10 +1636,12 @@ function toggleAlerts() {
 }
 
 // ── CLIENTS ───────────────────────────────────────────────────────────────────
-let _allClients  = null;
-let _clientPage  = 1;
-const CLIENT_PAGE_SIZE = 20;
+// ── CLIENT BASE ───────────────────────────────────────────────────────────────
+let _allClients      = null;
+let _clientPage      = 1;
+let _showArchive     = false;
 let _editingClientId = null;
+const CLIENT_PAGE_SIZE = 20;
 
 const CLIENT_STATUS_LABELS = {
   new: '🔵 Новий', trial: '🟣 Пробний', active: '🟢 Активний',
@@ -1658,71 +1681,125 @@ function renderClientStats(stats) {
 
 function renderClients() {
   if (!_allClients) return;
-  const q      = document.getElementById('clientSearch')?.value.toLowerCase() || '';
-  const status = document.getElementById('clientStatusFilter')?.value || '';
-  const course = document.getElementById('clientCourseFilter')?.value || '';
 
-  const ARCHIVED_STATUSES = ['churned', 'completed'];
-  const filtered = _allClients.filter(c => {
-    const isArchived = ARCHIVED_STATUSES.includes(c.status);
-    if (_showArchive ? !isArchived : isArchived) return false;
+  const q      = (document.getElementById('clientSearch')?.value      || '').toLowerCase();
+  const status =  document.getElementById('clientStatusFilter')?.value || '';
+  const course =  document.getElementById('clientCourseFilter')?.value || '';
+
+  const ARCHIVED = ['churned', 'completed'];
+  const list = _allClients.filter(c => {
+    const archived = ARCHIVED.includes(c.status);
+    if (_showArchive ? !archived : archived) return false;
     if (status && c.status !== status) return false;
-    if (course && c.course !== course) return false;
+    if (course && c.course  !== course) return false;
     if (q) {
-      const hay = [c.name, c.phone, c.email, c.course, c.manager, c.notes].join(' ').toLowerCase();
+      const hay = [c.name, c.phone, c.email, c.course, c.teacher, c.notes].join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
   });
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / CLIENT_PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(list.length / CLIENT_PAGE_SIZE));
   if (_clientPage > totalPages) _clientPage = totalPages;
-  const page = filtered.slice((_clientPage - 1) * CLIENT_PAGE_SIZE, _clientPage * CLIENT_PAGE_SIZE);
+  const page = list.slice((_clientPage - 1) * CLIENT_PAGE_SIZE, _clientPage * CLIENT_PAGE_SIZE);
 
   const tbody = document.getElementById('clientsBody');
+  if (!tbody) return;
+
   if (!page.length) {
-    tbody.innerHTML = `<tr><td colspan="13"><div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg><div>Клієнтів не знайдено</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="13"><div class="empty">Клієнтів не знайдено</div></td></tr>`;
   } else {
     tbody.innerHTML = page.map(c => {
-      const statusCls = 'cs-' + (c.status || 'new');
-      const statusOpts = Object.entries(CLIENT_STATUS_LABELS).map(([v,lbl]) =>
-        `<option value="${v}" ${c.status===v?'selected':''}>${lbl}</option>`).join('');
-      const courseOpts = [['','— курс —'],['scratch','Scratch'],['python','Python'],['roblox','Roblox'],['web','Веб'],['other','Інше']].map(([v,lbl]) =>
-        `<option value="${v}" ${c.course===v?'selected':''}>${lbl}</option>`).join('');
-      const nextDate = c.nextContact ? (new Date(c.nextContact) < new Date() ? `<span style="color:#dc2626;font-weight:700">${esc(c.nextContact)}</span>` : `<span style="color:#15803d">${esc(c.nextContact)}</span>`) : '—';
+      // Option lists
+      const courseOpts = [
+        ['','— курс —'],['scratch','Scratch'],['python','Python'],
+        ['roblox','Roblox'],['web','Веб'],['other','Інше'],
+      ].map(([v,l]) => `<option value="${v}"${c.course===v?' selected':''}>${l}</option>`).join('');
+
+      const statusOpts = Object.entries(CLIENT_STATUS_LABELS)
+        .map(([v,l]) => `<option value="${v}"${c.status===v?' selected':''}>${l}</option>`).join('');
+
+      const teacherOpts = [`<option value="">— —</option>`,
+        ..._teachersList.map(t =>
+          `<option value="${esc(t.name)}"${c.teacher===t.name?' selected':''}>${esc(t.name)}</option>`)
+      ].join('');
+
+      // Next-call coloring
+      const ncStyle = c.nextContact && new Date(c.nextContact) < new Date()
+        ? 'color:#dc2626;font-weight:700' : '';
+
       return `<tr>
         <td style="color:#aaa;font-size:12px">#${c.id}</td>
-        <td><input class="notes-input" style="font-weight:600;min-width:90px" value="${esc(c.name)}" onblur="saveClientField(${c.id},'name',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
-        <td><input class="notes-input" style="width:40px;text-align:center" type="number" value="${esc(String(c.age||''))}" placeholder="вік" onblur="saveClientField(${c.id},'age',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
-        <td><select class="status-sel" style="min-width:80px" onchange="saveClientField(${c.id},'course',this.value)">${courseOpts}</select></td>
-        <td><input class="notes-input" value="${esc(c.phone)}" onblur="saveClientField(${c.id},'phone',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
-        <td><select class="status-sel ${statusCls}" onchange="saveClientField(${c.id},'status',this.value);this.className='status-sel cs-'+this.value">${statusOpts}</select></td>
-        <td style="font-size:12px;white-space:nowrap;max-width:140px">
-          <span style="display:inline-flex;align-items:center;gap:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle">${esc(c.schedule || '')}</span>
-          <button class="btn btn-ghost btn-sm" style="padding:2px 6px;font-size:11px;vertical-align:middle" onclick="openSchedPopup(event,${c.id})" title="Редагувати розклад">🕐</button>
+        <td><input class="notes-input" style="font-weight:600;min-width:90px"
+          value="${esc(c.name||'')}"
+          onblur="saveClientField(${c.id},'name',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td><input class="notes-input" style="width:40px;text-align:center" type="number"
+          value="${c.age ?? ''}" placeholder="вік"
+          onblur="saveClientField(${c.id},'age',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td><select class="status-sel" style="min-width:80px"
+          onchange="saveClientField(${c.id},'course',this.value)">${courseOpts}</select></td>
+        <td><input class="notes-input"
+          value="${esc(c.phone||'')}"
+          onblur="saveClientField(${c.id},'phone',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td><select class="status-sel cs-${c.status||'new'}"
+          onchange="saveClientField(${c.id},'status',this.value);this.className='status-sel cs-'+this.value"
+          >${statusOpts}</select></td>
+        <td style="white-space:nowrap">
+          <span style="font-size:12px;max-width:110px;display:inline-block;overflow:hidden;text-overflow:ellipsis;vertical-align:middle">${esc(c.schedule||'')}</span>
+          <button class="btn btn-ghost btn-sm" style="padding:2px 6px;font-size:11px;vertical-align:middle"
+            onclick="openSchedPopup(event,${c.id})" title="Редагувати розклад">🕐</button>
         </td>
-        <td><select class="status-sel" style="min-width:100px" onchange="saveClientField(${c.id},'teacher',this.value)">${[`<option value="">— —</option>`,..._teachersList.map(t=>`<option value="${esc(t.name)}"${c.teacher===t.name?' selected':''}>${esc(t.name)}</option>`)].join('')}</select></td>
-        <td><input class="notes-input" style="width:72px" type="number" value="${esc(String(c.monthlyFee||''))}" placeholder="0" onblur="saveClientField(${c.id},'monthlyFee',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
-        <td><input class="notes-input" style="width:72px" type="number" value="${esc(String(c.totalPaid||''))}" placeholder="0" onblur="saveClientField(${c.id},'totalPaid',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
-        <td><input class="notes-input" style="width:100px" type="date" value="${esc(c.nextContact||'')}" onblur="saveClientField(${c.id},'nextContact',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
-        <td><input class="notes-input" value="${esc(c.notes||'')}" placeholder="Нотатки..."
-          onblur="saveClientField(${c.id},'notes',this.value)" onkeydown="if(event.key==='Enter')this.blur()"/></td>
-        <td>
-          <div style="display:flex;gap:4px;white-space:nowrap">
-            <button class="btn btn-ghost btn-sm" onclick="openClientModal(${c.id})" title="Детальне редагування">✏️</button>
-            ${currentRole === 'superadmin' ? `<button class="btn btn-danger btn-sm" onclick="deleteClient(${c.id})">✕</button>` : ''}
-          </div>
+        <td><select class="status-sel" style="min-width:100px"
+          onchange="saveClientField(${c.id},'teacher',this.value)">${teacherOpts}</select></td>
+        <td><input class="notes-input" style="width:72px" type="number"
+          value="${c.monthlyFee ?? ''}" placeholder="0"
+          onblur="saveClientField(${c.id},'monthlyFee',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td><input class="notes-input" style="width:72px" type="number"
+          value="${c.totalPaid ?? 0}" placeholder="0"
+          onblur="saveClientField(${c.id},'totalPaid',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td><input class="notes-input" style="width:100px;${ncStyle}" type="date"
+          value="${c.nextContact||''}"
+          onblur="saveClientField(${c.id},'nextContact',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td><input class="notes-input"
+          value="${esc(c.notes||'')}" placeholder="Нотатки…"
+          onblur="saveClientField(${c.id},'notes',this.value)"
+          onkeydown="if(event.key==='Enter')this.blur()"/></td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-ghost btn-sm" onclick="openClientModal(${c.id})" title="Детальне редагування">✏️</button>
+          ${currentRole==='superadmin'?`<button class="btn btn-danger btn-sm" onclick="deleteClient(${c.id})">✕</button>`:''}
         </td>
       </tr>`;
     }).join('');
   }
 
-  document.getElementById('clientsPager').innerHTML = `
-    <span>${filtered.length} клієнтів · стор. ${_clientPage} з ${totalPages}</span>
+  const pager = document.getElementById('clientsPager');
+  if (pager) pager.innerHTML = `
+    <span>${list.length} клієнтів · стор. ${_clientPage} з ${totalPages}</span>
     <div class="pager-btns">
-      <button class="btn btn-ghost btn-sm" onclick="_clientPage=${_clientPage-1};renderClients()" ${_clientPage<=1?'disabled':''}>‹</button>
-      <button class="btn btn-ghost btn-sm" onclick="_clientPage=${_clientPage+1};renderClients()" ${_clientPage>=totalPages?'disabled':''}>›</button>
+      <button class="btn btn-ghost btn-sm" onclick="_clientPage=${_clientPage-1};renderClients()"
+        ${_clientPage<=1?'disabled':''}>‹</button>
+      <button class="btn btn-ghost btn-sm" onclick="_clientPage=${_clientPage+1};renderClients()"
+        ${_clientPage>=totalPages?'disabled':''}>›</button>
     </div>`;
+}
+
+function toggleArchive() {
+  _showArchive = !_showArchive;
+  _clientPage  = 1;
+  const btn = document.getElementById('archiveToggleBtn');
+  if (btn) {
+    btn.textContent      = _showArchive ? '📋 Активні'  : '📦 Архів';
+    btn.style.background  = _showArchive ? '#dc2626'     : '';
+    btn.style.color       = _showArchive ? '#fff'        : '';
+    btn.style.borderColor = _showArchive ? '#dc2626'     : '';
+  }
+  renderClients();
 }
 
 function openClientModal(id) {
@@ -3642,22 +3719,6 @@ async function loadDashboardTab() {
     console.error('Dashboard error:', e);
     if (financialsEl) financialsEl.innerHTML = '<div style="color:#e53e3e;padding:20px;font-size:13px">⚠️ Помилка завантаження дашборду. Перевірте консоль.</div>';
   }
-}
-
-// ── ARCHIVE TOGGLE ───────────────────────────────────────────────────────────
-let _showArchive = false;
-
-function toggleArchive() {
-  _showArchive = !_showArchive;
-  const btn = document.getElementById('archiveToggleBtn');
-  if (btn) {
-    btn.textContent = _showArchive ? '📋 Активні' : '📦 Архів';
-    btn.style.background = _showArchive ? '#dc2626' : '';
-    btn.style.color      = _showArchive ? '#fff' : '';
-    btn.style.borderColor = _showArchive ? '#dc2626' : '';
-  }
-  _clientPage = 1;
-  renderClients();
 }
 
 // ── BULK PAYMENT ACTIONS ──────────────────────────────────────────────────────
