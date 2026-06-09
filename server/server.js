@@ -553,6 +553,8 @@ SPA_ROUTES.forEach(r => app.get(r, (req, res) => {
 }));
 
 // ── CLIENTS CRM API ──────────────────────────────────────────────────────────
+
+// Full sanitize — used for POST (create). Always returns all fields.
 function sanitizeClient(body) {
   const s = v => sanitize(v);
   return {
@@ -579,6 +581,34 @@ function sanitizeClient(body) {
   };
 }
 
+// Partial sanitize — used for PATCH. Only processes fields actually present in body,
+// so a single-field inline save does not overwrite every other field.
+function sanitizeClientPatch(body) {
+  const s = v => sanitize(v);
+  const p = {};
+  if ('name'         in body) p.name         = s(body.name);
+  if ('age'          in body) p.age          = body.age !== '' && body.age != null ? parseInt(body.age) || null : null;
+  if ('course'       in body) p.course       = s(body.course) || null;
+  if ('phone'        in body) p.phone        = s(body.phone);
+  if ('email'        in body) p.email        = s(body.email) || null;
+  if ('status'       in body) p.status       = s(body.status);
+  if ('source'       in body) p.source       = s(body.source);
+  if ('enrolledDate' in body) p.enrolledDate = s(body.enrolledDate) || null;
+  if ('trialDate'    in body) p.trialDate    = s(body.trialDate) || null;
+  if ('lastContact'  in body) p.lastContact  = s(body.lastContact) || null;
+  if ('nextContact'  in body) p.nextContact  = s(body.nextContact) || null;
+  if ('monthlyFee'   in body) p.monthlyFee   = body.monthlyFee !== '' && body.monthlyFee != null ? parseFloat(body.monthlyFee) || null : null;
+  if ('totalPaid'    in body) p.totalPaid    = body.totalPaid !== '' && body.totalPaid != null ? parseFloat(body.totalPaid) || null : null;
+  if ('notes'        in body) p.notes        = s(body.notes);
+  if ('manager'      in body) p.manager      = s(body.manager);
+  if ('teacher'      in body) p.teacher      = s(body.teacher);
+  if ('schedule'     in body) p.schedule     = s(body.schedule);
+  if ('scheduleDays' in body) p.scheduleDays = Array.isArray(body.scheduleDays) ? body.scheduleDays : [];
+  if ('lessonType'   in body) p.lessonType   = s(body.lessonType) || null;
+  if ('city'         in body) p.city         = s(body.city);
+  return p;
+}
+
 app.get('/api/clients', adminLimiter, requireAdmin, (req, res) => {
   res.json({ success: true, clients: clientsDb.getAll(), stats: clientsDb.getStats() });
 });
@@ -594,7 +624,7 @@ app.patch('/api/clients/:id', adminLimiter, requireAdmin, (req, res) => {
   const id = parseInt(req.params.id);
   const before = clientsDb.getById(id);
   if (!before) return res.status(404).json({ error: 'Not found' });
-  const data = sanitizeClient(req.body);
+  const data = sanitizeClientPatch(req.body);
   const client = clientsDb.update(id, data);
   if (!client) return res.status(404).json({ error: 'Not found' });
 
