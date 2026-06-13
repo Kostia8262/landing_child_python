@@ -341,6 +341,20 @@ app.get('/api/admins/:id/docs/:filename', adminLimiter, requireSuperAdmin, (req,
   res.download(filePath, filename);
 });
 
+// Count scheduled lesson slots for a given year/month from scheduleDays [{day,time}]
+// day: 1=Mon..7=Sun (matching the schedule system)
+function countScheduledLessons(scheduleDays, year, month) {
+  if (!scheduleDays || !scheduleDays.length) return 0;
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const dowCount = {};
+  for (let d = 1; d <= daysInMonth; d++) {
+    let dow = new Date(year, month - 1, d).getDay(); // 0=Sun..6=Sat
+    if (dow === 0) dow = 7; // 1=Mon..7=Sun
+    dowCount[dow] = (dowCount[dow] || 0) + 1;
+  }
+  return scheduleDays.reduce((s, slot) => s + (dowCount[parseInt(slot.day)] || 0), 0);
+}
+
 // Teacher salary calculation (superadmin only)
 app.get('/api/admins/:id/salary', adminLimiter, requireSuperAdmin, (req, res) => {
   const id = parseInt(req.params.id);
@@ -349,21 +363,32 @@ app.get('/api/admins/:id/salary', adminLimiter, requireSuperAdmin, (req, res) =>
   const ym = req.query.ym || new Date().toISOString().slice(0, 7);
   const [year, month] = ym.split('-').map(Number);
   const allClients     = clientsDb.getAll();
-  const teacherClients = allClients.filter(c => c.teacher === admin.name);
+  const teacherClients = allClients.filter(c => (c.teacher || '').trim() === (admin.name || '').trim());
   const attData        = attendanceDb.getMonth(year, month);
   const breakdown = [];
-  let totalLessons = 0;
+  let totalScheduled = 0;
+  let totalConducted = 0;
   teacherClients.forEach(c => {
     const clientAtt = attData[String(c.id)] || {};
-    const lessons = Object.values(clientAtt).filter(v => ['present', 'absent', 'makeup'].includes(v)).length;
-    totalLessons += lessons;
-    breakdown.push({ clientId: c.id, clientName: c.name, lessons });
+    const conducted = Object.values(clientAtt).filter(v => ['present', 'makeup'].includes(v)).length;
+    const absent    = Object.values(clientAtt).filter(v => v === 'absent').length;
+    const cancelled = Object.values(clientAtt).filter(v => v === 'cancelled').length;
+    const scheduled = countScheduledLessons(c.scheduleDays || [], year, month);
+    totalScheduled += scheduled;
+    totalConducted += conducted;
+    breakdown.push({ clientId: c.id, clientName: c.name, scheduled, conducted, absent, cancelled });
   });
+  // Salary based on conducted; fall back to scheduled if attendance not filled in
+  const billableLessons = totalConducted > 0 ? totalConducted : totalScheduled;
   const hourlyRate     = admin.hourlyRate     || 0;
   const lessonDuration = admin.lessonDuration || 60;
-  const totalHours     = (totalLessons * lessonDuration) / 60;
+  const totalHours     = (billableLessons * lessonDuration) / 60;
   const totalSalary    = Math.round(totalHours * hourlyRate);
-  res.json({ success: true, admin, ym, totalLessons, totalHours, totalSalary, hourlyRate, lessonDuration, breakdown });
+  res.json({
+    success: true, admin, ym,
+    totalLessons: billableLessons, totalScheduled, totalConducted,
+    totalHours, totalSalary, hourlyRate, lessonDuration, breakdown,
+  });
 });
 
 // POST /api/leads — submit lead (rate-limited)
@@ -869,8 +894,15 @@ app.post('/api/monthly-payments/:ym', adminLimiter, requireAdmin, (req, res) => 
 
 app.patch('/api/monthly-payments/:ym/:clientId', adminLimiter, requireAdmin, (req, res) => {
   const { ym, clientId } = req.params;
-  const record = monthlyPayDb.updateRecord(ym, clientId, req.body);
-  if (!record) return res.status(404).json({ error: 'Not found' });
+  const monthData = monthlyPayDb.getMonth(ym);
+  if (!monthData) return res.status(404).json({ error: 'Month not found' });
+  let record = monthlyPayDb.updateRecord(ym, clientId, req.body);
+  if (!record) {
+    // Record missing (client not yet in this month) — upsert it
+    const client = clientsDb.getById(parseInt(clientId));
+    record = monthlyPayDb.upsertRecord(ym, clientId, { clientName: client?.name || '', ...req.body });
+  }
+  if (!record) return res.status(500).json({ error: 'Failed' });
   res.json({ success: true, record });
 });
 

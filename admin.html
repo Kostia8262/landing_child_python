@@ -286,6 +286,7 @@ tr:hover td{background:#faf9ff}
 .sched-time{font-size:11px;color:#aaa;font-weight:700;text-align:right;padding:8px;white-space:nowrap;background:#faf9ff;width:52px}
 .sched-card{border-radius:6px;padding:3px 7px;margin:2px 0;font-size:11px;font-weight:600;line-height:1.4;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
 </head>
 <body>
 
@@ -316,6 +317,7 @@ tr:hover td{background:#faf9ff}
     </div>
     <div class="topbar-right">
       <a href="/" target="_blank" class="btn btn-ghost btn-sm">← Сайт</a>
+      <button class="btn btn-ghost btn-sm" id="xlsxExportBtn" onclick="exportExcel()" style="display:none" title="Завантажити Excel">📊 Excel</button>
       <button class="btn btn-ghost btn-sm" id="csvExportBtn" onclick="exportCSV()" style="display:none" title="Завантажити CSV">📥 CSV</button>
       <button class="btn btn-ghost btn-sm" id="csvImportBtn" onclick="triggerImport()" style="display:none" title="Імпортувати CSV">📤 Імпорт</button>
       <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="importCSV(this)"/>
@@ -828,6 +830,7 @@ tr:hover td{background:#faf9ff}
               <th>Статус</th>
               <th>Розклад</th>
               <th>Викладач</th>
+              <th style="width:96px">Формат</th>
               <th style="width:82px">Взнос</th>
               <th style="width:82px">Сплачено</th>
               <th style="width:110px">Наст. дзвінок</th>
@@ -1307,13 +1310,15 @@ function showTab(tab) {
     if (btn) btn.classList.toggle('active', t === tab);
   });
   // CSV buttons: export = superadmin only; import = superadmin + administrator + manager
-  const csvExportBtn = document.getElementById('csvExportBtn');
-  const csvImportBtn = document.getElementById('csvImportBtn');
+  const csvExportBtn  = document.getElementById('csvExportBtn');
+  const xlsxExportBtn = document.getElementById('xlsxExportBtn');
+  const csvImportBtn  = document.getElementById('csvImportBtn');
   const showCsv = ['leads','clients'].includes(tab);
   const canExport = currentRole === 'superadmin';
   const canImport = ['superadmin','administrator','manager'].includes(currentRole);
-  if (csvExportBtn) csvExportBtn.style.display = (showCsv && canExport) ? '' : 'none';
-  if (csvImportBtn) csvImportBtn.style.display = (showCsv && canImport) ? '' : 'none';
+  if (csvExportBtn)  csvExportBtn.style.display  = (showCsv && canExport) ? '' : 'none';
+  if (xlsxExportBtn) xlsxExportBtn.style.display = (showCsv && canExport) ? '' : 'none';
+  if (csvImportBtn)  csvImportBtn.style.display  = (showCsv && canImport) ? '' : 'none';
   if (tab === 'admins')     renderAdmins();
   if (tab === 'content' && !_cmsData) loadContentData();
   if (tab === 'clients' && !_allClients) loadClients();
@@ -1802,7 +1807,7 @@ function renderClients() {
   if (!tbody) return;
 
   if (!page.length) {
-    tbody.innerHTML = `<tr><td colspan="13"><div class="empty">Клієнтів не знайдено</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="14"><div class="empty">Клієнтів не знайдено</div></td></tr>`;
   } else {
     tbody.innerHTML = page.map(c => {
       // Option lists
@@ -1818,6 +1823,11 @@ function renderClients() {
         ..._teachersList.map(t =>
           `<option value="${esc(t.name)}"${c.teacher===t.name?' selected':''}>${esc(t.name)}</option>`)
       ].join('');
+
+      const lessonTypeOpts = [
+        ['group','👥 Групові'],['group2','👥 Групові 2×'],
+        ['individual','👤 Індивід.'],['adult','🧑 Дорослий'],
+      ].map(([v,l]) => `<option value="${v}"${c.lessonType===v?' selected':''}>${l}</option>`).join('');
 
       // Next-call coloring
       const ncStyle = c.nextContact && new Date(c.nextContact) < new Date()
@@ -1849,6 +1859,8 @@ function renderClients() {
         </td>
         <td><select class="status-sel" style="min-width:100px"
           onchange="saveClientField(${c.id},'teacher',this.value)">${teacherOpts}</select></td>
+        <td><select class="status-sel" style="min-width:90px"
+          onchange="saveClientField(${c.id},'lessonType',this.value)">${lessonTypeOpts}</select></td>
         <td><input class="notes-input" style="width:72px" type="number"
           value="${c.monthlyFee ?? ''}" placeholder="0"
           onblur="saveClientField(${c.id},'monthlyFee',this.value)"
@@ -2020,23 +2032,18 @@ async function saveClientField(id, field, value) {
     if (c && data.client) Object.assign(c, data.client);
     showToast('Збережено ✓', 'success');
 
-    // Sync взнос: monthlyFee → payments expectedAmount for current month
-    if (field === 'monthlyFee' && _mpAllMonths.length > 0) {
+    // Sync взнос: monthlyFee → payments expectedAmount (always PATCH, server upserts if missing)
+    if (field === 'monthlyFee') {
       const fee = parseFloat(value) || 0;
       const ym  = _mpYM();
+      fetch(`/api/monthly-payments/${ym}/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+        body: JSON.stringify({ expectedAmount: fee }),
+      }).catch(() => {});
       const rec = _mpData.find(r => r.clientId === id);
       if (rec) {
         rec.expectedAmount = fee;
-        const isVirtual = !!rec._virtual;
-        if (isVirtual) rec._virtual = false;
-        fetch(`/api/monthly-payments/${ym}/${id}`, {
-          method: isVirtual ? 'PUT' : 'PATCH',
-          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
-          body: JSON.stringify(isVirtual
-            ? { clientName: rec.clientName, expectedAmount: fee, paidAmount: rec.paidAmount,
-                status: rec.status, paidDate: rec.paidDate, method: rec.method, note: rec.note || '' }
-            : { expectedAmount: fee }),
-        }).catch(() => {});
         if (_clientsSubTab === 'payments') renderMonthPayments();
       }
     }
@@ -2326,17 +2333,15 @@ async function updateMpRecord(clientId, field, value) {
   renderPayAlert();
   if (needsRerender) renderMonthPayments();
 
-  // Sync взнос: expectedAmount → client.monthlyFee
+  // Sync взнос: expectedAmount → client.monthlyFee (always send, don't gate on _allClients)
   if (field === 'expectedAmount') {
+    fetch(`/api/clients/${clientId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify({ monthlyFee: rec.expectedAmount }),
+    }).catch(() => {});
     const client = _allClients?.find(c => c.id === clientId);
-    if (client) {
-      client.monthlyFee = rec.expectedAmount;
-      fetch(`/api/clients/${clientId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
-        body: JSON.stringify({ monthlyFee: rec.expectedAmount }),
-      }).catch(() => {});
-    }
+    if (client) client.monthlyFee = rec.expectedAmount;
   }
 
   try {
@@ -2659,6 +2664,59 @@ function downloadCSV(rows, filename) {
 }
 
 function todayStr() { return new Date().toISOString().slice(0,10); }
+
+// ── EXCEL EXPORT ──────────────────────────────────────────────────────────────
+function exportExcel() {
+  if (!window.XLSX) { showToast('Бібліотека Excel ще завантажується…', 'error'); return; }
+  if (_currentTab === 'clients') { _exportClientsExcel(); return; }
+  _exportLeadsExcel();
+}
+
+function _exportClientsExcel() {
+  const q      = document.getElementById('clientSearch')?.value.toLowerCase() || '';
+  const status = document.getElementById('clientStatusFilter')?.value || '';
+  const course = document.getElementById('clientCourseFilter')?.value || '';
+  const data = (_allClients || []).filter(c => {
+    if (status && c.status !== status) return false;
+    if (course && c.course !== course) return false;
+    if (q) { const h = [c.name,c.phone,c.email,c.course,c.teacher,c.notes].join(' ').toLowerCase(); if (!h.includes(q)) return false; }
+    return true;
+  });
+  const headers = ['#','ПІБ','Вік','Курс','Телефон','Email','Статус','Формат','Викладач','Розклад','Взнос','Сплачено','Дата запису','Наст. дзвінок','Місто','Нотатки'];
+  const rows = data.map(c => [
+    c.id, c.name, c.age ?? '', COURSE_LABELS[c.course]||c.course||'',
+    c.phone, c.email||'',
+    (CLIENT_STATUS_LABELS[c.status]||c.status||'').replace(/^\S+\s/,''),
+    (LESSON_TYPE_LABELS[c.lessonType]||c.lessonType||'').replace(/^\S+\s/,''),
+    c.teacher||'', c.schedule||'', c.monthlyFee||0, c.totalPaid||0,
+    c.enrolledDate||'', c.nextContact||'', c.city||'', c.notes||'',
+  ]);
+  _writeExcel([headers, ...rows], 'Клієнти', `clients-${todayStr()}.xlsx`);
+}
+
+function _exportLeadsExcel() {
+  const data = filtered || allLeads || [];
+  const headers = ['#','ПІБ','Вік','Курс','Телефон','Email','Статус','Викладач','Нотатки','Дата'];
+  const rows = data.map(l => [
+    l.id, l.child_name, l.age||'', COURSE_LABELS[l.course]||l.course||'',
+    l.phone, l.email||'', l.status||'', l.teacher||'', l.notes||'', l.created_at||'',
+  ]);
+  _writeExcel([headers, ...rows], 'Заявки', `leads-${todayStr()}.xlsx`);
+}
+
+function _writeExcel(aoa, sheetName, filename) {
+  const XLSX = window.XLSX;
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+  // Auto column widths based on content
+  const colWidths = aoa[0].map((_, ci) =>
+    Math.min(36, Math.max(...aoa.map(row => String(row[ci] ?? '').length)) + 2)
+  );
+  ws['!cols'] = colWidths.map(w => ({ wch: w }));
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  XLSX.writeFile(wb, filename);
+  showToast(`Excel завантажено ✓`, 'success');
+}
 
 // ── CSV IMPORT ─────────────────────────────────────────────────────────────────
 function triggerImport() {
@@ -4115,14 +4173,19 @@ function renderSchedule() {
   const monday = _schedWeekMonday(_schedWeekOffset);
   const todayStr = new Date().toDateString();
 
+  // Pre-compute column dates for use in group card labels
+  const colDates = Array.from({length: 7}, (_, i) => {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    return { date: d, str: `${d.getDate()} ${MONTHS_SHORT_UA[d.getMonth()]}` };
+  });
+
   let html = '<table class="sched-tbl"><thead><tr><th class="sched-time">Час</th>';
   for (let d = 1; d <= 7; d++) {
-    const colDate = new Date(monday);
-    colDate.setDate(monday.getDate() + (d - 1));
-    const dateStr  = `${colDate.getDate()} ${MONTHS_SHORT_UA[colDate.getMonth()]}`;
-    const isToday  = colDate.toDateString() === todayStr;
+    const { date, str } = colDates[d - 1];
+    const isToday  = date.toDateString() === todayStr;
     const todayCss = isToday ? 'background:#f0eeff;color:#6C47FF;' : '';
-    html += `<th style="${todayCss}font-size:12px">${SCHED_DAYS_SHORT[d]}<br><span style="font-weight:400;font-size:11px;color:${isToday?'#6C47FF':'#aaa'}">${dateStr}</span></th>`;
+    html += `<th style="${todayCss}font-size:12px">${SCHED_DAYS_SHORT[d]}<br><span style="font-weight:400;font-size:11px;color:${isToday?'#6C47FF':'#aaa'}">${str}</span></th>`;
   }
   html += '</tr></thead><tbody>';
 
@@ -4130,15 +4193,42 @@ function renderSchedule() {
     html += `<tr><td class="sched-time">${time}</td>`;
     for (let d = 1; d <= 7; d++) {
       const cards = grid[time][d];
+      const dateStr = colDates[d - 1].str;
       if (!cards.length) {
         html += `<td></td>`;
       } else {
-        html += `<td>${cards.map(card => {
-          const bgLight     = card.color + '22';
-          const courseLabel = COURSE_LABELS[card.course] || card.course || '';
-          const titleTxt    = `${esc(card.teacher)}: ${esc(card.name)}${courseLabel ? ' ('+courseLabel+')' : ''} — натисніть для редагування`;
-          return `<span class="sched-card" style="background:${bgLight};color:${card.color};border:1px solid ${card.color}44;cursor:pointer" onclick="openSchedPopup(event,${card.clientId})" title="${titleTxt}">${esc(card.name)}${courseLabel?' · '+courseLabel:''}</span>`;
-        }).join('')}</td>`;
+        // Group cards by teacher; 2+ students with same teacher → collapsible group chip
+        const byTeacher = {};
+        cards.forEach(c => { const k = c.teacher || ''; (byTeacher[k] = byTeacher[k] || []).push(c); });
+        const cellHtml = Object.entries(byTeacher).map(([teacher, tCards], ti) => {
+          if (tCards.length === 1) {
+            const card = tCards[0];
+            const courseLabel = COURSE_LABELS[card.course] || card.course || '';
+            return `<span class="sched-card" style="background:${card.color}22;color:${card.color};border:1px solid ${card.color}44;cursor:pointer"
+              onclick="openSchedPopup(event,${card.clientId})"
+              title="${esc(card.teacher)}: ${esc(card.name)} — редагувати">${esc(card.name)}${courseLabel?' · '+courseLabel:''}</span>`;
+          }
+          const color = tCards[0].color;
+          const gid = `sg_${d}_${time.replace(':','')}_${ti}`;
+          return `<div style="background:${color}11;border:1px solid ${color}44;border-radius:6px;margin-bottom:2px;overflow:hidden">
+            <div onclick="toggleSchedGroup('${gid}')" style="cursor:pointer;padding:3px 6px;color:${color};font-size:11px;font-weight:600;display:flex;justify-content:space-between;align-items:center">
+              <span>👥 ${tCards.length} учн. · ${esc(teacher)||'—'}</span>
+              <span id="${gid}_ico">▼</span>
+            </div>
+            <div id="${gid}" style="display:none;padding:0 6px 4px">
+              ${tCards.map(c => {
+                const cl = COURSE_LABELS[c.course]||c.course||'';
+                return `<div style="font-size:11px;display:flex;align-items:center;gap:4px;padding:2px 0;border-top:1px solid ${color}22">
+                  <span style="flex:1;color:#333">${esc(c.name)}${cl?` <span style="color:#aaa">(${cl})</span>`:''}</span>
+                  <button onclick="event.stopPropagation();openSchedPopup(event,${c.clientId})"
+                    style="font-size:9px;padding:1px 5px;border:1px solid ${color}44;border-radius:3px;background:white;color:${color};cursor:pointer">✏</button>
+                </div>`;
+              }).join('')}
+              <div style="font-size:10px;color:#aaa;margin-top:3px">${time} · ${dateStr}</div>
+            </div>
+          </div>`;
+        }).join('');
+        html += `<td>${cellHtml}</td>`;
       }
     }
     html += '</tr>';
@@ -4153,6 +4243,15 @@ function _teacherColor(name) {
   let h = 0;
   for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffff;
   return palette[h % palette.length];
+}
+
+function toggleSchedGroup(id) {
+  const el  = document.getElementById(id);
+  const ico = document.getElementById(id + '_ico');
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : '';
+  if (ico) ico.textContent = open ? '▼' : '▲';
 }
 
 // ── GLOBAL SEARCH ─────────────────────────────────────────────────────────────
@@ -4438,16 +4537,27 @@ async function loadTeacherSalary() {
       const mRate = parseFloat(document.getElementById('tp_monthlyRate')?.value) || d.admin?.monthlyRate || 0;
       resultEl.textContent = `💰 ${mRate.toLocaleString('uk-UA')} ₴ (місячна ставка)`;
     } else {
-      resultEl.textContent = `💰 ${d.totalSalary.toLocaleString('uk-UA')} ₴ (${d.totalLessons} ур. × ${d.lessonDuration} хв × ${d.hourlyRate} ₴/год)`;
+      const basis = d.totalConducted > 0 ? 'проведено' : 'заплановано';
+      resultEl.innerHTML = `💰 <strong>${d.totalSalary.toLocaleString('uk-UA')} ₴</strong>
+        <span style="font-size:12px;color:#888;font-weight:400"> (${d.totalLessons} ур. [${basis}] × ${d.lessonDuration} хв × ${d.hourlyRate} ₴/год)</span>`;
     }
     if (d.breakdown && d.breakdown.length) {
       breakdownEl.innerHTML = `<div style="margin-top:8px;font-size:12px">
-        ${d.breakdown.filter(b => b.lessons > 0).map(b =>
-          `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #f0eeff">
-            <span>${esc(b.clientName)}</span>
-            <span style="color:#6C47FF;font-weight:600">${b.lessons} ур.</span>
+        <div style="display:flex;gap:8px;padding:4px 0 6px;font-weight:600;font-size:11px;color:#888;text-transform:uppercase;border-bottom:2px solid #f0eeff">
+          <span style="flex:1">Учень</span><span style="width:56px;text-align:right">Запл.</span><span style="width:60px;text-align:right">Провед.</span>
+        </div>
+        ${d.breakdown.map(b =>
+          `<div style="display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid #f0eeff">
+            <span style="flex:1">${esc(b.clientName)}</span>
+            <span style="width:56px;text-align:right;color:#888">${b.scheduled}</span>
+            <span style="width:60px;text-align:right;color:#6C47FF;font-weight:600">${b.conducted}</span>
           </div>`
         ).join('') || '<div style="color:#aaa">Уроків не відмічено</div>'}
+        <div style="display:flex;gap:8px;padding:6px 0 0;font-weight:700;border-top:2px solid #ede9fe;margin-top:4px">
+          <span style="flex:1">Разом</span>
+          <span style="width:56px;text-align:right;color:#888">${d.totalScheduled}</span>
+          <span style="width:60px;text-align:right;color:#6C47FF">${d.totalConducted}</span>
+        </div>
       </div>`;
     } else {
       breakdownEl.innerHTML = '<div style="color:#aaa;font-size:12px;margin-top:6px">Учнів у цього викладача не знайдено</div>';
