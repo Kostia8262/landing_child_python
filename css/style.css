@@ -978,14 +978,14 @@ body.modal-open{overflow:hidden}
    ENHANCED MOBILE HERO
    =================================================== */
 @media(max-width:768px){
-  .hero{padding:60px 0 80px !important}
+  .hero{padding:90px 0 80px !important}
   .hero__title{font-size:clamp(28px,6vw,36px);line-height:1.2}
   .hero__subtitle{font-size:15px;line-height:1.6;margin-bottom:24px}
   .hero__buttons{gap:12px}
   .hero-mockup{height:280px}
 }
 @media(max-width:480px){
-  .hero{padding:40px 0 60px !important}
+  .hero{padding:80px 0 60px !important}
   .hero__title{font-size:clamp(24px,5vw,28px)}
   .hero__subtitle{font-size:14px;margin-bottom:20px}
   .hero-mockup{display:none}
