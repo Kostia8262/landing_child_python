@@ -472,14 +472,15 @@ app.patch('/api/leads/:id', adminLimiter, requireAdmin, (req, res) => {
       if (!valid.includes(status)) return res.status(400).json({ error: `Статус: ${valid.join(', ')}` });
       db.updateStatus(id, status);
 
-      // Auto-create client when lead is enrolled
+      // Auto-create client when lead is enrolled.
+      // Dedup by sourceLeadId so each lead gets exactly one client even when
+      // two leads share the same phone number.
       if (status === 'enrolled') {
         try {
           const lead = db.getLeadById(id);
           if (lead) {
-            const leadPhone = lead.phone || '';
-            const existing = leadPhone ? clientsDb.getAll().find(c => c.phone === leadPhone) : null;
-            if (!existing) {
+            const alreadyLinked = clientsDb.getAll().find(c => c.sourceLeadId === id);
+            if (!alreadyLinked) {
               const today = new Date().toISOString().slice(0, 10);
               const newClient = clientsDb.create({
                 name:         lead.child_name,
@@ -493,6 +494,7 @@ app.patch('/api/leads/:id', adminLimiter, requireAdmin, (req, res) => {
                 notes:        lead.notes || '',
                 teacher:      lead.teacher || null,
                 schedule:     lead.schedule || null,
+                sourceLeadId: id,
               });
               const ym = new Date().toISOString().slice(0, 7);
               const monthData = monthlyPayDb.getMonth(ym);
@@ -509,6 +511,8 @@ app.patch('/api/leads/:id', adminLimiter, requireAdmin, (req, res) => {
                 });
               }
               console.log(`[AUTO-CLIENT] Created client #${newClient.id} from lead #${lead.id}`);
+            } else {
+              console.log(`[AUTO-CLIENT] Lead #${id} already has client #${alreadyLinked.id}, skipping`);
             }
           }
         } catch (autoErr) {
@@ -518,13 +522,13 @@ app.patch('/api/leads/:id', adminLimiter, requireAdmin, (req, res) => {
     }
     if (notes !== undefined) db.updateNotes(id, sanitize(notes));
 
-    // Sync field changes from lead to matching client
+    // Sync field changes from lead to its linked client (by sourceLeadId first, phone as fallback)
     if (fieldPatch.child_name || fieldPatch.phone || fieldPatch.teacher || fieldPatch.schedule) {
       try {
         const updatedLead = db.getLeadById(id);
         if (updatedLead) {
-          const matchPhone = updatedLead.phone || '';
-          const matchClient = matchPhone ? clientsDb.getAll().find(c => c.phone === matchPhone) : null;
+          const matchClient = clientsDb.getAll().find(c => c.sourceLeadId === id)
+            || (updatedLead.phone ? clientsDb.getAll().find(c => c.phone === updatedLead.phone) : null);
           if (matchClient) {
             const clientPatch = {};
             if (fieldPatch.child_name) clientPatch.name     = fieldPatch.child_name;

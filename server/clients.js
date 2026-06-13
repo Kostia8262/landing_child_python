@@ -61,6 +61,7 @@ module.exports = {
       scheduleDays: Array.isArray(data.scheduleDays) ? data.scheduleDays : [],
       lessonType:   LESSON_TYPE_VALUES.includes(data.lessonType) ? data.lessonType : 'group',
       city:         data.city         || '',
+      sourceLeadId: data.sourceLeadId ?? null,
       createdAt:    data.createdAt    || nowIso(),
       updatedAt:    nowIso(),
     };
@@ -75,7 +76,7 @@ module.exports = {
     if (idx === -1) return null;
     const allowed = ['name','age','course','phone','email','status','source',
       'enrolledDate','trialDate','lastContact','nextContact','monthlyFee','totalPaid',
-      'notes','manager','teacher','schedule','scheduleDays','lessonType','city'];
+      'notes','manager','teacher','schedule','scheduleDays','lessonType','city','sourceLeadId'];
     const patch = {};
     allowed.forEach(k => { if (k in data) patch[k] = data[k]; });
     if (patch.status     && !STATUS_VALUES.includes(patch.status))           delete patch.status;
