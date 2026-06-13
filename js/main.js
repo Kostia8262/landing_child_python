@@ -1,6 +1,13 @@
 'use strict';
 
 /* ===================================================
+   CONFIGURATION — GOOGLE SHEETS INTEGRATION
+   =================================================== */
+// Вставьте URL вашего Google Apps Script Web App здесь:
+// Інструкція: див. GOOGLE-SHEETS-SETUP.md
+const GOOGLE_SHEETS_URL = ''; // Приклад: 'https://script.google.com/macros/d/...../usercontent/exec'
+
+/* ===================================================
    i18n — редактируйте текст прямо в index.html:
    • Украинский: текст внутри тега
    • Русский: атрибут data-ru="..." на том же элементе
@@ -347,13 +354,27 @@ async function submitLeadForm(formEl, submitBtnEl) {
   };
 
   try {
+    // Try Google Sheets first (if URL is configured)
+    if (GOOGLE_SHEETS_URL && GOOGLE_SHEETS_URL.includes('script.google.com')) {
+      try {
+        const gsParams = new URLSearchParams();
+        gsParams.append('child_name', data.child_name);
+        gsParams.append('age', data.age);
+        gsParams.append('course', data.course);
+        gsParams.append('phone', data.phone);
+        gsParams.append('email', data.email);
+        await fetch(GOOGLE_SHEETS_URL, { method: 'POST', body: gsParams });
+      } catch (gsErr) { console.warn('Google Sheets error:', gsErr); }
+    }
+    
+    // Fallback to local API (if available)
     const res = await fetch('/api/leads', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(data),
-    });
+    }).catch(() => null);
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (res && !res.ok) throw new Error(`HTTP ${res.status}`);
 
     formEl.reset();
     clearAllErrors(formEl);

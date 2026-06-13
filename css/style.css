@@ -919,3 +919,75 @@ body.modal-open{overflow:hidden}
   .article-card{scroll-snap-align:start;flex-shrink:0;width:300px}
   .articles-dots{display:flex}
 }
+
+/* ===================================================
+   PYTHON COURSE FULL-WIDTH BLOCK
+   =================================================== */
+.python-course-block{display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:start;margin-top:40px}
+.python-course-content{padding:36px;background:linear-gradient(135deg,rgba(108,71,255,.05),rgba(108,71,255,.02));border:1.5px solid rgba(108,71,255,.1);border-radius:20px}
+.python-course-hero{margin-bottom:32px;text-align:center}
+.python-emoji{font-size:48px;margin-bottom:16px;display:inline-block;animation:bounce 2s infinite}
+.python-course-title{font-size:clamp(24px,3.5vw,32px);font-weight:900;color:var(--color-text);margin-bottom:8px}
+.python-course-subtitle{color:var(--color-text-2);font-size:14px}
+
+.python-course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.python-feature{padding:20px;background:#fff;border-radius:12px;border:1px solid var(--color-border);text-align:center}
+.python-feature-icon{font-size:32px;margin-bottom:12px}
+.python-feature h4{font-size:15px;font-weight:700;color:var(--color-text);margin-bottom:8px}
+.python-feature p{font-size:13px;color:var(--color-text-2);line-height:1.5}
+
+.python-course-info{display:flex;flex-direction:column;gap:16px}
+.python-info-card{background:#fff;border:1.5px solid var(--color-border);border-radius:12px;padding:20px;text-align:center}
+.python-info-card .info-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--color-text-muted);letter-spacing:.5px;margin-bottom:6px}
+.python-info-card .info-value{display:block;font-size:22px;font-weight:900;color:var(--color-primary);margin-bottom:4px}
+.python-info-card .info-detail{display:block;font-size:12px;color:var(--color-text-2)}
+
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+@media(max-width:1024px){
+  .python-course-block{grid-template-columns:1fr;gap:32px}
+  .python-course-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .python-course-block{gap:20px}
+  .python-course-content{padding:24px}
+  .python-course-title{font-size:22px}
+  .python-feature-icon{font-size:28px}
+}
+
+/* ===================================================
+   PAIN POINTS SECTION
+   =================================================== */
+.pain-points{padding:80px 0;background:#fff}
+.pain-points-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:48px}
+.pain-point-card{padding:32px;background:linear-gradient(135deg,#fff,#f8f7ff);border:1.5px solid #e8e4ff;border-radius:16px;text-align:center;transition:transform .2s,box-shadow .2s}
+.pain-point-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(108,71,255,.12)}
+.pain-icon{font-size:40px;margin-bottom:16px;display:inline-block}
+.pain-point-card h3{font-size:18px;font-weight:700;color:var(--color-text);margin-bottom:12px;line-height:1.3}
+.pain-point-card p{font-size:14px;color:var(--color-text-2);line-height:1.6}
+
+@media(max-width:768px){
+  .pain-points{padding:56px 0}
+  .pain-points-grid{grid-template-columns:1fr;gap:20px}
+  .pain-point-card{padding:24px}
+  .pain-icon{font-size:32px}
+  .pain-point-card h3{font-size:16px}
+}
+
+/* ===================================================
+   ENHANCED MOBILE HERO
+   =================================================== */
+@media(max-width:768px){
+  .hero{padding:60px 0 80px !important}
+  .hero__title{font-size:clamp(28px,6vw,36px);line-height:1.2}
+  .hero__subtitle{font-size:15px;line-height:1.6;margin-bottom:24px}
+  .hero__buttons{gap:12px}
+  .hero-mockup{height:280px}
+}
+@media(max-width:480px){
+  .hero{padding:40px 0 60px !important}
+  .hero__title{font-size:clamp(24px,5vw,28px)}
+  .hero__subtitle{font-size:14px;margin-bottom:20px}
+  .hero-mockup{display:none}
+  .btn--lg{padding:12px 20px;font-size:14px}
+}
