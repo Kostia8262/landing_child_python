@@ -11,11 +11,15 @@
   <meta property="og:description" content="Онлайн та офлайн курси програмування для дітей у Дніпрі. Scratch, Python, Roblox, Веб-розробка. Групи до 6 осіб. Перший урок безкоштовно!" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mycomputer.education/" />
+  <meta property="og:image" content="https://mycomputer.education/android-chrome-512x512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
   <meta property="og:locale" content="uk_UA" />
   <meta property="og:site_name" content="My Computer Academy" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="My Computer Academy — Школа програмування для дітей" />
   <meta name="twitter:description" content="Онлайн та офлайн курси програмування для дітей від 6 до 18 років у Дніпрі." />
+  <meta name="twitter:image" content="https://mycomputer.education/android-chrome-512x512.png" />
   <link rel="canonical" href="https://mycomputer.education/" />
   <link rel="alternate" hreflang="uk" href="https://mycomputer.education/" />
   <link rel="alternate" hreflang="ru" href="https://mycomputer.education/?lang=ru" />
@@ -679,16 +683,9 @@
               <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18" />
             </div>
           </div>
+          <input type="hidden" name="course" value="help" />
           <div class="form-group">
-            <label class="form-label" data-ru="Курс">Курс</label>
-            <select class="form-input form-select" name="course">
-              <option value="" disabled selected data-ru="Какой курс интересует?">Який курс цікавить?</option>
-              <option value="python"  data-ru="Python (10–14 лет)">Python (10–14 років)</option>
-              <option value="help"    data-ru="Помогите выбрать">Допоможіть обрати</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" data-ru="Ваш телефон">Ваш телефон *</label>
+            <label class="form-label" data-ru="Ваш телефон">Ваш телефон *<
             <div class="phone-wrap">
               <select class="form-input phone-code-sel" name="phone_code" aria-label="Код країни">
                 <option value="+380">🇺🇦 +380</option><option value="+48">🇵🇱 +48</option>
@@ -706,7 +703,7 @@
             </div>
             <span class="field-error" aria-live="polite"></span>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="display:none">
             <label class="form-label" data-ru="Ваш email">Ваш email</label>
             <input type="email" class="form-input" name="email" placeholder="example@gmail.com" autocomplete="email" />
             <span class="field-error" aria-live="polite"></span>
@@ -998,7 +995,7 @@
           <span class="field-error" aria-live="polite"></span>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="display:none">
         <label class="form-label" data-ru="Курс">Курс</label>
         <select class="form-input form-select" name="course">
           <option value="" disabled selected data-ru="Какой курс интересует?">Який курс цікавить?</option>
@@ -1028,7 +1025,7 @@
         </div>
         <span class="field-error" aria-live="polite"></span>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="display:none">
         <label class="form-label" data-ru="Ваш email">Ваш email</label>
         <input type="email" class="form-input" name="email" placeholder="example@gmail.com" autocomplete="email" />
         <span class="field-error" aria-live="polite"></span>

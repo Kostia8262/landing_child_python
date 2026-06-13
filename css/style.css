@@ -567,6 +567,7 @@ a{color:inherit;text-decoration:none}
   /* Hero */
   .hero__inner{grid-template-columns:1fr}
   .hero__visual{display:none}
+  .hero{padding:90px 0 80px !important}
   .hero__title{font-size:clamp(28px,8vw,40px)}
   .hero__subtitle{font-size:15px;max-width:100%}
 
@@ -641,8 +642,7 @@ a{color:inherit;text-decoration:none}
 }
 
 @media (max-width:480px){
-  .container{padding:0 16px}
-  .hero__actions{flex-direction:column}
+  .container{padding:0 16px}  .hero{padding:80px 0 60px !important}  .hero__actions{flex-direction:column}
   .hero__actions .btn{width:100%;justify-content:center}
   .stats__grid{grid-template-columns:1fr}
   .footer__links{grid-template-columns:1fr}
@@ -958,7 +958,7 @@ body.modal-open{overflow:hidden}
 /* ===================================================
    PAIN POINTS SECTION
    =================================================== */
-.pain-points{padding:80px 0;background:#fff}
+.pain-points{display:none !important;}
 .pain-points-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:48px}
 .pain-point-card{padding:32px;background:linear-gradient(135deg,#fff,#f8f7ff);border:1.5px solid #e8e4ff;border-radius:16px;text-align:center;transition:transform .2s,box-shadow .2s}
 .pain-point-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(108,71,255,.12)}
