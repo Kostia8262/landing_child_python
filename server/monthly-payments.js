@@ -84,6 +84,34 @@ module.exports = {
     return changed;
   },
 
+  // Create or update a record (upsert). Used when a "virtual" client row is first edited.
+  upsertRecord(ym, clientId, data) {
+    const all = load();
+    if (!all[ym]) return null;
+    const cid = parseInt(clientId);
+    const idx = all[ym].findIndex(r => r.clientId === cid);
+    const { _virtual, ...d } = data;
+    if (idx !== -1) {
+      const allowed = ['expectedAmount','paidAmount','status','paidDate','method','note','clientName'];
+      allowed.forEach(k => { if (k in d) all[ym][idx][k] = d[k]; });
+      save(all);
+      return all[ym][idx];
+    }
+    const record = {
+      clientId: cid,
+      clientName: d.clientName || '',
+      expectedAmount: d.expectedAmount ?? 0,
+      paidAmount: d.paidAmount ?? 0,
+      status: STATUS_VALUES.includes(d.status) ? d.status : 'pending',
+      paidDate: d.paidDate ?? null,
+      method: METHOD_VALUES.includes(d.method) ? d.method : null,
+      note: d.note ?? '',
+    };
+    all[ym].push(record);
+    save(all);
+    return record;
+  },
+
   deleteMonth(ym) {
     const all = load();
     if (!all[ym]) return false;

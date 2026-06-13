@@ -874,6 +874,18 @@ app.patch('/api/monthly-payments/:ym/:clientId', adminLimiter, requireAdmin, (re
   res.json({ success: true, record });
 });
 
+// Upsert: create record if missing, update if exists (used for "virtual" rows added client-side)
+app.put('/api/monthly-payments/:ym/:clientId', adminLimiter, requireAdmin, (req, res) => {
+  const { ym, clientId } = req.params;
+  if (!monthlyPayDb.getMonth(ym)) return res.status(404).json({ error: 'Month not found' });
+  const client = clientsDb.getById(parseInt(clientId));
+  // Always take clientName from DB if available — prevents stale/garbled values from client
+  const data = { ...req.body, clientName: client?.name || req.body.clientName || '' };
+  const record = monthlyPayDb.upsertRecord(ym, clientId, data);
+  if (!record) return res.status(404).json({ error: 'Month not found' });
+  res.status(200).json({ success: true, record });
+});
+
 app.delete('/api/monthly-payments/:ym/:clientId', adminLimiter, requireAdmin, (req, res) => {
   const { ym, clientId } = req.params;
   const ok = monthlyPayDb.removeRecord(ym, parseInt(clientId));

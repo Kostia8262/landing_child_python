@@ -828,7 +828,7 @@ tr:hover td{background:#faf9ff}
               <th>Статус</th>
               <th>Розклад</th>
               <th>Викладач</th>
-              <th style="width:82px">Внесок</th>
+              <th style="width:82px">Взнос</th>
               <th style="width:82px">Сплачено</th>
               <th style="width:110px">Наст. дзвінок</th>
               <th>Нотатки</th>
@@ -899,7 +899,7 @@ tr:hover td{background:#faf9ff}
                 <thead><tr>
                   <th style="width:36px;text-align:center"><input type="checkbox" id="paySelectAll" onclick="toggleAllPayChecks()" title="Вибрати всіх"/></th>
                   <th>Учень</th><th>Курс</th><th>Формат</th><th>Розклад</th>
-                  <th>Очікується ₴</th><th>Сплачено ₴</th><th>Статус</th>
+                  <th>Взнос ₴</th><th>Сплачено ₴</th><th>Статус</th>
                   <th>Дата оплати</th><th>Спосіб</th><th>Нотатка</th><th style="width:32px"></th>
                 </tr></thead>
                 <tbody id="monthPayBody"></tbody>
@@ -2019,6 +2019,27 @@ async function saveClientField(id, field, value) {
     const c = _allClients?.find(x => x.id === id);
     if (c && data.client) Object.assign(c, data.client);
     showToast('Збережено ✓', 'success');
+
+    // Sync взнос: monthlyFee → payments expectedAmount for current month
+    if (field === 'monthlyFee' && _mpAllMonths.length > 0) {
+      const fee = parseFloat(value) || 0;
+      const ym  = _mpYM();
+      const rec = _mpData.find(r => r.clientId === id);
+      if (rec) {
+        rec.expectedAmount = fee;
+        const isVirtual = !!rec._virtual;
+        if (isVirtual) rec._virtual = false;
+        fetch(`/api/monthly-payments/${ym}/${id}`, {
+          method: isVirtual ? 'PUT' : 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+          body: JSON.stringify(isVirtual
+            ? { clientName: rec.clientName, expectedAmount: fee, paidAmount: rec.paidAmount,
+                status: rec.status, paidDate: rec.paidDate, method: rec.method, note: rec.note || '' }
+            : { expectedAmount: fee }),
+        }).catch(() => {});
+        if (_clientsSubTab === 'payments') renderMonthPayments();
+      }
+    }
   } catch { showToast('Помилка', 'error'); }
 }
 
@@ -2106,6 +2127,7 @@ async function _loadMpMonth() {
   const ym = _mpYM();
   document.getElementById('payMonthLabel').textContent = _mpFormatLabel(_mpYear, _mpMonth);
   try {
+    if (!_allClients) await loadClients();
     const res = await fetch(`/api/monthly-payments/${ym}`, { headers: { 'x-admin-token': token } });
     const d   = await res.json();
     _mpData = d.records || [];
@@ -2113,10 +2135,32 @@ async function _loadMpMonth() {
     document.getElementById('payNoMonth').style.display       = hasMonth ? 'none' : '';
     document.getElementById('payMonthContent').style.display  = hasMonth ? ''     : 'none';
     if (hasMonth) {
+      // Fix any stale/garbled names using current client data
+      if (_allClients) {
+        _mpData.forEach(r => {
+          const c = _allClients.find(c => c.id === r.clientId);
+          if (c && c.name) r.clientName = c.name;
+        });
+      }
+      // Add virtual rows for active/trial clients not yet in this month
+      _syncVirtualClients();
       renderMonthPayments();
       renderPayAlert();
     }
   } catch { showToast('Помилка', 'error'); }
+}
+
+function _syncVirtualClients() {
+  if (!_allClients) return;
+  const existingIds = new Set(_mpData.map(r => r.clientId));
+  _allClients
+    .filter(c => ['active', 'trial'].includes(c.status) && !existingIds.has(c.id))
+    .forEach(c => _mpData.push({
+      clientId: c.id, clientName: c.name,
+      expectedAmount: c.monthlyFee || 0, paidAmount: 0,
+      status: 'pending', paidDate: null, method: null, note: '',
+      _virtual: true,
+    }));
 }
 
 function _mpFormatLabel(y, m) {
@@ -2229,7 +2273,7 @@ function renderMonthPayments() {
     const isChecked = _selectedPayments.has(r.clientId);
     return `<tr>
       <td style="padding:4px 6px;text-align:center"><input type="checkbox" ${isChecked ? 'checked' : ''} onchange="togglePayCheck(${r.clientId})"/></td>
-      <td style="font-weight:600;white-space:nowrap">${esc(r.clientName || (c?.name) || '#'+r.clientId)}</td>
+      <td style="font-weight:600;white-space:nowrap">${esc((c?.name) || r.clientName || '#'+r.clientId)}</td>
       <td style="font-size:12px">${c?.course ? `<span class="chip">${COURSE_LABELS[c.course]||c.course}</span>` : '—'}</td>
       <td style="font-size:12px">${LESSON_TYPE_LABELS[c?.lessonType] || '—'}</td>
       <td style="font-size:11px;color:#888;white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis">${esc(c?.schedule || '—')}</td>
@@ -2263,23 +2307,61 @@ function renderMonthPayments() {
 async function updateMpRecord(clientId, field, value) {
   const rec = _mpData.find(r => r.clientId === clientId);
   if (!rec) return;
-  rec[field] = field === 'expectedAmount' || field === 'paidAmount' ? parseFloat(value) || 0 : value;
-  // Auto-set paidDate when marking as paid/partial
-  if (field === 'status' && ['paid','partial'].includes(value) && !rec.paidDate) {
-    rec.paidDate = new Date().toISOString().slice(0,10);
+  rec[field] = (field === 'expectedAmount' || field === 'paidAmount') ? parseFloat(value) || 0 : value;
+
+  let needsRerender = false;
+
+  // Auto-set status when paidAmount is entered
+  if (field === 'paidAmount' && rec.paidAmount > 0 && ['pending', 'partial'].includes(rec.status)) {
+    const exp = rec.expectedAmount || 0;
+    rec.status = (exp > 0 && rec.paidAmount < exp) ? 'partial' : 'paid';
+    if (!rec.paidDate) rec.paidDate = new Date().toISOString().slice(0, 10);
+    needsRerender = true;
   }
+  // Auto-set paidDate when manually marking as paid/partial
+  if (field === 'status' && ['paid','partial'].includes(value) && !rec.paidDate) {
+    rec.paidDate = new Date().toISOString().slice(0, 10);
+  }
+
   renderPayAlert();
+  if (needsRerender) renderMonthPayments();
+
+  // Sync взнос: expectedAmount → client.monthlyFee
+  if (field === 'expectedAmount') {
+    const client = _allClients?.find(c => c.id === clientId);
+    if (client) {
+      client.monthlyFee = rec.expectedAmount;
+      fetch(`/api/clients/${clientId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+        body: JSON.stringify({ monthlyFee: rec.expectedAmount }),
+      }).catch(() => {});
+    }
+  }
+
   try {
+    const isVirtual = !!rec._virtual;
+    if (isVirtual) rec._virtual = false;
+    const body = isVirtual
+      ? { clientName: rec.clientName, expectedAmount: rec.expectedAmount, paidAmount: rec.paidAmount,
+          status: rec.status, paidDate: rec.paidDate, method: rec.method, note: rec.note || '' }
+      : { [field]: rec[field], paidDate: rec.paidDate, status: rec.status };
     await fetch(`/api/monthly-payments/${_mpYM()}/${clientId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type':'application/json', 'x-admin-token': token },
-      body: JSON.stringify({ [field]: rec[field], paidDate: rec.paidDate }),
+      method: isVirtual ? 'PUT' : 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify(body),
     });
   } catch { showToast('Помилка збереження', 'error'); }
 }
 
 async function removeMpRecord(clientId, silent) {
   if (!silent && !confirm('Видалити учня з цього місяця?')) return;
+  const rec = _mpData.find(r => r.clientId === clientId);
+  if (rec?._virtual) {
+    _mpData = _mpData.filter(r => r.clientId !== clientId);
+    if (!silent) { renderMonthPayments(); renderPayAlert(); showToast('Видалено ✓', 'success'); }
+    return;
+  }
   try {
     const res = await fetch(`/api/monthly-payments/${_mpYM()}/${clientId}`, {
       method: 'DELETE', headers: { 'x-admin-token': token },
@@ -3818,7 +3900,7 @@ async function loadDashboardTab() {
           <thead><tr style="background:#fff5f5">
             <th style="text-align:left;padding:8px 12px;border-bottom:2px solid #fecaca;color:#dc2626;font-size:11px;text-transform:uppercase">⚠️ Учень</th>
             <th style="text-align:left;padding:8px 12px;border-bottom:2px solid #fecaca;color:#dc2626;font-size:11px;text-transform:uppercase">Курс</th>
-            <th style="text-align:right;padding:8px 12px;border-bottom:2px solid #fecaca;color:#dc2626;font-size:11px;text-transform:uppercase">Очікується</th>
+            <th style="text-align:right;padding:8px 12px;border-bottom:2px solid #fecaca;color:#dc2626;font-size:11px;text-transform:uppercase">Взнос</th>
             <th style="text-align:right;padding:8px 12px;border-bottom:2px solid #fecaca;color:#dc2626;font-size:11px;text-transform:uppercase">Телефон</th>
             <th style="padding:8px 12px;border-bottom:2px solid #fecaca"></th>
           </tr></thead>
