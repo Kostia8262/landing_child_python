@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="My Computer Academy — онлайн та офлайн школа програмування для дітей від 6 до 18 років у Дніпрі. Курси Scratch, Python, Roblox, Веб-розробка. Перший урок безкоштовно!" />
-  <meta name="keywords" content="курси програмування для дітей, школа програмування Дніпро, Python для дітей, Scratch для дітей, Roblox Studio, веб-розробка HTML CSS JS, онлайн курси програмування, курси программирования для детей, детская школа программирования, программирование для детей Днепр, IT курси для дітей, комп'ютерні курси для дітей" />
+  <meta name="description" content="Курс Python для дітей та підлітків — практичні заняття з програмування на Python: ігри, боти, автоматизація. Онлайн та офлайн. Перший пробний урок безкоштовно." />
+  <meta name="keywords" content="курс Python для дітей, Python для підлітків, курси Python, програмування для дітей, навчання Python онлайн, пробний урок Python, Python для дітей Дніпро" />
   <meta name="author" content="My Computer Academy" />
   <meta name="robots" content="index, follow" />
   <meta property="og:title" content="My Computer Academy — Школа програмування для дітей від 6 до 18 років" />
@@ -20,7 +20,7 @@
   <link rel="alternate" hreflang="uk" href="https://mycomputer.education/" />
   <link rel="alternate" hreflang="ru" href="https://mycomputer.education/?lang=ru" />
   <link rel="alternate" hreflang="x-default" href="https://mycomputer.education/" />
-  <title>My Computer Academy — Школа програмування для дітей | Дніпро</title>
+  <title>Курс Python для дітей і підлітків — навчання Python онлайн</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
@@ -45,15 +45,6 @@
     </a>
 
     <ul class="nav__menu" id="navMenu">
-      <li class="nav__has-dropdown" id="coursesNavItem">
-        <a href="#courses" class="nav__link nav__link--drop" data-ru="Курсы" id="coursesNavLink">Курси</a>
-        <div class="nav__dropdown">
-          <a href="/course.html?c=scratch"><span class="nav__dropdown-emoji">🧩</span>Scratch (6–10 років)</a>
-          <a href="/course.html?c=python"><span class="nav__dropdown-emoji">🐍</span>Python (10–14 років)</a>
-          <a href="/course.html?c=roblox"><span class="nav__dropdown-emoji">🎮</span>Roblox (9–14 років)</a>
-          <a href="/course.html?c=web"><span class="nav__dropdown-emoji">🌐</span>Веб-розробка (12–16 років)</a>
-        </div>
-      </li>
       <li><a href="#how-it-works" class="nav__link" data-ru="Как это работает">Як це працює</a></li>
       <li><a href="#about"        class="nav__link" data-ru="О нас">Про нас</a></li>
       <li><a href="#reviews"      class="nav__link" data-ru="Отзывы">Відгуки</a></li>
@@ -88,19 +79,19 @@
           <span data-ru="Онлайн и офлайн обучение в Днепре">Онлайн та офлайн навчання у Дніпрі</span>
         </div>
         <h1 class="hero__title">
-          <span data-ru="Твой ребёнок научится">Твоя дитина навчиться</span><br/>
-          <span class="gradient-text" data-ru="программировать">програмувати</span><br/>
-          <span data-ru="с нуля до проекта">з нуля до проекту</span>
+          <span data-ru="Курс Python">Курс Python для дітей і підлітків</span><br/>
+          <span class="gradient-text" data-ru="программировать">Практичний Python: ігри, боти, автоматизація</span><br/>
+          <span data-ru="с нуля до проекта">Від основ до реального проєкту</span>
         </h1>
         <p class="hero__subtitle" data-ru="Интерактивные курсы для детей от 6 до 18 лет. Scratch, Python, Roblox, Web-разработка — выбирай направление и начни уже сегодня.">
-          Інтерактивні курси для дітей від 6 до 18 років. Scratch, Python, Roblox, Веб-розробка — обирай напрямок і починай вже сьогодні.
+          Інтенсивний курс Python для дітей та підлітків: основи синтаксису, алгоритми, Pygame, створення Telegram-ботів та власного проєкту. Онлайн та офлайн — перший пробний урок безкоштовний.
         </p>
         <div class="hero__actions">
           <a href="#" class="btn btn--primary btn--lg open-modal" data-ru="Записаться на пробный урок">
             Записатися на пробний урок
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#courses" class="btn btn--ghost btn--lg" data-ru="Смотреть курсы">Дивитися курси</a>
+          <a href="#courses" class="btn btn--ghost btn--lg" data-ru="Смотреть курсы">Дивитися курс</a>
         </div>
         <div class="hero__trust">
           <div class="trust-item">
@@ -244,110 +235,32 @@
 <section class="courses" id="courses">
   <div class="container">
     <div class="section-header">
-      <div class="section-badge" data-ru="Наши программы">Наші програми</div>
-      <h2 class="section-title" data-ru="Выбери направление">Обери напрямок</h2>
-      <p class="section-subtitle" data-ru="Курсы разработаны с учётом возраста и уровня подготовки ребёнка.">Курси розроблені з урахуванням віку та рівня підготовки дитини.</p>
+      <div class="section-badge" data-ru="Наши программы">Курс</div>
+      <h2 class="section-title" data-ru="Выбери направление">Курс Python</h2>
+      <p class="section-subtitle" data-ru="Курсы разработаны с учётом возраста и уровня подготовки ребёнка.">Практичний курс Python для дітей і підлітків: від основ до реальних проєктів.</p>
     </div>
     <div class="courses__grid" id="coursesGrid">
-
-      <div class="course-card">
-        <div class="course-card__header course-card__header--scratch">
-          <div class="course-card__emoji">🧩</div>
-          <div class="course-card__age-badge" data-ru="6–10 лет">6–10 років</div>
-        </div>
-        <div class="course-card__body">
-          <h3 class="course-card__title" data-ru="Scratch: визуальное программирование">Scratch: візуальне програмування</h3>
-          <p class="course-card__desc" data-ru="Первый шаг в программирование через игру. Дети создают анимации, интерактивные истории и простые игры с помощью блочного кода.">Перший крок у програмування через гру. Діти створюють анімації, інтерактивні історії та прості ігри за допомогою блочного коду.</p>
-          <ul class="course-card__features">
-            <li data-ru="✓ Создание персонажей и сцен">✓ Створення персонажів і сцен</li>
-            <li data-ru="✓ Логика и алгоритмы через игру">✓ Логіка та алгоритми через гру</li>
-            <li data-ru="✓ Собственная игра в финале курса">✓ Власна гра у фіналі курсу</li>
-          </ul>
-          <div class="course-card__footer">
-            <div class="course-card__info">
-              <span data-ru="⏱ 3 месяца">⏱ 3 місяці</span>
-              <span data-ru="👥 Группа до 6 человек">👥 Група до 6 осіб</span>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <a href="/course.html?c=scratch" class="btn--ghost-sm" data-ru="Подробнее">Детальніше</a>
-              <a href="#" class="btn btn--primary btn--sm open-modal" data-ru="Записаться">Записатись</a>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div class="course-card course-card--popular">
         <div class="course-card__header course-card__header--python">
           <div class="course-card__emoji">🐍</div>
-          <div class="course-card__age-badge" data-ru="10–14 лет">10–14 років</div>
+          <div class="course-card__age-badge" data-ru="10–14 лет">10–16 років</div>
         </div>
         <div class="course-card__body">
-          <h3 class="course-card__title" data-ru="Python: настоящее программирование">Python: справжнє програмування</h3>
-          <p class="course-card__desc" data-ru="Один из самых популярных языков в мире. Дети пишут реальный код: игры, боты, автоматизацию — и начинают думать как разработчики.">Один з найпопулярніших мов у світі. Діти пишуть реальний код: ігри, боти, автоматизацію — і починають думати як розробники.</p>
+          <h3 class="course-card__title" data-ru="Python: настоящее программирование">Python — повний курс для дітей і підлітків</h3>
+          <p class="course-card__desc" data-ru="Один из самых популярных языков в мире. Дети пишут реальный код: игры, боты, автоматизацию — и начинают думать как разработчики.">Практичний Python: синтаксис, алгоритми, Pygame, Telegram-боти і фінальний проєкт. Підходить для початківців та тих, хто хоче перейти на професійний рівень.</p>
           <ul class="course-card__features">
             <li data-ru="✓ Переменные, функции, циклы">✓ Змінні, функції, цикли</li>
             <li data-ru="✓ Pygame — разработка игр">✓ Pygame — розробка ігор</li>
-            <li data-ru="✓ Telegram-бот в финале курса">✓ Telegram-бот у фіналі курсу</li>
+            <li data-ru="✓ Telegram-бот в финале курса">✓ Telegram-бот і фінальний проєкт</li>
           </ul>
           <div class="course-card__footer">
             <div class="course-card__info">
               <span data-ru="⏱ 4 месяца">⏱ 4 місяці</span>
-              <span data-ru="👥 Группа до 5 человек">👥 Група до 5 осіб</span>
+              <span data-ru="👥 Группа до 5 человек">👥 Група до 6 осіб</span>
             </div>
             <div style="display:flex;gap:8px;align-items:center">
               <a href="/course.html?c=python" class="btn--ghost-sm" data-ru="Подробнее">Детальніше</a>
-              <a href="#" class="btn btn--primary btn--sm open-modal" data-ru="Записаться">Записатись</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="course-card">
-        <div class="course-card__header course-card__header--roblox">
-          <div class="course-card__emoji">🎮</div>
-          <div class="course-card__age-badge" data-ru="9–14 лет">9–14 років</div>
-        </div>
-        <div class="course-card__body">
-          <h3 class="course-card__title" data-ru="Roblox: разработка игр">Roblox: розробка ігор</h3>
-          <p class="course-card__desc" data-ru="Любишь Roblox? Научись его создавать! Дети изучают Lua, строят собственные миры и публикуют игры для миллионов игроков.">Любиш Roblox? Навчись його створювати! Діти вивчають Lua, будують власні світи та публікують ігри для мільйонів гравців.</p>
-          <ul class="course-card__features">
-            <li data-ru="✓ Lua — язык для Roblox Studio">✓ Lua — мова для Roblox Studio</li>
-            <li data-ru="✓ 3D-дизайн и физика игр">✓ 3D-дизайн та фізика ігор</li>
-            <li data-ru="✓ Публикация игры в Roblox">✓ Публікація гри в Roblox</li>
-          </ul>
-          <div class="course-card__footer">
-            <div class="course-card__info">
-              <span data-ru="⏱ 3 месяца">⏱ 3 місяці</span>
-              <span data-ru="👥 Группа до 6 человек">👥 Група до 6 осіб</span>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <a href="/course.html?c=roblox" class="btn--ghost-sm" data-ru="Подробнее">Детальніше</a>
-              <a href="#" class="btn btn--primary btn--sm open-modal" data-ru="Записаться">Записатись</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="course-card">
-        <div class="course-card__header course-card__header--web">
-          <div class="course-card__emoji">🌐</div>
-          <div class="course-card__age-badge" data-ru="12–16 лет">12–16 років</div>
-        </div>
-        <div class="course-card__body">
-          <h3 class="course-card__title" data-ru="Web-разработка: HTML, CSS, JS">Веб-розробка: HTML, CSS, JS</h3>
-          <p class="course-card__desc" data-ru="Создавай сайты с нуля. От первой страницы до полноценного адаптивного проекта — всё по шагам с реальными задачами из индустрии.">Створюй сайти з нуля. Від першої сторінки до повноцінного адаптивного проекту — все покроково з реальними задачами.</p>
-          <ul class="course-card__features">
-            <li data-ru="✓ HTML5, CSS3, Flexbox/Grid">✓ HTML5, CSS3, Flexbox/Grid</li>
-            <li data-ru="✓ JavaScript — интерактивность">✓ JavaScript — інтерактивність</li>
-            <li data-ru="✓ Персональный сайт-портфолио">✓ Персональний сайт-портфоліо</li>
-          </ul>
-          <div class="course-card__footer">
-            <div class="course-card__info">
-              <span data-ru="⏱ 5 месяцев">⏱ 5 місяців</span>
-              <span data-ru="👥 Группа до 5 человек">👥 Група до 5 осіб</span>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <a href="/course.html?c=web" class="btn--ghost-sm" data-ru="Подробнее">Детальніше</a>
               <a href="#" class="btn btn--primary btn--sm open-modal" data-ru="Записаться">Записатись</a>
             </div>
           </div>
@@ -468,7 +381,7 @@
         <ul class="pricing-card__features">
           <li data-ru="9–18 месяцев, один раз в неделю">9–18 місяців, один раз на тиждень</li>
           <li data-ru="Доступ к материалам навсегда">Доступ до матеріалів назавжди</li>
-          <li data-ru="Более 15 направлений">Більше 15 напрямків</li>
+          <li data-ru="Более 15 направлений">Фокус: повний курс з Python</li>
         </ul>
         <div class="pricing-card__price">
           <div class="pricing-card__price-label" data-ru="от">від</div>
@@ -554,27 +467,47 @@
       <h2 class="section-title" data-ru="Что говорят наши семьи">Що кажуть наші сім'ї</h2>
     </div>
     <div class="reviews__track" id="reviewsTrack">
-      <div class="reviews__grid" id="reviewsGrid"></div>
+      <div class="reviews__grid" id="reviewsGrid">
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">Наш син почав займатися Python і вже через 2 місяці навчився писати прості ігри. Відмінний підхід викладача, вправи — практичні.</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">А.К.</div>
+            <div>
+              <div class="review-card__name">Алла Коваленко</div>
+              <div class="review-card__meta">мама, Дніпро</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">Курс допоміг моїй доньці зрозуміти логіку програмування. Вона створила свій перший бот і тепер мріє про IT-професію.</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">О.П.</div>
+            <div>
+              <div class="review-card__name">Олег Петров</div>
+              <div class="review-card__meta">тато, Київ</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★☆</div>
+          <p class="review-card__text">Зручний формат занять, зрозумілі домашні завдання і уважні викладачі. Рекомендую для початківців.</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">Н.С.</div>
+            <div>
+              <div class="review-card__name">Наталя Семенюк</div>
+              <div class="review-card__meta">мама, Львів</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- Mobile dots -->
     <div class="reviews__dots" id="reviewsDots" aria-hidden="true"></div>
   </div>
 </section>
 
-<!-- ========== ARTICLES ========== -->
-<section class="articles-section" id="articles">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-badge" data-ru="Блог">Блог</div>
-      <h2 class="section-title" data-ru="Полезные статьи">Корисні статті</h2>
-      <p class="section-subtitle" data-ru="Советы для родителей и детей об IT-образовании">Поради для батьків та дітей про ІТ-освіту та програмування</p>
-    </div>
-    <div class="articles-slider" id="articlesSlider">
-      <!-- filled by JS -->
-    </div>
-    <div class="articles-dots" id="articlesDots" aria-hidden="true"></div>
-  </div>
-</section>
 
 <!-- ========== FAQ ========== -->
 <section class="faq" id="faq">
@@ -692,10 +625,7 @@
             <label class="form-label" data-ru="Курс">Курс</label>
             <select class="form-input form-select" name="course">
               <option value="" disabled selected data-ru="Какой курс интересует?">Який курс цікавить?</option>
-              <option value="scratch" data-ru="Scratch (6–10 лет)">Scratch (6–10 років)</option>
               <option value="python"  data-ru="Python (10–14 лет)">Python (10–14 років)</option>
-              <option value="roblox"  data-ru="Roblox (9–14 лет)">Roblox (9–14 років)</option>
-              <option value="web"     data-ru="Web-разработка (12–16 лет)">Веб-розробка (12–16 років)</option>
               <option value="help"    data-ru="Помогите выбрать">Допоможіть обрати</option>
             </select>
           </div>
