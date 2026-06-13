@@ -286,7 +286,6 @@ tr:hover td{background:#faf9ff}
 .sched-time{font-size:11px;color:#aaa;font-weight:700;text-align:right;padding:8px;white-space:nowrap;background:#faf9ff;width:52px}
 .sched-card{border-radius:6px;padding:3px 7px;margin:2px 0;font-size:11px;font-weight:600;line-height:1.4;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
 </head>
 <body>
 
@@ -989,10 +988,11 @@ tr:hover td{background:#faf9ff}
           <div style="margin-top:12px;padding:14px;background:#f9f7ff;border-radius:10px;border:1px solid #e0d9ff">
             <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:10px">💰 Розрахунок зарплати</div>
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-              <select class="filter-select" id="tp_salaryMonth" style="min-width:160px" onchange="loadTeacherSalary()">
+              <select class="filter-select" id="tp_salaryMonth" style="min-width:160px">
                 <option value="">— Оберіть місяць —</option>
               </select>
-              <div id="tp_salaryResult" style="font-size:14px;color:#6C47FF;font-weight:700"></div>
+              <button class="btn btn-primary btn-sm" onclick="loadTeacherSalary()" style="white-space:nowrap">📊 Розрахувати</button>
+              <div id="tp_salaryResult" style="font-size:14px;color:#6C47FF;font-weight:700;margin-top:6px;width:100%"></div>
             </div>
             <div id="tp_salaryBreakdown" style="margin-top:10px"></div>
           </div>
@@ -1233,6 +1233,11 @@ async function showApp() {
   const ok = await loadMe();
   if (!ok) return; // token invalid — doLogout() already fired inside loadMe
   await loadTeachersList();
+  // Pre-load course list so COURSE_LABELS is up-to-date for leads/clients render
+  fetch('/api/courses?all=1', { headers: { 'x-admin-token': token } })
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { if (d) { _allCourses = d.courses || []; _populateCourseDropdowns(); } })
+    .catch(() => {});
   // Teachers go straight to attendance — skip leads init
   if (currentRole !== 'teacher') {
     await loadLeads();
@@ -2399,6 +2404,16 @@ function renderPayAlert() {
 let _attYear  = new Date().getFullYear();
 let _attMonth = new Date().getMonth() + 1;
 let _attData  = {};
+let _schedAttData = {};  // attendance cache for schedule tab
+
+function _attDotColors(status) {
+  if (status === 'present')   return ['#86efac', '#4ade80'];
+  if (status === 'absent')    return ['#fca5a5', '#f87171'];
+  if (status === 'makeup')    return ['#fde68a', '#fbbf24'];
+  if (status === 'cancelled') return ['#d1d5db', '#9ca3af'];
+  return ['#f3f4f6', '#d1d5db'];
+}
+
 const ATT_CYCLE = ['', 'present', 'absent', 'makeup', 'cancelled'];
 const ATT_LABELS = { '': '', present: '✓', absent: '✗', makeup: 'В', cancelled: '—' };
 const MONTHS_UA = ['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
@@ -2584,7 +2599,12 @@ async function setAttStatus(status) {
   if (!_attData[String(clientId)]) _attData[String(clientId)] = {};
   if (status === '') { delete _attData[String(clientId)][date]; }
   else               { _attData[String(clientId)][date] = status; }
-  renderAttCalendar();
+  // Keep schedule attendance cache in sync
+  if (!_schedAttData[String(clientId)]) _schedAttData[String(clientId)] = {};
+  if (status === '') { delete _schedAttData[String(clientId)][date]; }
+  else               { _schedAttData[String(clientId)][date] = status; }
+  if (_clientsSubTab === 'schedule') renderSchedule();
+  else renderAttCalendar();
   try {
     await fetch('/api/attendance', {
       method: 'POST',
@@ -2667,7 +2687,15 @@ function todayStr() { return new Date().toISOString().slice(0,10); }
 
 // ── EXCEL EXPORT ──────────────────────────────────────────────────────────────
 function exportExcel() {
-  if (!window.XLSX) { showToast('Бібліотека Excel ще завантажується…', 'error'); return; }
+  if (!window.XLSX) {
+    showToast('Завантажуємо Excel…', 'success');
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = () => exportExcel();
+    s.onerror = () => showToast('Помилка завантаження Excel-бібліотеки', 'error');
+    document.head.appendChild(s);
+    return;
+  }
   if (_currentTab === 'clients') { _exportClientsExcel(); return; }
   _exportLeadsExcel();
 }
@@ -3174,6 +3202,8 @@ async function hideCourse(id, currentlyActive) {
 
 function _populateCourseDropdowns() {
   if (!_allCourses) return;
+  // Sync COURSE_LABELS so leads table course column reflects all courses
+  _allCourses.forEach(c => { if (!COURSE_LABELS[c.id]) COURSE_LABELS[c.id] = c.name; });
   // Update all course <select> elements in the admin (client form + filters)
   const opts = '<option value="">— Курс —</option>' +
     _allCourses.filter(c => c.active !== false).map(c =>
@@ -3744,7 +3774,11 @@ async function loadDashboardTab() {
       if (dayOfMonth >= 10) {
         const clientMap2 = {};
         clients.forEach(c => { clientMap2[c.id] = c; });
-        const overdue = mpRecords.filter(r => r.status === 'pending' || r.status === 'partial');
+        const overdue = mpRecords.filter(r => {
+          const exp  = parseFloat(r.expectedAmount) || 0;
+          const paid = parseFloat(r.paidAmount) || 0;
+          return exp > paid && !['waived', 'completed'].includes(r.status);
+        });
         if (overdue.length) {
           lateEl.innerHTML = `
             <div style="background:#fff5f5;border:2px solid #fca5a5;border-radius:14px;padding:20px">
@@ -3767,7 +3801,7 @@ async function loadDashboardTab() {
                   </div>`;
                 }).join('')}
               </div>
-              <div style="margin-top:12px;font-size:12px;color:#888">Загальна сума боргу: <strong style="color:#dc2626">${overdue.reduce((s,r)=>s+(parseFloat(r.expectedAmount)||0),0).toLocaleString('uk-UA')} ₴</strong></div>
+              <div style="margin-top:12px;font-size:12px;color:#888">Загальна сума боргу: <strong style="color:#dc2626">${overdue.reduce((s,r)=>s+Math.max(0,(parseFloat(r.expectedAmount)||0)-(parseFloat(r.paidAmount)||0)),0).toLocaleString('uk-UA')} ₴</strong></div>
             </div>`;
         } else {
           lateEl.innerHTML = `<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;color:#15803d;margin-bottom:4px">✅ Після 10-го числа — всі учні сплатили цей місяць</div>`;
@@ -3781,9 +3815,13 @@ async function loadDashboardTab() {
     const collected    = mpRecords.filter(r => r.status === 'paid' || r.status === 'partial')
                            .reduce((s, r) => s + (parseFloat(r.paidAmount) || 0), 0);
     const expected     = mpRecords.reduce((s, r) => s + (parseFloat(r.expectedAmount) || 0), 0);
-    const pendingCount = mpRecords.filter(r => r.status === 'pending').length;
-    const pendingAmt   = mpRecords.filter(r => r.status === 'pending')
-                           .reduce((s, r) => s + (parseFloat(r.expectedAmount) || 0), 0);
+    const debtors      = mpRecords.filter(r => {
+      const exp  = parseFloat(r.expectedAmount) || 0;
+      const paid = parseFloat(r.paidAmount) || 0;
+      return exp > paid && !['waived', 'completed'].includes(r.status);
+    });
+    const pendingCount = debtors.length;
+    const pendingAmt   = debtors.reduce((s, r) => s + Math.max(0, (parseFloat(r.expectedAmount)||0) - (parseFloat(r.paidAmount)||0)), 0);
     const collectRate  = expected > 0 ? Math.round(collected / expected * 100) : (collected > 0 ? 100 : 0);
     const payingCount  = mpRecords.filter(r => r.status === 'paid' || r.status === 'partial').length;
     const avgRevenue   = payingCount > 0 ? Math.round(collected / payingCount) : 0;
@@ -3942,10 +3980,14 @@ async function loadDashboardTab() {
 
     // ── ⑤ UNPAID STUDENTS TABLE ──────────────────────────────────────────────
     if (unpaidEl) {
-      const unpaid = mpRecords.filter(r => r.status === 'pending');
+      const unpaid = mpRecords.filter(r => {
+        const exp  = parseFloat(r.expectedAmount) || 0;
+        const paid = parseFloat(r.paidAmount) || 0;
+        return exp > paid && !['waived', 'completed'].includes(r.status);
+      });
       if (unpaidSumEl) {
         unpaidSumEl.textContent = unpaid.length > 0
-          ? `${unpaid.length} учнів · борг ${unpaid.reduce((s,r)=>s+(parseFloat(r.expectedAmount)||0),0).toLocaleString('uk-UA')} ₴`
+          ? `${unpaid.length} учнів · борг ${unpaid.reduce((s,r)=>s+Math.max(0,(parseFloat(r.expectedAmount)||0)-(parseFloat(r.paidAmount)||0)),0).toLocaleString('uk-UA')} ₴`
           : '';
       }
       if (!unpaid.length) {
@@ -3969,7 +4011,7 @@ async function loadDashboardTab() {
             return `<tr style="border-bottom:1px solid #fef2f2">
               <td style="padding:10px 12px;font-weight:600">${esc(r.clientName || cl.name || '—')}</td>
               <td style="padding:10px 12px"><span class="chip">${courseLabel}</span></td>
-              <td style="padding:10px 12px;font-weight:700;color:#dc2626;text-align:right">${(parseFloat(r.expectedAmount)||0).toLocaleString('uk-UA')} ₴</td>
+              <td style="padding:10px 12px;font-weight:700;color:#dc2626;text-align:right">${Math.max(0,(parseFloat(r.expectedAmount)||0)-(parseFloat(r.paidAmount)||0)).toLocaleString('uk-UA')} ₴</td>
               <td style="padding:10px 12px;color:#888;font-size:12px;text-align:right">${esc(cl.phone||'—')}</td>
               <td style="padding:10px 12px">
                 <button class="btn btn-ghost btn-sm" onclick="showTab('clients')" style="white-space:nowrap">Відкрити →</button>
@@ -4102,13 +4144,38 @@ function _schedUpdateWeekLabel() {
   if (el) el.textContent = label;
 }
 
-function changeSchedWeek(delta) {
+async function _loadSchedAttendanceForWeek() {
+  const monday = _schedWeekMonday(_schedWeekOffset);
+  const months = new Set();
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    months.add(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+  }
+  for (const ym of months) {
+    const [y, m] = ym.split('-').map(Number);
+    try {
+      const res = await fetch(`/api/attendance?year=${y}&month=${m}`, { headers: { 'x-admin-token': token } });
+      if (res.ok) {
+        const data = await res.json();
+        Object.entries(data.data || {}).forEach(([cid, cDates]) => {
+          if (!_schedAttData[cid]) _schedAttData[cid] = {};
+          Object.assign(_schedAttData[cid], cDates);
+        });
+      }
+    } catch {}
+  }
+}
+
+async function changeSchedWeek(delta) {
   _schedWeekOffset += delta;
+  await _loadSchedAttendanceForWeek();
   renderSchedule();
 }
 
-function goToCurrentSchedWeek() {
+async function goToCurrentSchedWeek() {
   _schedWeekOffset = 0;
+  await _loadSchedAttendanceForWeek();
   renderSchedule();
 }
 
@@ -4128,9 +4195,10 @@ function _refreshSchedTeacherFilter() {
   });
 }
 
-function loadSchedule() {
-  if (!_allClients) { loadClients().then(() => { _refreshSchedTeacherFilter(); renderSchedule(); }); return; }
+async function loadSchedule() {
+  if (!_allClients) await loadClients();
   _refreshSchedTeacherFilter();
+  await _loadSchedAttendanceForWeek();
   renderSchedule();
 }
 
@@ -4173,11 +4241,12 @@ function renderSchedule() {
   const monday = _schedWeekMonday(_schedWeekOffset);
   const todayStr = new Date().toDateString();
 
-  // Pre-compute column dates for use in group card labels
+  // Pre-compute column dates for use in group card labels and attendance dots
   const colDates = Array.from({length: 7}, (_, i) => {
     const d = new Date(monday);
     d.setDate(monday.getDate() + i);
-    return { date: d, str: `${d.getDate()} ${MONTHS_SHORT_UA[d.getMonth()]}` };
+    const iso = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    return { date: d, str: `${d.getDate()} ${MONTHS_SHORT_UA[d.getMonth()]}`, iso };
   });
 
   let html = '<table class="sched-tbl"><thead><tr><th class="sched-time">Час</th>';
@@ -4194,6 +4263,7 @@ function renderSchedule() {
     for (let d = 1; d <= 7; d++) {
       const cards = grid[time][d];
       const dateStr = colDates[d - 1].str;
+      const isoDate = colDates[d - 1].iso;
       if (!cards.length) {
         html += `<td></td>`;
       } else {
@@ -4204,9 +4274,15 @@ function renderSchedule() {
           if (tCards.length === 1) {
             const card = tCards[0];
             const courseLabel = COURSE_LABELS[card.course] || card.course || '';
-            return `<span class="sched-card" style="background:${card.color}22;color:${card.color};border:1px solid ${card.color}44;cursor:pointer"
+            const attSt = (_schedAttData[String(card.clientId)] || {})[isoDate] || '';
+            const [attBg, attBr] = _attDotColors(attSt);
+            return `<span class="sched-card" style="background:${card.color}22;color:${card.color};border:1px solid ${card.color}44;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:3px;white-space:normal"
               onclick="openSchedPopup(event,${card.clientId})"
-              title="${esc(card.teacher)}: ${esc(card.name)} — редагувати">${esc(card.name)}${courseLabel?' · '+courseLabel:''}</span>`;
+              title="${esc(card.teacher)}: ${esc(card.name)} — редагувати"
+              ><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(card.name)}${courseLabel?' · '+courseLabel:''}</span
+              ><button onclick="event.stopPropagation();openAttDropdown(event,${card.clientId},'${isoDate}')"
+                title="Позначити відвідування" style="flex-shrink:0;width:12px;height:12px;border-radius:50%;border:1.5px solid ${attBr};background:${attBg};cursor:pointer;padding:0"></button
+              ></span>`;
           }
           const color = tCards[0].color;
           const gid = `sg_${d}_${time.replace(':','')}_${ti}`;
@@ -4218,8 +4294,12 @@ function renderSchedule() {
             <div id="${gid}" style="display:none;padding:0 6px 4px">
               ${tCards.map(c => {
                 const cl = COURSE_LABELS[c.course]||c.course||'';
+                const attSt2 = (_schedAttData[String(c.clientId)] || {})[isoDate] || '';
+                const [attBg2, attBr2] = _attDotColors(attSt2);
                 return `<div style="font-size:11px;display:flex;align-items:center;gap:4px;padding:2px 0;border-top:1px solid ${color}22">
                   <span style="flex:1;color:#333">${esc(c.name)}${cl?` <span style="color:#aaa">(${cl})</span>`:''}</span>
+                  <button onclick="event.stopPropagation();openAttDropdown(event,${c.clientId},'${isoDate}')"
+                    title="Відвідування" style="flex-shrink:0;width:12px;height:12px;border-radius:50%;border:1.5px solid ${attBr2};background:${attBg2};cursor:pointer;padding:0"></button>
                   <button onclick="event.stopPropagation();openSchedPopup(event,${c.clientId})"
                     style="font-size:9px;padding:1px 5px;border:1px solid ${color}44;border-radius:3px;background:white;color:${color};cursor:pointer">✏</button>
                 </div>`;
@@ -4538,8 +4618,13 @@ async function loadTeacherSalary() {
       resultEl.textContent = `💰 ${mRate.toLocaleString('uk-UA')} ₴ (місячна ставка)`;
     } else {
       const basis = d.totalConducted > 0 ? 'проведено' : 'заплановано';
-      resultEl.innerHTML = `💰 <strong>${d.totalSalary.toLocaleString('uk-UA')} ₴</strong>
-        <span style="font-size:12px;color:#888;font-weight:400"> (${d.totalLessons} ур. [${basis}] × ${d.lessonDuration} хв × ${d.hourlyRate} ₴/год)</span>`;
+      const hrInput = parseFloat(document.getElementById('tp_hourlyRate')?.value);
+      const hourlyRate = !isNaN(hrInput) ? hrInput : (d.hourlyRate || 0);
+      const ldInput = parseInt(document.getElementById('tp_lessonDuration')?.value);
+      const lessonDuration = !isNaN(ldInput) && ldInput > 0 ? ldInput : (d.lessonDuration || 60);
+      const totalSalary = Math.round((d.totalLessons * lessonDuration / 60) * hourlyRate);
+      resultEl.innerHTML = `💰 <strong>${totalSalary.toLocaleString('uk-UA')} ₴</strong>
+        <span style="font-size:12px;color:#888;font-weight:400"> (${d.totalLessons} ур. [${basis}] × ${lessonDuration} хв × ${hourlyRate} ₴/год)</span>`;
     }
     if (d.breakdown && d.breakdown.length) {
       breakdownEl.innerHTML = `<div style="margin-top:8px;font-size:12px">

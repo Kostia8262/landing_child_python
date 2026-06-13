@@ -455,6 +455,24 @@ async function loadCourses() {
       e.preventDefault();
       openModal(btn.dataset.course || '');
     }));
+
+    // Update nav dropdown
+    const navDrop = document.querySelector('#coursesNavItem .nav__dropdown');
+    if (navDrop) {
+      navDrop.innerHTML = active.map(c =>
+        `<a href="/courses/${esc(c.id)}"><span class="nav__dropdown-emoji">${c.emoji || ''}</span>${esc(c.name)}${c.age ? ` (${esc(c.age)})` : ''}</a>`
+      ).join('');
+    }
+
+    // Update all course selects in forms (lead forms + modal)
+    const courseOpts = `<option value="" disabled selected>${currentLang === 'ru' ? 'Какой курс интересует?' : 'Який курс цікавить?'}</option>` +
+      active.map(c => `<option value="${esc(c.id)}">${c.emoji || ''} ${esc(c.name)}${c.age ? ` (${esc(c.age)})` : ''}</option>`).join('') +
+      `<option value="help">${currentLang === 'ru' ? 'Помогите выбрать' : 'Допоможіть обрати'}</option>`;
+    document.querySelectorAll('select[name="course"]').forEach(sel => {
+      const cur = sel.value;
+      sel.innerHTML = courseOpts;
+      if (cur && [...sel.options].some(o => o.value === cur)) sel.value = cur;
+    });
   } catch (e) { /* keep static fallback */ }
 }
 

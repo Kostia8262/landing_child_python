@@ -3,6 +3,14 @@
 const fs   = require('fs');
 const path = require('path');
 
+const DEFAULT_CURRICULUM = [
+  { num: 'Модуль 1', title: 'Вступ та основи',      desc: 'Знайомство з інструментами та середовищем. Перші практичні кроки та базові концепції курсу.' },
+  { num: 'Модуль 2', title: 'Ключові концепції',    desc: 'Детальне вивчення ключових понять і технік. Практичні завдання для закріплення матеріалу.' },
+  { num: 'Модуль 3', title: 'Практичні проекти',    desc: 'Застосування знань на реальних мінізавданнях. Самостійна робота та розбір типових помилок.' },
+  { num: 'Модуль 4', title: 'Просунутий рівень',    desc: 'Ускладнені теми та нові інструменти. Творчі завдання з елементами самостійного дослідження.' },
+  { num: 'Фінал',    title: 'Підсумковий проект',   desc: 'Учень самостійно розробляє та презентує фінальний проект. Сертифікат про завершення курсу.' },
+];
+
 const DATA_DIR  = path.join(__dirname, '..', 'data');
 const DATA_FILE = path.join(DATA_DIR, 'courses.json');
 
@@ -37,6 +45,9 @@ module.exports = {
       description:  data.description || '',
       color:        data.color       || '#6C47FF',
       active:       data.active !== false,
+      curriculum:   Array.isArray(data.curriculum) && data.curriculum.length > 0
+                      ? data.curriculum
+                      : DEFAULT_CURRICULUM,
     };
     courses.push(course);
     save(courses);
