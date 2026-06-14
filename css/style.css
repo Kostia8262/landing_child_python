@@ -1047,3 +1047,53 @@ body.modal-open{overflow:hidden}
   .hero-mockup{display:none}
   .btn--lg{padding:12px 20px;font-size:14px}
 }
+
+/* ===================================================
+   PAGE LOADER
+   =================================================== */
+#page-loader{
+  position:fixed;top:0;left:0;z-index:9999;
+  width:0%;height:3px;
+  background:linear-gradient(90deg,var(--color-primary),var(--color-primary-mid),#C084FC);
+  transition:width .5s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+  box-shadow:0 0 8px rgba(108,71,255,.6);
+}
+#page-loader.done{
+  width:100%;
+  opacity:0;
+  transition:width .3s ease,opacity .35s ease .15s;
+}
+
+/* ===================================================
+   SKELETON SCREENS
+   =================================================== */
+@keyframes skel-shimmer{
+  0%{background-position:-800px 0}
+  100%{background-position:800px 0}
+}
+.skel-block{
+  display:block;
+  background:linear-gradient(90deg,#eeeaff 0%,#ddd8ff 40%,#eeeaff 80%);
+  background-size:1600px 100%;
+  animation:skel-shimmer 1.6s ease-in-out infinite;
+  border-radius:var(--r-sm);
+}
+.review-card--skel{
+  pointer-events:none;
+  box-shadow:none;
+}
+.review-card--skel .skel-avatar{
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
+}
+
+/* ===================================================
+   CONTENT-VISIBILITY — skip off-screen rendering
+   =================================================== */
+.benefits{content-visibility:auto;contain-intrinsic-size:0 560px}
+.courses{content-visibility:auto;contain-intrinsic-size:0 900px}
+.how-it-works{content-visibility:auto;contain-intrinsic-size:0 480px}
+.stats{content-visibility:auto;contain-intrinsic-size:0 320px}
+.reviews{content-visibility:auto;contain-intrinsic-size:0 480px}
+.faq{content-visibility:auto;contain-intrinsic-size:0 640px}
+.contact{content-visibility:auto;contain-intrinsic-size:0 680px}

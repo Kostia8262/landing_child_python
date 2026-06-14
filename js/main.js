@@ -1,6 +1,19 @@
 'use strict';
 
 /* ===================================================
+   PAGE LOADER
+   =================================================== */
+(function () {
+  const bar = document.getElementById('page-loader');
+  if (!bar) return;
+  requestAnimationFrame(() => { bar.style.width = '72%'; });
+  window.addEventListener('load', () => {
+    bar.classList.add('done');
+    setTimeout(() => bar.remove(), 600);
+  }, { once: true });
+})();
+
+/* ===================================================
    CONFIGURATION — GOOGLE SHEETS INTEGRATION
    =================================================== */
 // Вставьте URL вашего Google Apps Script Web App здесь:
@@ -705,15 +718,51 @@ if (statsSection) {
    REVIEWS — loads from /api/reviews
    =================================================== */
 async function loadReviews() {
-  const grid     = document.getElementById('reviewsGrid');
-  const dotsEl   = document.getElementById('reviewsDots');
+  const grid   = document.getElementById('reviewsGrid');
+  const dotsEl = document.getElementById('reviewsDots');
   if (!grid) return;
+
+  const staticHTML = grid.innerHTML;
+
+  const skelCard = () => `
+    <div class="review-card review-card--skel" aria-hidden="true">
+      <span class="skel-block" style="width:52%;height:13px;margin-bottom:14px"></span>
+      <span class="skel-block" style="width:100%;height:9px;margin-bottom:7px"></span>
+      <span class="skel-block" style="width:85%;height:9px;margin-bottom:7px"></span>
+      <span class="skel-block" style="width:68%;height:9px;margin-bottom:22px"></span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="skel-block skel-avatar"></span>
+        <div style="flex:1">
+          <span class="skel-block" style="width:44%;height:9px;margin-bottom:5px"></span>
+          <span class="skel-block" style="width:30%;height:8px"></span>
+        </div>
+      </div>
+    </div>`;
+  grid.innerHTML = [1, 2, 3].map(skelCard).join('');
+
+  function attachDots(track, dots) {
+    if (!track || !dots.length) return;
+    track.addEventListener('scroll', () => {
+      const card = track.querySelector('.review-card');
+      if (!card) return;
+      const idx = Math.round(track.scrollLeft / (card.offsetWidth + 14));
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }, { passive: true });
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        const card = track.querySelector('.review-card');
+        if (!card) return;
+        track.scrollTo({ left: i * (card.offsetWidth + 14), behavior: 'smooth' });
+      });
+    });
+  }
+
   try {
     const res = await fetch('/api/reviews');
-    if (!res.ok) return;
+    if (!res.ok) throw new Error('no data');
     const { reviews } = await res.json();
     const active = (reviews || []).filter(r => r.active !== false);
-    if (!active.length) return;
+    if (!active.length) throw new Error('empty');
     const stars = n => '★'.repeat(Math.max(1, Math.min(5, n || 5)));
     grid.innerHTML = active.map(r => `
       <div class="review-card">
@@ -726,31 +775,15 @@ async function loadReviews() {
             <div class="review-card__meta">${esc(r.role || '')}</div>
           </div>
         </div>
-      </div>
-    `).join('');
+      </div>`).join('');
     if (dotsEl) {
       dotsEl.innerHTML = active.map((_, i) =>
         `<span class="reviews__dot${i === 0 ? ' active' : ''}"></span>`).join('');
+      attachDots(document.getElementById('reviewsTrack'), [...dotsEl.querySelectorAll('.reviews__dot')]);
     }
-    // Re-attach dot click listeners (track needs to be available)
-    const track = document.getElementById('reviewsTrack');
-    const dots  = dotsEl ? dotsEl.querySelectorAll('.reviews__dot') : [];
-    if (track && dots.length) {
-      track.addEventListener('scroll', () => {
-        const card = track.querySelector('.review-card');
-        if (!card) return;
-        const idx = Math.round(track.scrollLeft / (card.offsetWidth + 14));
-        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-      }, { passive: true });
-      dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-          const card = track.querySelector('.review-card');
-          if (!card) return;
-          track.scrollTo({ left: i * (card.offsetWidth + 14), behavior: 'smooth' });
-        });
-      });
-    }
-  } catch { /* keep empty grid if API fails */ }
+  } catch {
+    grid.innerHTML = staticHTML;
+  }
 }
 
 /* ===================================================
