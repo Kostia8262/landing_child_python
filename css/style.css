@@ -778,11 +778,12 @@ body.modal-open{overflow:hidden}
   .benefit-card{
     display:flex;align-items:flex-start;gap:14px;
     padding:16px 18px;
+    border-radius:var(--r-md);
   }
   .benefit-card__icon{font-size:24px;margin-bottom:0;flex-shrink:0;margin-top:2px}
   .benefit-card h3{font-size:15px;margin-bottom:4px}
   .benefit-card p{font-size:13px;line-height:1.5}
-  .benefit-card--featured{display:block;padding:20px}
+  .benefit-card--featured{display:block;padding:20px;border-radius:var(--r-md)}
   .benefit-card--featured .benefit-card__icon{font-size:28px;margin-bottom:10px}
 }
 
