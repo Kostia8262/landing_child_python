@@ -623,8 +623,8 @@ a{color:inherit;text-decoration:none}
     margin-bottom:0;
   }
   .contact__info-title:first-child{margin-top:0}
-  /* Reduce contact section bottom padding on mobile */
-  .contact{padding-bottom:36px}
+  /* Reduce contact section bottom padding on mobile + purple gradient */
+  .contact{padding-bottom:36px;background:linear-gradient(160deg,#f8f7ff 0%,#ede9ff 40%,#ddd5ff 100%)}
 
   /* FIX 2: FAQ — reduce header bottom margin on mobile */
   .faq__inner .section-header{margin-bottom:20px}
@@ -924,7 +924,7 @@ body.modal-open{overflow:hidden}
    PYTHON COURSE FULL-WIDTH BLOCK
    =================================================== */
 .python-course-block{display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:start;margin-top:40px}
-.python-course-content{padding:32px;background:linear-gradient(135deg,rgba(108,71,255,.05),rgba(108,71,255,.02));border:1.5px solid rgba(108,71,255,.1);border-radius:20px}
+.python-course-content{padding:24px;background:linear-gradient(135deg,rgba(108,71,255,.05),rgba(108,71,255,.02));border:1.5px solid rgba(108,71,255,.1);border-radius:20px}
 
 /* Age tabs */
 .age-tabs{display:flex;gap:8px;margin-bottom:28px;background:rgba(108,71,255,.06);border-radius:12px;padding:5px}
@@ -958,7 +958,7 @@ body.modal-open{overflow:hidden}
 
 /* Right panel — compact info */
 .python-course-info{display:flex;flex-direction:column;gap:16px}
-.python-info-compact{background:#fff;border:1.5px solid var(--color-border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.python-info-compact{background:#fff;border:1.5px solid var(--color-border);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px}
 .info-compact-row{display:flex;align-items:center;gap:12px}
 .info-compact-icon{font-size:22px;flex-shrink:0;width:36px;text-align:center}
 .info-compact-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--color-text-muted);letter-spacing:.4px;margin-bottom:2px}
@@ -970,8 +970,9 @@ body.modal-open{overflow:hidden}
   .python-course-block{grid-template-columns:1fr;gap:32px}
 }
 @media(max-width:600px){
-  .python-course-block{gap:20px}
-  .python-course-content{padding:20px}
+  .python-course-block{gap:16px}
+  .python-course-content{padding:16px}
+  .python-info-compact{padding:16px}
   .age-tab{font-size:13px;padding:8px 4px}
 }
 
