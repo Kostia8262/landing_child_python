@@ -139,6 +139,7 @@ a{color:inherit;text-decoration:none}
 .hero__actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px}
 .hero__trust{display:flex;flex-wrap:wrap;gap:16px}
 .trust-item{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--color-text-2)}
+.hero__mobile-stats{display:none}
 
 /* Mockup — FIX 10: move up */
 .hero__visual{transform:translateY(-16px)}
@@ -194,11 +195,16 @@ a{color:inherit;text-decoration:none}
 .benefit-card{background:var(--color-bg-soft);border:1px solid var(--color-border);border-radius:var(--r-xl);padding:32px 28px;transition:all var(--t)}
 .benefit-card:hover{border-color:var(--color-primary);box-shadow:var(--sh-md);transform:translateY(-2px)}
 
-/* Featured: solid purple, strong white text */
-.benefit-card--featured{background:var(--color-primary);border-color:transparent}
-.benefit-card--featured:hover{background:var(--color-primary-dark);transform:translateY(-2px);box-shadow:0 12px 40px rgba(108,71,255,.45)}
-.benefit-card--featured h3{color:#fff !important;font-weight:800}
-.benefit-card--featured p{color:rgba(255,255,255,.92) !important}
+/* Featured: premium gradient card */
+.benefit-card--featured{background:linear-gradient(145deg,#6C47FF 0%,#7C5CFF 50%,#9B72FF 100%);border-color:transparent;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(108,71,255,.35),0 2px 8px rgba(108,71,255,.15)}
+.benefit-card--featured::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.14) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.benefit-card--featured::after{content:'';position:absolute;bottom:-50px;left:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.benefit-card--featured:hover{background:linear-gradient(145deg,#5533EE 0%,#6C47FF 50%,#8B6FFF 100%);transform:translateY(-3px);box-shadow:0 16px 48px rgba(108,71,255,.5),0 4px 16px rgba(108,71,255,.25)}
+.benefit-card--featured h3{color:#fff !important;font-weight:800;font-size:20px;margin-bottom:12px;position:relative;z-index:1}
+.benefit-card--featured p{color:rgba(255,255,255,.85) !important;font-size:14.5px;line-height:1.65;position:relative;z-index:1}
+.benefit-card__featured-badge{display:inline-flex;align-items:center;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);color:rgba(255,255,255,.95);font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 12px;border-radius:var(--r-full);margin-bottom:16px;position:relative;z-index:1}
+.benefit-card__icon-wrap{width:52px;height:52px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.28);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);position:relative;z-index:1;transition:background var(--t),transform var(--t)}
+.benefit-card--featured:hover .benefit-card__icon-wrap{background:rgba(255,255,255,.22);transform:scale(1.04)}
 
 .benefit-card__icon{font-size:32px;margin-bottom:16px;line-height:1}
 .benefit-card h3{font-size:18px;font-weight:700;margin-bottom:10px;color:var(--color-text)}
@@ -568,7 +574,8 @@ a{color:inherit;text-decoration:none}
   /* Hero */
   .hero__inner{grid-template-columns:1fr}
   .hero__visual{display:none}
-  .hero{padding:90px 0 80px !important}
+  .hero{padding:90px 0 80px !important;background:linear-gradient(160deg,#FDFCFF 0%,#E4DAFF 18%,#EDE8FF 50%,#F5F3FF 100%)}
+  .shape--1{width:300px;height:300px;top:-100px;right:-80px;opacity:.55}
   .hero__title{font-size:clamp(28px,8vw,40px)}
   .hero__subtitle{font-size:15px;max-width:100%}
 
@@ -576,11 +583,17 @@ a{color:inherit;text-decoration:none}
   .hero__trust{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .trust-item{background:rgba(255,255,255,.75);backdrop-filter:blur(8px);border:1px solid rgba(108,71,255,.15);border-radius:var(--r-md);padding:10px 12px;font-size:12px}
   .trust-item:last-child{grid-column:1/3}
+  /* Mobile hero stats bar */
+  .hero__mobile-stats{display:flex;align-items:center;justify-content:space-around;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(108,71,255,.12);border-radius:var(--r-xl);padding:16px 20px;margin-top:20px;box-shadow:0 4px 24px rgba(108,71,255,.1)}
+  .hero__mstat{text-align:center;flex:1}
+  .hero__mstat-value{display:block;font-size:22px;font-weight:800;color:var(--color-primary);line-height:1;letter-spacing:-.02em}
+  .hero__mstat-label{display:block;font-size:11px;color:var(--color-text-2);font-weight:500;margin-top:3px}
+  .hero__mstat-sep{width:1px;height:36px;background:var(--color-border);flex-shrink:0}
 
   /* Benefits bento → 1 col */
   .benefits__bento{grid-template-columns:1fr}
   .benefit-card--featured{grid-column:1;grid-row:auto}
-  .benefit-card--featured h3{font-size:20px;padding-top:16px}
+  .benefit-card--featured h3{font-size:18px;padding-top:0}
   .benefit-card__number{font-size:40px}
   .benefit-card--featured .benefit-card__number{font-size:52px}
 
@@ -804,8 +817,8 @@ body.modal-open{overflow:hidden}
   .benefit-card__icon{font-size:24px;margin-bottom:0;flex-shrink:0;margin-top:2px}
   .benefit-card h3{font-size:15px;margin-bottom:4px}
   .benefit-card p{font-size:13px;line-height:1.5}
-  .benefit-card--featured{display:flex;align-items:flex-start;gap:14px;padding:20px;border-radius:var(--r-md)}
-  .benefit-card--featured .benefit-card__icon{font-size:28px;margin-bottom:0;flex-shrink:0;margin-top:2px}
+  .benefit-card--featured{display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:22px 20px;border-radius:var(--r-lg)}
+  .benefit-card--featured .benefit-card__icon-wrap{width:44px;height:44px;border-radius:12px;margin-bottom:12px}
 }
 
 /* ===================================================
