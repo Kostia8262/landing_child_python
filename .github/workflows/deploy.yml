@@ -14,6 +14,22 @@ jobs:
       - name: Install lftp
         run: sudo apt-get install -y lftp
 
+      - name: Show server structure (debug)
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USERNAME }}
+          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          lftp << FTPEOF
+          set ftp:ssl-allow no
+          set ftp:passive-mode true
+          set net:timeout 30
+          open -u $FTP_USER,$FTP_PASS $FTP_HOST
+          pwd
+          ls -la
+          quit
+          FTPEOF
+
       - name: Deploy via FTP
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
@@ -26,6 +42,7 @@ jobs:
           set net:timeout 60
           set net:max-retries 5
           open -u $FTP_USER,$FTP_PASS $FTP_HOST
-          mirror -R --delete --transfer-all --verbose=1 --exclude-glob .github/ --exclude-glob DEPLOY.md --exclude-glob AGENTS.md --exclude-glob CLAUDE.md --exclude-glob SKILLS.md --exclude-glob diff.txt --exclude-glob tests/ --exclude-glob seo/ . public_html/
+          lcd $GITHUB_WORKSPACE
+          mirror -R --delete --ignore-time --verbose=1 --exclude-glob .github/ --exclude-glob DEPLOY.md --exclude-glob AGENTS.md --exclude-glob CLAUDE.md --exclude-glob SKILLS.md --exclude-glob diff.txt --exclude-glob tests/ --exclude-glob seo/ . public_html/
           quit
           FTPEOF
