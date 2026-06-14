@@ -832,6 +832,18 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 });
 
 /* ===================================================
+   AGE TABS — COURSE PROGRAM
+   =================================================== */
+document.querySelectorAll('.age-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const age = tab.dataset.age;
+    const block = tab.closest('.python-course-content');
+    block.querySelectorAll('.age-tab').forEach(t => t.classList.toggle('active', t === tab));
+    block.querySelectorAll('.age-program').forEach(p => p.classList.toggle('active', p.dataset.age === age));
+  });
+});
+
+/* ===================================================
    TOAST
    =================================================== */
 let toastEl = null, toastTimer = null;

@@ -901,7 +901,7 @@ body.modal-open{overflow:hidden}
 .article-card__cat{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:3px 10px;border-radius:20px;background:#f0eeff;color:#6C47FF}
 .article-card__body{padding:16px 20px;flex:1}
 .article-card__title{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:10px;color:#1a1a2e}
-.article-card__excerpt{font-size:13px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.article-card__excerpt{font-size:13px;color:#666;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .article-card__footer{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid #f0eeff}
 .article-card__date{font-size:12px;color:#aaa}
 .article-card__read{font-size:13px;font-weight:600;color:#6C47FF}
@@ -924,35 +924,55 @@ body.modal-open{overflow:hidden}
    PYTHON COURSE FULL-WIDTH BLOCK
    =================================================== */
 .python-course-block{display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:start;margin-top:40px}
-.python-course-content{padding:36px;background:linear-gradient(135deg,rgba(108,71,255,.05),rgba(108,71,255,.02));border:1.5px solid rgba(108,71,255,.1);border-radius:20px}
-.python-course-hero{margin-bottom:32px;text-align:center}
-.python-emoji{font-size:48px;margin-bottom:16px;display:inline-block;animation:bounce 2s infinite}
-.python-course-title{font-size:clamp(24px,3.5vw,32px);font-weight:900;color:var(--color-text);margin-bottom:8px}
-.python-course-subtitle{color:var(--color-text-2);font-size:14px}
+.python-course-content{padding:32px;background:linear-gradient(135deg,rgba(108,71,255,.05),rgba(108,71,255,.02));border:1.5px solid rgba(108,71,255,.1);border-radius:20px}
 
-.python-course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-.python-feature{padding:20px;background:#fff;border-radius:12px;border:1px solid var(--color-border);text-align:center}
-.python-feature-icon{font-size:32px;margin-bottom:12px}
-.python-feature h4{font-size:15px;font-weight:700;color:var(--color-text);margin-bottom:8px}
-.python-feature p{font-size:13px;color:var(--color-text-2);line-height:1.5}
+/* Age tabs */
+.age-tabs{display:flex;gap:8px;margin-bottom:28px;background:rgba(108,71,255,.06);border-radius:12px;padding:5px}
+.age-tab{flex:1;padding:10px 8px;border:none;border-radius:9px;background:transparent;font-size:14px;font-weight:600;color:var(--color-text-2);cursor:pointer;transition:all .2s}
+.age-tab:hover{color:var(--color-text)}
+.age-tab.active{background:#fff;color:var(--color-primary);box-shadow:0 2px 8px rgba(108,71,255,.15)}
 
+/* Age programs */
+.age-program{display:none}
+.age-program.active{display:block}
+
+.program-header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.program-emoji{font-size:36px;flex-shrink:0}
+.program-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:4px}
+.program-sub{font-size:13px;color:rgba(255,255,255,.5)}
+
+/* Module list — scrollable */
+.modules-list{display:flex;flex-direction:column;gap:8px;max-height:380px;overflow-y:auto;padding-right:4px}
+.modules-list::-webkit-scrollbar{width:4px}
+.modules-list::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:4px}
+.modules-list::-webkit-scrollbar-thumb{background:rgba(108,71,255,.4);border-radius:4px}
+.module-item{display:flex;align-items:flex-start;gap:14px;padding:11px 14px;background:rgba(255,255,255,.92);border-radius:10px;border:1px solid rgba(255,255,255,.15);transition:box-shadow .15s;flex-shrink:0}
+.module-item:hover{box-shadow:0 4px 16px rgba(108,71,255,.18)}
+.module-item--final{background:linear-gradient(135deg,rgba(108,71,255,.35),rgba(108,71,255,.2));border-color:rgba(108,71,255,.5)}
+.module-num{min-width:28px;font-size:12px;font-weight:800;color:var(--color-primary);opacity:.8;padding-top:2px;flex-shrink:0}
+.module-item--final .module-num{font-size:20px;opacity:1}
+.module-body h4{font-size:14px;font-weight:700;color:var(--color-text);margin-bottom:2px}
+.module-body p{font-size:12px;color:var(--color-text-2);line-height:1.5;margin:0}
+.module-item--final .module-body h4{color:#fff}
+.module-item--final .module-body p{color:rgba(255,255,255,.75)}
+
+/* Right panel — compact info */
 .python-course-info{display:flex;flex-direction:column;gap:16px}
-.python-info-card{background:#fff;border:1.5px solid var(--color-border);border-radius:12px;padding:20px;text-align:center}
-.python-info-card .info-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--color-text-muted);letter-spacing:.5px;margin-bottom:6px}
-.python-info-card .info-value{display:block;font-size:22px;font-weight:900;color:var(--color-primary);margin-bottom:4px}
-.python-info-card .info-detail{display:block;font-size:12px;color:var(--color-text-2)}
+.python-info-compact{background:#fff;border:1.5px solid var(--color-border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.info-compact-row{display:flex;align-items:center;gap:12px}
+.info-compact-icon{font-size:22px;flex-shrink:0;width:36px;text-align:center}
+.info-compact-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--color-text-muted);letter-spacing:.4px;margin-bottom:2px}
+.info-compact-val{display:block;font-size:14px;font-weight:600;color:var(--color-text)}
 
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
 @media(max-width:1024px){
   .python-course-block{grid-template-columns:1fr;gap:32px}
-  .python-course-grid{grid-template-columns:1fr}
 }
 @media(max-width:600px){
   .python-course-block{gap:20px}
-  .python-course-content{padding:24px}
-  .python-course-title{font-size:22px}
-  .python-feature-icon{font-size:28px}
+  .python-course-content{padding:20px}
+  .age-tab{font-size:13px;padding:8px 4px}
 }
 
 /* ===================================================

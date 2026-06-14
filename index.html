@@ -240,62 +240,126 @@
   <div class="container">
     <div class="section-header">
       <div class="section-badge" data-ru="Наша программа">Наш курс</div>
-      <h2 class="section-title" data-ru="Python — от основ к мастерству">Python — від основ до мастерства</h2>
+      <h2 class="section-title" data-ru="Подробнее про курс">Детальніше про курс</h2>
       <p class="section-subtitle" data-ru="Интенсивный практический курс для детей и подростков">Інтенсивний практичний курс для дітей та підлітків: реальні проєкти, робоча дошка, готовність до коледжу.</p>
     </div>
     <div class="python-course-block">
+
+      <!-- LEFT: program by age tabs -->
       <div class="python-course-content">
-        <div class="python-course-hero">
-          <div class="python-emoji">🐍</div>
-          <h3 class="python-course-title">Python — Повний курс</h3>
-          <p class="python-course-subtitle">Для дітей 10–16 років • Онлайн та офлайн • Перший урок безкоштовно</p>
+        <div class="age-tabs">
+          <button class="age-tab active" data-age="7-10">7–10 років</button>
+          <button class="age-tab" data-age="10-14">10–14 років</button>
+          <button class="age-tab" data-age="14-18">14–18 років</button>
         </div>
-        <div class="python-course-grid">
-          <div class="python-feature">
-            <div class="python-feature-icon">📚</div>
-            <h4>Основи синтаксису</h4>
-            <p>Змінні, функції, цикли, умовні оператори і логіка — все, що потрібно для старту.</p>
+
+        <!-- 7-10 -->
+        <div class="age-program active" data-age="7-10">
+          <div class="program-header">
+            <div class="program-emoji">🐢</div>
+            <div>
+              <h3 class="program-title">Python Старт</h3>
+              <p class="program-sub">Перші кроки в програмуванні через ігри та малюнки</p>
+            </div>
           </div>
-          <div class="python-feature">
-            <div class="python-feature-icon">🎮</div>
-            <h4>Pygame — розробка ігор</h4>
-            <p>Створіть власну 2D гру: керування персонажем, колізії, звуки та анімація.</p>
+          <div class="modules-list">
+            <div class="module-item"><span class="module-num">01</span><div class="module-body"><h4>Знайомство з Python</h4><p>Встановлення, IDLE, print(), перша програма "Hello, World!"</p></div></div>
+            <div class="module-item"><span class="module-num">02</span><div class="module-body"><h4>Змінні та типи даних</h4><p>Числа, рядки, True/False. Математика в коді.</p></div></div>
+            <div class="module-item"><span class="module-num">03</span><div class="module-body"><h4>Умови if / else</h4><p>Вчимо Python "думати": порівняння та розгалуження логіки.</p></div></div>
+            <div class="module-item"><span class="module-num">04</span><div class="module-body"><h4>Цикли for та while</h4><p>Автоматизація повторень. Будуємо патерни та лічильники.</p></div></div>
+            <div class="module-item"><span class="module-num">05</span><div class="module-body"><h4>Функції</h4><p>Пишемо власні команди: def, return, параметри.</p></div></div>
+            <div class="module-item"><span class="module-num">06</span><div class="module-body"><h4>Списки</h4><p>Зберігання наборів даних, індекси, len(), sorted().</p></div></div>
+            <div class="module-item"><span class="module-num">07</span><div class="module-body"><h4>Turtle: малюємо кодом</h4><p>Графіка, фігури, кольори, спіралі та зірки.</p></div></div>
+            <div class="module-item module-item--final"><span class="module-num">🚀</span><div class="module-body"><h4>Фінальний проект</h4><p>Власна малюнкова програма або вікторина з логікою.</p></div></div>
           </div>
-          <div class="python-feature">
-            <div class="python-feature-icon">🤖</div>
-            <h4>Telegram-боти та автоматизація</h4>
-            <p>Напишіть бота, який виконує корисні завдання. Поговоріть про те, як технологія служить людям.</p>
+        </div>
+
+        <!-- 10-14 -->
+        <div class="age-program" data-age="10-14">
+          <div class="program-header">
+            <div class="program-emoji">🎮</div>
+            <div>
+              <h3 class="program-title">Python: Ігри та боти</h3>
+              <p class="program-sub">Від синтаксису до власної гри та Telegram-бота</p>
+            </div>
           </div>
-          <div class="python-feature">
-            <div class="python-feature-icon">🚀</div>
-            <h4>Фінальний проєкт</h4>
-            <p>Студент обирає своє завдання, реалізує його під керівництвом викладача — виходить портфоліо.</p>
+          <div class="modules-list">
+            <div class="module-item"><span class="module-num">01</span><div class="module-body"><h4>Основи та VS Code</h4><p>Середовище розробника, синтаксис, типи, умови, цикли.</p></div></div>
+            <div class="module-item"><span class="module-num">02</span><div class="module-body"><h4>Структури даних</h4><p>Списки, словники, кортежи, set. Коли що використовувати.</p></div></div>
+            <div class="module-item"><span class="module-num">03</span><div class="module-body"><h4>Функції та модулі</h4><p>Scope, рекурсія, import, власні модулі.</p></div></div>
+            <div class="module-item"><span class="module-num">04</span><div class="module-body"><h4>Файли та обробка помилок</h4><p>Читання/запис файлів, try/except, власні виключення.</p></div></div>
+            <div class="module-item"><span class="module-num">05</span><div class="module-body"><h4>Робота з API</h4><p>requests, JSON, отримання даних з відкритих API (погода, курси валют).</p></div></div>
+            <div class="module-item"><span class="module-num">06</span><div class="module-body"><h4>Pygame: основи</h4><p>Вікно, події, малювання фігур, таймер, FPS-контроль.</p></div></div>
+            <div class="module-item"><span class="module-num">07</span><div class="module-body"><h4>Pygame: спрайти та анімація</h4><p>Завантаження зображень, спрайт-листи, плавний рух, ефекти.</p></div></div>
+            <div class="module-item"><span class="module-num">08</span><div class="module-body"><h4>Pygame: повноцінна гра</h4><p>Колізії, рахунок, рівні, звуки, меню старту та кінця гри.</p></div></div>
+            <div class="module-item"><span class="module-num">09</span><div class="module-body"><h4>Telegram-бот: основи</h4><p>aiogram, команди, клавіатури, відповіді на повідомлення.</p></div></div>
+            <div class="module-item"><span class="module-num">10</span><div class="module-body"><h4>Telegram-бот: стани та логіка</h4><p>FSM (машина станів), сценарії діалогу, зберігання даних користувача.</p></div></div>
+            <div class="module-item"><span class="module-num">11</span><div class="module-body"><h4>Git та GitHub</h4><p>Контроль версій, commit, push, pull request — публікуємо перший репозиторій.</p></div></div>
+            <div class="module-item module-item--final"><span class="module-num">🚀</span><div class="module-body"><h4>Фінальний проект</h4><p>Власна гра на Pygame або бот з реальним функціоналом — публікація на GitHub.</p></div></div>
+          </div>
+        </div>
+
+        <!-- 14-18 -->
+        <div class="age-program" data-age="14-18">
+          <div class="program-header">
+            <div class="program-emoji">💻</div>
+            <div>
+              <h3 class="program-title">Python Pro: до портфоліо</h3>
+              <p class="program-sub">Глибокий Python, автоматизація та реальні продукти</p>
+            </div>
+          </div>
+          <div class="modules-list">
+            <div class="module-item"><span class="module-num">01</span><div class="module-body"><h4>Python Advanced: генератори та декоратори</h4><p>lambda, map/filter, генератори, декоратори — пишемо елегантний код.</p></div></div>
+            <div class="module-item"><span class="module-num">02</span><div class="module-body"><h4>ООП: класи та об'єкти</h4><p>Класи, методи, наслідування, інкапсуляція, dunder-методи.</p></div></div>
+            <div class="module-item"><span class="module-num">03</span><div class="module-body"><h4>Бібліотеки та pip</h4><p>requests, json, datetime, virtual environment — робота з зовнішніми пакетами.</p></div></div>
+            <div class="module-item"><span class="module-num">04</span><div class="module-body"><h4>Парсинг даних</h4><p>BeautifulSoup, requests-html — автоматичний збір інформації з сайтів.</p></div></div>
+            <div class="module-item"><span class="module-num">05</span><div class="module-body"><h4>Бази даних: SQLite</h4><p>SQL: SELECT, INSERT, UPDATE, DELETE. Підключення через sqlite3 та SQLAlchemy.</p></div></div>
+            <div class="module-item"><span class="module-num">06</span><div class="module-body"><h4>Telegram-бот з БД</h4><p>aiogram + SQLite — реєстрація, профілі, адмін-панель, FSM-діалоги.</p></div></div>
+            <div class="module-item"><span class="module-num">07</span><div class="module-body"><h4>Веб-API на Flask</h4><p>Роутінг, GET/POST, шаблони Jinja2, JSON API, автентифікація.</p></div></div>
+            <div class="module-item"><span class="module-num">08</span><div class="module-body"><h4>Автоматизація та аналіз даних</h4><p>pandas, openpyxl — читання Excel, статистика, автогенерація звітів.</p></div></div>
+            <div class="module-item"><span class="module-num">09</span><div class="module-body"><h4>Основи Machine Learning</h4><p>scikit-learn, numpy, matplotlib — лінійна регресія, класифікатори, візуалізація.</p></div></div>
+            <div class="module-item"><span class="module-num">10</span><div class="module-body"><h4>Git, GitHub та деплой</h4><p>Гілки, pull request, деплой Flask на Railway/Render, змінні оточення.</p></div></div>
+            <div class="module-item"><span class="module-num">11</span><div class="module-body"><h4>Тестування та якість коду</h4><p>pytest, unittest, mock, linting (flake8/black) — код як у реальному проекті.</p></div></div>
+            <div class="module-item module-item--final"><span class="module-num">🚀</span><div class="module-body"><h4>Фінальний проект для портфоліо</h4><p>Повноцінний продукт: бот, Flask-додаток або ML-сервіс — деплой і GitHub.</p></div></div>
           </div>
         </div>
       </div>
+
+      <!-- RIGHT: compact info -->
       <div class="python-course-info">
-        <div class="python-info-card">
-          <span class="info-label">Тривалість</span>
-          <span class="info-value">4 місяці</span>
-          <span class="info-detail">2 заняття на тиждень × 60 хвилин</span>
+        <div class="python-info-compact">
+          <div class="info-compact-row">
+            <span class="info-compact-icon">📅</span>
+            <div>
+              <span class="info-compact-label">Тривалість</span>
+              <span class="info-compact-val">4 місяці · 2×60 хв/тиж</span>
+            </div>
+          </div>
+          <div class="info-compact-row">
+            <span class="info-compact-icon">🎂</span>
+            <div>
+              <span class="info-compact-label">Вік</span>
+              <span class="info-compact-val">7–18 років · будь-який рівень</span>
+            </div>
+          </div>
+          <div class="info-compact-row">
+            <span class="info-compact-icon">👥</span>
+            <div>
+              <span class="info-compact-label">Група</span>
+              <span class="info-compact-val">До 6 осіб · увага кожному</span>
+            </div>
+          </div>
+          <div class="info-compact-row">
+            <span class="info-compact-icon">🌐</span>
+            <div>
+              <span class="info-compact-label">Формат</span>
+              <span class="info-compact-val">Онлайн або офлайн (Дніпро)</span>
+            </div>
+          </div>
         </div>
-        <div class="python-info-card">
-          <span class="info-label">Вік</span>
-          <span class="info-value">10–16</span>
-          <span class="info-detail">Від початківців до промежуточного рівня</span>
-        </div>
-        <div class="python-info-card">
-          <span class="info-label">Група</span>
-          <span class="info-value">До 6 осіб</span>
-          <span class="info-detail">Індивідуальна увага кожному</span>
-        </div>
-        <div class="python-info-card">
-          <span class="info-label">Формат</span>
-          <span class="info-value">Гібридний</span>
-          <span class="info-detail">Онлайн (Zoom) або офлайн у Дніпрі</span>
-        </div>
-        <a href="#contact" class="btn btn--primary btn--lg open-modal" style="width:100%;justify-content:center" data-ru="Записаться">Записатись на пробний урок</a>
+        <a href="#contact" class="btn btn--primary btn--lg open-modal" style="width:100%;justify-content:center;margin-top:8px" data-ru="Записаться">Записатись на пробний урок</a>
       </div>
+
     </div>
   </div>
 </section>
@@ -563,6 +627,17 @@
             </div>
           </div>
         </div>
+        <div class="review-card">
+          <div class="review-card__stars">★★★★★</div>
+          <p class="review-card__text">Син ходить на Python вже 3 місяці. За цей час написав Telegram-бота, який нагадує йому про домашні завдання. Викладач завжди на зв'язку, відповідає в чаті навіть ввечері.</p>
+          <div class="review-card__author">
+            <div class="review-card__avatar">В.М.</div>
+            <div>
+              <div class="review-card__name">Вікторія Мельник</div>
+              <div class="review-card__meta">мама, Дніпро</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Mobile dots -->
@@ -601,7 +676,7 @@
           </button>
           <div class="faq-item__answer"><p data-ru="Занятия в Zoom или Google Meet. Преподаватель видит экран ребёнка, помогает в реальном времени. Группы до 6 человек — каждый получает внимание.">Заняття у Zoom або Google Meet. Викладач бачить екран дитини, допомагає в реальному часі. Групи до 6 осіб — кожен отримує увагу.</p></div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" style="display:none">
           <button class="faq-item__question">
             <span data-ru="Сколько времени нужно в неделю?">Скільки часу потрібно на тиждень?</span>
             <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -615,7 +690,7 @@
           </button>
           <div class="faq-item__answer"><p data-ru="Все занятия записываются. Пропущенный урок можно посмотреть в записи, а преподаватель ответит на вопросы в чате.">Всі заняття записуються. Пропущений урок можна переглянути в записі, а викладач відповість на питання в чаті.</p></div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" style="display:none">
           <button class="faq-item__question">
             <span data-ru="Сколько стоят курсы?">Скільки коштують курси?</span>
             <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -643,7 +718,7 @@
           </button>
           <div class="faq-item__answer"><p data-ru="Принимаем оплату наличными в офисе, банковским переводом или на карту ПриватБанка. Если вы за рубежом — пересчитаем стоимость в удобной валюте.">Приймаємо оплату готівкою в офісі, банківським переказом або на картку ПриватБанку. Якщо ви за кордоном — розрахуємо вартість у зручній валюті.</p></div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" style="display:none">
           <button class="faq-item__question">
             <span data-ru="Помогаете ли с трудоустройством?">Чи допомагаєте з працевлаштуванням?</span>
             <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -897,7 +972,7 @@
           <img src="/android-chrome-192x192.png" alt="" class="nav__logo-img" width="38" height="38" loading="lazy" />
           <span>My Computer <strong>Academy</strong></span>
         </a>
-        <p class="footer__desc" data-ru="Онлайн школа программирования для детей от 6 до 16 лет. Днепр, Украина.">Онлайн школа програмування для дітей від 6 до 16 років. Дніпро, Україна.</p>
+        <p class="footer__desc" data-ru="Онлайн школа программирования для детей от 6 до 18 лет. Днепр, Украина.">Онлайн школа програмування для дітей від 6 до 18 років. Дніпро, Україна.</p>
         <div class="footer__social">
           <a href="https://www.instagram.com/my_computer_academy_/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
           <a href="https://www.facebook.com/MyComputerAcademy.Dnipro" target="_blank" rel="noopener" class="social-link" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
@@ -908,10 +983,10 @@
         <div class="footer__col">
           <h4 data-ru="Курсы">Курси</h4>
           <ul>
-            <li><a href="#courses" data-ru="Scratch (6–10 лет)">Scratch (6–10 років)</a></li>
-            <li><a href="#courses" data-ru="Python (10–14 лет)">Python (10–14 років)</a></li>
-            <li><a href="#courses" data-ru="Roblox (9–14 лет)">Roblox (9–14 років)</a></li>
-            <li><a href="#courses" data-ru="Web-разработка">Веб-розробка</a></li>
+            <li><a href="#" class="open-modal" data-ru="Scratch (6–10 лет)">Scratch (6–10 років)</a></li>
+            <li><a href="#" class="open-modal" data-ru="Python (10–14 лет)">Python (10–14 років)</a></li>
+            <li><a href="#" class="open-modal" data-ru="Roblox (9–14 лет)">Roblox (9–14 років)</a></li>
+            <li><a href="#" class="open-modal" data-ru="Web-разработка">Веб-розробка</a></li>
           </ul>
         </div>
         <div class="footer__col">
