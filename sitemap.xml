@@ -1,82 +1,82 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <!-- Homepage -->
   <url>
-    <loc>https://YOUR_DOMAIN/</loc>
+    <loc>https://mycomputer.school/</loc>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://YOUR_DOMAIN/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://YOUR_DOMAIN/?lang=ru"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://YOUR_DOMAIN/"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mycomputer.school/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/"/>
   </url>
 
   <!-- Course pages (both URL formats supported) -->
   <url>
-    <loc>https://YOUR_DOMAIN/courses/scratch</loc>
+    <loc>https://mycomputer.school/courses/scratch</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://YOUR_DOMAIN/courses/scratch"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://YOUR_DOMAIN/courses/scratch"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/scratch"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/scratch"/>
   </url>
 
   <url>
-    <loc>https://YOUR_DOMAIN/courses/python</loc>
+    <loc>https://mycomputer.school/courses/python</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://YOUR_DOMAIN/courses/python"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://YOUR_DOMAIN/courses/python"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/python"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/python"/>
   </url>
 
   <url>
-    <loc>https://YOUR_DOMAIN/courses/roblox</loc>
+    <loc>https://mycomputer.school/courses/roblox</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://YOUR_DOMAIN/courses/roblox"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://YOUR_DOMAIN/courses/roblox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/roblox"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/roblox"/>
   </url>
 
   <url>
-    <loc>https://YOUR_DOMAIN/courses/web</loc>
+    <loc>https://mycomputer.school/courses/web</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://YOUR_DOMAIN/courses/web"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://YOUR_DOMAIN/courses/web"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/web"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/web"/>
   </url>
 
   <!-- Blog / Articles -->
   <url>
-    <loc>https://YOUR_DOMAIN/articles/chomu-vchyty-dytynu-prohramuvanniu-2026</loc>
+    <loc>https://mycomputer.school/articles/chomu-vchyty-dytynu-prohramuvanniu-2026</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/articles/scratch-dlia-ditei-6-10-rokiv</loc>
+    <loc>https://mycomputer.school/articles/scratch-dlia-ditei-6-10-rokiv</loc>
     <lastmod>2026-06-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/articles/python-dlia-pidlitkiv-vid-nulia-do-bota</loc>
+    <loc>https://mycomputer.school/articles/python-dlia-pidlitkiv-vid-nulia-do-bota</loc>
     <lastmod>2026-06-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/articles/roblox-studio-yak-hra-peretvoriuietsia-na-navchannia</loc>
+    <loc>https://mycomputer.school/articles/roblox-studio-yak-hra-peretvoriuietsia-na-navchannia</loc>
     <lastmod>2026-06-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://YOUR_DOMAIN/articles/onlain-chy-oflain-yake-navchannia-krasche</loc>
+    <loc>https://mycomputer.school/articles/onlain-chy-oflain-yake-navchannia-krasche</loc>
     <lastmod>2026-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -84,35 +84,35 @@
 
   <!-- Legal / policy pages -->
   <url>
-    <loc>https://YOUR_DOMAIN/docs/privacy-policy.html</loc>
+    <loc>https://mycomputer.school/docs/privacy-policy.html</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://YOUR_DOMAIN/docs/public-offer.html</loc>
+    <loc>https://mycomputer.school/docs/public-offer.html</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://YOUR_DOMAIN/docs/terms.html</loc>
+    <loc>https://mycomputer.school/docs/terms.html</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://YOUR_DOMAIN/docs/refund-policy.html</loc>
+    <loc>https://mycomputer.school/docs/refund-policy.html</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://YOUR_DOMAIN/docs/cookie-policy.html</loc>
+    <loc>https://mycomputer.school/docs/cookie-policy.html</loc>
     <lastmod>2026-06-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>

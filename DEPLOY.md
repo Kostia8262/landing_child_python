@@ -1,4 +1,4 @@
-# Деплой My Computer Academy
+﻿# Деплой My Computer Academy
 
 ## Структура проекта
 ```
@@ -74,7 +74,7 @@ pm2 startup   # автозапуск при перезагрузке
 # /etc/nginx/sites-available/mycomputer
 server {
     listen 80;
-    server_name mycomputer.education www.mycomputer.education;
+    server_name mycomputer.school www.mycomputer.school;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -96,7 +96,7 @@ sudo nginx -t && sudo systemctl reload nginx
 ### 6. SSL (Let's Encrypt)
 ```bash
 sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d mycomputer.education -d www.mycomputer.education
+sudo certbot --nginx -d mycomputer.school -d www.mycomputer.school
 ```
 
 ---
@@ -134,7 +134,7 @@ sudo certbot --nginx -d mycomputer.education -d www.mycomputer.education
 
 ### Просмотр всех заявок
 ```bash
-curl https://mycomputer.education/api/leads?token=ВАШ_ADMIN_TOKEN
+curl https://mycomputer.school/api/leads?token=ВАШ_ADMIN_TOKEN
 ```
 
 ### Или SQLite напрямую
@@ -144,7 +144,7 @@ sqlite3 data/leads.db "SELECT * FROM leads ORDER BY created_at DESC;"
 
 ### Обновить статус заявки
 ```bash
-curl -X PATCH https://mycomputer.education/api/leads/1 \
+curl -X PATCH https://mycomputer.school/api/leads/1 \
   -H "x-admin-token: ВАШ_ADMIN_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"status": "contacted"}'
@@ -157,7 +157,7 @@ curl -X PATCH https://mycomputer.education/api/leads/1 \
 ## Телефон и контакты
 Замени в `index.html`:
 - `+38 (000) 000-00-00` → реальный номер
-- `info@mycomputer.education` → реальный email
+- `info@mycomputer.school` → реальный email
 
 ---
 

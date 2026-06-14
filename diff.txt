@@ -1,0 +1,561 @@
+﻿diff --git a/css/style.css b/css/style.css
+index aa545d6..1125654 100644
+--- a/css/style.css
++++ b/css/style.css
+@@ -179,10 +179,17 @@ a{color:inherit;text-decoration:none}
+    =================================================== */
+ .partners{padding:36px 0;border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border)}
+ .partners__label{text-align:center;font-size:12px;font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:20px}
+-.partners__logos{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:32px}
+-.partner-logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--color-text-muted);transition:color var(--t)}
+-.partner-logo:hover{color:var(--color-primary)}
+-.partner-logo__icon{font-size:22px}
++.partners__logos{display:grid;grid-template-columns:repeat(3,minmax(140px,1fr));gap:16px;justify-items:center;align-items:center}
++.partner-logo{display:flex;align-items:center;gap:14px;font-size:14px;font-weight:700;color:var(--color-text);background:#fff;border:1px solid rgba(108,71,255,.12);padding:14px 16px;border-radius:18px;box-shadow:0 12px 36px rgba(108,71,255,.08);transition:all var(--t);min-width:140px}
++.partner-logo:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(108,71,255,.14)}
++.partner-logo__icon{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;font-size:18px;border-radius:16px;background:rgba(108,71,255,.1);color:var(--color-primary)}
++.partner-logo--python .partner-logo__icon{background:#FBBF24;color:#1F2937;box-shadow:0 4px 12px rgba(251,191,36,.16)}
++.partner-logo--scratch .partner-logo__icon{background:#00C28F;color:#fff}
++.partner-logo--roblox .partner-logo__icon{background:#000000;color:#fff}
++.partner-logo--htmlcss .partner-logo__icon{background:#F16529;color:#fff}
++.partner-logo--js .partner-logo__icon{background:#F7DF1E;color:#1F2937}
++.partner-logo--ai .partner-logo__icon{background:#2B2B2B;color:#fff}
++.partner-logo span{display:inline-block}
+ 
+ /* ===================================================
+    BENEFITS тАФ LIGHT (restored)
+@@ -334,7 +341,8 @@ a{color:inherit;text-decoration:none}
+ /* ===================================================
+    FIX 7: CONTACT тАФ grid-area layout, mobile separation
+    =================================================== */
+-.contact{padding:32px 0 88px;background:var(--color-bg-soft)}
++.contact{padding:32px 0 88px;background:linear-gradient(180deg,#6C47FF 0%,#3B2AE0 100%);color:#fff;position:relative;overflow:hidden}
++.contact::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(255,255,255,.15),transparent 28%),radial-gradient(circle at bottom left,rgba(255,255,255,.08),transparent 24%);pointer-events:none}
+ .contact__grid{
+   display:grid;
+   grid-template-columns:1fr 1fr;
+@@ -344,31 +352,36 @@ a{color:inherit;text-decoration:none}
+ }
+ .contact__intro{grid-area:intro}
+ .contact__form-wrap{grid-area:form}
+-.contact__details{grid-area:details}
++.contact__details{grid-area:details;color:var(--color-text)}
++.contact__details a{color:var(--color-text);text-decoration:none}
++.contact__details a:hover{text-decoration:underline}
+ 
+ .contact__title{font-size:clamp(26px,4vw,38px);font-weight:800;line-height:1.2;margin:8px 0 14px}
++.contact__highlight{display:inline-block;color:#F8D351;font-size:inherit;font-weight:900;letter-spacing:.01em}
+ 
+ /* Contact details */
+ .contact__info-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--color-text-muted);margin-top:20px;margin-bottom:10px}
+ .contact__info-title:first-child{margin-top:0}
+ .contact__phones{display:flex;flex-direction:column;gap:10px}
+ .contact__phone-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+-.contact__phone-number{font-size:16px;font-weight:700;color:var(--color-text);transition:color var(--t)}
+-.contact__phone-number:hover{color:var(--color-primary)}
++.contact__phone-number{font-size:16px;font-weight:700;color:#fff;transition:color var(--t)}
++.contact__phone-number:hover{color:rgba(255,255,255,.8)}
+ .contact__phone-links{display:flex;gap:6px}
+ .messenger-btn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all var(--t);color:#fff;flex-shrink:0}
+ .messenger-btn--viber   {background:#7360F2}
+ .messenger-btn--whatsapp{background:#25D366}
+ .messenger-btn--telegram{background:#0088CC}
++.messenger-btn svg{width:18px;height:18px;fill:#fff;stroke:#fff}
+ .messenger-btn:hover{transform:scale(1.12);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+-.contact__email{font-size:15px;font-weight:600;color:var(--color-primary);transition:color var(--t);word-break:break-all}
+-.contact__email:hover{color:var(--color-primary-dark);text-decoration:underline}
+-.contact__social{display:flex;gap:10px;margin-top:4px}
+-.contact__social-link{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--color-text-2);background:var(--color-bg);border:1px solid var(--color-border);padding:7px 14px;border-radius:var(--r-full);transition:all var(--t)}
+-.contact__social-link:hover{border-color:var(--color-primary);color:var(--color-primary);background:var(--color-primary-light)}
++.contact__email{font-size:15px;font-weight:600;color:#fff;transition:color var(--t);word-break:break-all}
++.contact__email:hover{color:rgba(255,255,255,.8);text-decoration:underline}
++.contact__social{display:flex;gap:10px;margin-top:4px;flex-wrap:wrap}
++.contact__social-link{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#1F2937;border:1px solid rgba(15,14,26,.08);padding:10px 16px;border-radius:9999px;transition:all var(--t);background:#fff}
++.contact__social-link svg{width:18px;height:18px;stroke:currentColor;fill:none}
++.contact__social-link:hover{transform:translateY(-1px);box-shadow:0 12px 40px rgba(15,14,26,.12);border-color:rgba(15,14,26,.12)}
+ 
+ /* Form */
+-.contact-form{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--r-xl);padding:32px;box-shadow:var(--sh-md);width:100%;min-width:0;overflow:hidden}
++.contact-form{background:#fff;border:1px solid rgba(15,14,26,.08);border-radius:var(--r-xl);padding:32px;box-shadow:0 20px 60px rgba(15,14,26,.08);width:100%;min-width:0;overflow:hidden;color:var(--color-text)}
+ .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .form-group{margin-bottom:16px;min-width:0}
+ .form-label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;letter-spacing:.2px}
+@@ -517,7 +530,12 @@ a{color:inherit;text-decoration:none}
+   /* FIX 5: reduced section padding */
+   .benefits,.courses,.how-it-works,.stats,.reviews,.faq,.contact{padding:56px 0}
+   .partners{padding:28px 0}
+-  .hero{padding:90px 0 52px}
++  .hero{padding:140px 0 52px}
++  .hero__actions{display:grid;gap:16px}
++  .hero__trust{display:grid;grid-template-columns:1fr 1fr;gap:12px}
++  .partner-logo{width:100%;min-width:0;justify-content:center}
++  .partners__logos{grid-template-columns:repeat(2,minmax(140px,1fr));gap:14px}
++}
+ 
+   /* Restored simple mobile menu */
+   .nav__menu,
+@@ -567,12 +585,14 @@ a{color:inherit;text-decoration:none}
+   /* Hero */
+   .hero__inner{grid-template-columns:1fr}
+   .hero__visual{display:none}
+-  .hero__title{font-size:clamp(28px,8vw,40px)}
+-  .hero__subtitle{font-size:15px;max-width:100%}
++  .hero__title{font-size:clamp(26px,8vw,34px);line-height:1.18;margin-bottom:18px}
++  .hero__subtitle{font-size:15px;line-height:1.65;max-width:100%;margin-bottom:24px}
++  .hero__actions{flex-direction:column;align-items:stretch}
++  .hero__actions .btn{width:100%}
+ 
+   /* FIX 3: hero mobile trust as cards */
+-  .hero__trust{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+-  .trust-item{background:rgba(255,255,255,.75);backdrop-filter:blur(8px);border:1px solid rgba(108,71,255,.15);border-radius:var(--r-md);padding:10px 12px;font-size:12px}
++  .hero__trust{display:grid;grid-template-columns:1fr 1fr;gap:10px}
++  .trust-item{background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border:1px solid rgba(108,71,255,.15);border-radius:var(--r-xl);padding:12px 14px;font-size:13px}
+   .trust-item:last-child{grid-column:1/3}
+ 
+   /* Benefits bento тЖТ 1 col */
+@@ -923,41 +943,43 @@ body.modal-open{overflow:hidden}
+ /* ===================================================
+    PYTHON COURSE FULL-WIDTH BLOCK
+    =================================================== */
+-.python-course-block{display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:start;margin-top:40px}
+-.python-course-content{padding:36px;background:linear-gradient(135deg,rgba(108,71,255,.05),rgba(108,71,255,.02));border:1.5px solid rgba(108,71,255,.1);border-radius:20px}
+-.python-course-hero{margin-bottom:32px;text-align:center}
+-.python-emoji{font-size:48px;margin-bottom:16px;display:inline-block;animation:bounce 2s infinite}
+-.python-course-title{font-size:clamp(24px,3.5vw,32px);font-weight:900;color:var(--color-text);margin-bottom:8px}
+-.python-course-subtitle{color:var(--color-text-2);font-size:14px}
+-
+-.python-course-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+-.python-feature{padding:20px;background:#fff;border-radius:12px;border:1px solid var(--color-border);text-align:center}
+-.python-feature-icon{font-size:32px;margin-bottom:12px}
+-.python-feature h4{font-size:15px;font-weight:700;color:var(--color-text);margin-bottom:8px}
+-.python-feature p{font-size:13px;color:var(--color-text-2);line-height:1.5}
++.python-course-block{display:grid;grid-template-columns:1.6fr 1fr;gap:48px;align-items:start;margin-top:48px}
++.python-course-content{padding:36px;background:linear-gradient(180deg,rgba(108,71,255,.03),rgba(108,71,255,.01));border:1px solid rgba(108,71,255,.06);border-radius:18px}
++.python-course-hero{margin-bottom:20px;text-align:left}
++.python-emoji{font-size:44px;margin-bottom:10px;display:inline-block}
++.python-course-title{font-size:clamp(28px,4vw,40px);font-weight:900;color:var(--color-text);margin-bottom:10px}
++.python-course-subtitle{color:var(--color-text-2);font-size:15px;max-width:72%}
++
++.python-course-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:20px}
++.python-feature{display:flex;gap:14px;align-items:flex-start;background:#fff;border-radius:12px;border:1px solid var(--color-border);padding:18px}
++.python-feature-icon{font-size:34px;flex-shrink:0;width:52px;height:52px;display:flex;align-items:center;justify-content:center;background:transparent;border-radius:10px}
++.python-feature .feature-text h4{font-size:16px;font-weight:800;color:var(--color-text);margin-bottom:6px}
++.python-feature .feature-text p{font-size:14px;color:var(--color-text-2);line-height:1.5;margin:0}
+ 
+ .python-course-info{display:flex;flex-direction:column;gap:16px}
+-.python-info-card{background:#fff;border:1.5px solid var(--color-border);border-radius:12px;padding:20px;text-align:center}
++.python-info-card{background:#fff;border:1.5px solid var(--color-border);border-radius:12px;padding:18px;text-align:center}
+ .python-info-card .info-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--color-text-muted);letter-spacing:.5px;margin-bottom:6px}
+-.python-info-card .info-value{display:block;font-size:22px;font-weight:900;color:var(--color-primary);margin-bottom:4px}
+-.python-info-card .info-detail{display:block;font-size:12px;color:var(--color-text-2)}
++.python-info-card .info-value{display:block;font-size:20px;font-weight:900;color:var(--color-primary);margin-bottom:4px}
++.python-info-card .info-detail{display:block;font-size:13px;color:var(--color-text-2)}
+ 
+ @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+ 
+ @media(max-width:1024px){
+-  .python-course-block{grid-template-columns:1fr;gap:32px}
+-  .python-course-grid{grid-template-columns:1fr}
++  .python-course-block{grid-template-columns:1fr;gap:28px}
++  .python-course-hero{text-align:left}
+ }
+ @media(max-width:600px){
+-  .python-course-block{gap:20px}
+-  .python-course-content{padding:24px}
++  .python-course-block{gap:18px}
++  .python-course-content{padding:20px}
+   .python-course-title{font-size:22px}
+-  .python-feature-icon{font-size:28px}
++  .python-feature{padding:14px}
++  .python-feature-icon{font-size:24px;width:44px;height:44px}
+ }
+ 
+ /* ===================================================
+    PAIN POINTS SECTION
+    =================================================== */
++#pain-points{display:none !important}
+ .pain-points{padding:80px 0;background:#fff}
+ .pain-points-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-top:48px}
+ .pain-point-card{padding:32px;background:linear-gradient(135deg,#fff,#f8f7ff);border:1.5px solid #e8e4ff;border-radius:16px;text-align:center;transition:transform .2s,box-shadow .2s}
+@@ -978,14 +1000,14 @@ body.modal-open{overflow:hidden}
+    ENHANCED MOBILE HERO
+    =================================================== */
+ @media(max-width:768px){
+-  .hero{padding:60px 0 80px !important}
++  .hero{padding:140px 0 80px !important}
+   .hero__title{font-size:clamp(28px,6vw,36px);line-height:1.2}
+   .hero__subtitle{font-size:15px;line-height:1.6;margin-bottom:24px}
+   .hero__buttons{gap:12px}
+   .hero-mockup{height:280px}
+ }
+ @media(max-width:480px){
+-  .hero{padding:40px 0 60px !important}
++  .hero{padding:140px 0 60px !important}
+   .hero__title{font-size:clamp(24px,5vw,28px)}
+   .hero__subtitle{font-size:14px;margin-bottom:20px}
+   .hero-mockup{display:none}
+diff --git a/index.html b/index.html
+index 30af26d..6dcb62c 100644
+--- a/index.html
++++ b/index.html
+@@ -3,19 +3,19 @@
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-  <meta name="description" content="╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤В╨░ ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓ тАФ ╨┐╤А╨░╨║╤В╨╕╤З╨╜╤Ц ╨╖╨░╨╜╤П╤В╤В╤П ╨╖ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨╜╨░ Python: ╤Ц╨│╤А╨╕, ╨▒╨╛╤В╨╕, ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╨╖╨░╤Ж╤Ц╤П. ╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜. ╨Я╨╡╤А╤И╨╕╨╣ ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛." />
+-  <meta name="keywords" content="╨║╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣, Python ╨┤╨╗╤П ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓, ╨║╤Г╤А╤Б╨╕ Python, ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣, ╨╜╨░╨▓╤З╨░╨╜╨╜╤П Python ╨╛╨╜╨╗╨░╨╣╨╜, ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ Python, Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╨Ф╨╜╤Ц╨┐╤А╨╛" />
++  <meta name="description" content="╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤Ц ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц тАФ ╨┐╤А╨░╨║╤В╨╕╤З╨╜╤Ц ╨╖╨░╨╜╤П╤В╤В╤П ╨╖ Python: ╤Ц╨│╤А╨╕, ╨▒╨╛╤В╨╕, ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╨╖╨░╤Ж╤Ц╤П. ╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜. ╨Я╨╡╤А╤И╨╕╨╣ ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛." />
++  <meta name="keywords" content="╨║╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣, Python ╨┤╨╗╤П ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓, Python ╨Ф╨╜╤Ц╨┐╤А╨╛, Python ╨╛╨╜╨╗╨░╨╣╨╜, ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣, ╨║╤Г╤А╤Б╨╕ Python ╨╛╨╜╨╗╨░╨╣╨╜, ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ Python" />
+   <meta name="author" content="My Computer Academy" />
+   <meta name="robots" content="index, follow" />
+-  <meta property="og:title" content="My Computer Academy тАФ ╨и╨║╨╛╨╗╨░ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╨┤╨╛ 18 ╤А╨╛╨║╤Ц╨▓" />
+-  <meta property="og:description" content="╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ ╨║╤Г╤А╤Б╨╕ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц. Scratch, Python, Roblox, ╨Т╨╡╨▒-╤А╨╛╨╖╤А╨╛╨▒╨║╨░. ╨У╤А╤Г╨┐╨╕ ╨┤╨╛ 6 ╨╛╤Б╤Ц╨▒. ╨Я╨╡╤А╤И╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛!" />
++  <meta property="og:title" content="My Computer Academy тАФ ╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤В╨░ ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓" />
++  <meta property="og:description" content="╨Э╨░╨▓╤З╨░╨╜╨╜╤П Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤В╨░ ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓: ╤Ц╨│╤А╨╕, Telegram-╨▒╨╛╤В╨╕, Pygame ╤В╨░ ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╨╖╨░╤Ж╤Ц╤П. ╨Я╨╡╤А╤И╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛." />
+   <meta property="og:type" content="website" />
+   <meta property="og:url" content="https://mycomputer.school/" />
+   <meta property="og:locale" content="uk_UA" />
+   <meta property="og:site_name" content="My Computer Academy" />
+   <meta name="twitter:card" content="summary_large_image" />
+-  <meta name="twitter:title" content="My Computer Academy тАФ ╨и╨║╨╛╨╗╨░ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣" />
+-  <meta name="twitter:description" content="╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ ╨║╤Г╤А╤Б╨╕ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╨┤╨╛ 18 ╤А╨╛╨║╤Ц╨▓ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц." />
++  <meta name="twitter:title" content="My Computer Academy тАФ ╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣" />
++  <meta name="twitter:description" content="╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤В╨░ ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц. ╨Я╨╡╤А╤И╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛." />
+   <link rel="canonical" href="https://mycomputer.school/" />
+   <link rel="alternate" hreflang="uk" href="https://mycomputer.school/" />
+   <link rel="alternate" hreflang="ru" href="https://mycomputer.school/?lang=ru" />
+@@ -76,15 +76,14 @@
+       <div class="hero__content">
+         <div class="hero__badge">
+           <span class="badge-dot"></span>
+-          <span data-ru="╨Ю╨╜╨╗╨░╨╣╨╜ ╨╕ ╨╛╤Д╨╗╨░╨╣╨╜ ╨╛╨▒╤Г╤З╨╡╨╜╨╕╨╡ ╨▓ ╨Ф╨╜╨╡╨┐╤А╨╡">╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ ╨╜╨░╨▓╤З╨░╨╜╨╜╤П ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц</span>
++           <span data-ru="╨Ю╨╜╨╗╨░╨╣╨╜ ╨╕ ╨╛╤Д╨╗╨░╨╣╨╜ ╨╛╨▒╤Г╤З╨╡╨╜╨╕╨╡ ╨▓ ╨Ф╨╜╨╡╨┐╤А╨╡">╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ ╨╜╨░╨▓╤З╨░╨╜╨╜╤П ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц</span>
+         </div>
+         <h1 class="hero__title">
+-          <span data-ru="╨Ъ╤Г╤А╤Б Python">╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤Ц ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓</span><br/>
+-          <span class="gradient-text" data-ru="╨┐╤А╨╛╨│╤А╨░╨╝╨╝╨╕╤А╨╛╨▓╨░╤В╤М">╨Я╤А╨░╨║╤В╨╕╤З╨╜╨╕╨╣ Python: ╤Ц╨│╤А╨╕, ╨▒╨╛╤В╨╕, ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╨╖╨░╤Ж╤Ц╤П</span><br/>
+-          <span data-ru="╤Б ╨╜╤Г╨╗╤П ╨┤╨╛ ╨┐╤А╨╛╨╡╨║╤В╨░">╨Т╤Ц╨┤ ╨╛╤Б╨╜╨╛╨▓ ╨┤╨╛ ╤А╨╡╨░╨╗╤М╨╜╨╛╨│╨╛ ╨┐╤А╨╛╤Ф╨║╤В╤Г</span>
++          <span data-ru="╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╨╡╤В╨╡╨╣ ╨╕ ╨┐╨╛╨┤╤А╨╛╤Б╤В╨║╨╛╨▓">╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤Ц ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓</span><br/>
++          <span class="gradient-text" data-ru="╨б╨╛╨╖╨┤╨░╤С╨╝ ╨╕╨│╤А╤Л, ╨в╨╡╨╗╨╡╨│╤А╨░╨╝-╨▒╨╛╤В╨╛╨▓ ╨╕ ╨┐╨╡╤А╨▓╤Л╨╡ ╨╜╨░╤Б╤В╨╛╤П╤Й╨╕╨╡ ╨┐╤А╨╛╨╡╨║╤В╤Л">╨б╤В╨▓╨╛╤А╤О╤Ф╨╝╨╛ ╤Ц╨│╤А╨╕, Telegram-╨▒╨╛╤В╤Ц╨▓ ╤В╨░ ╨┐╨╡╤А╤И╤Ц ╤Б╨┐╤А╨░╨▓╨╢╨╜╤Ц ╨┐╤А╨╛╤Ф╨║╤В╨╕</span><br/>
+         </h1>
+-        <p class="hero__subtitle" data-ru="╨Ш╨╜╤В╨╡╤А╨░╨║╤В╨╕╨▓╨╜╤Л╨╡ ╨║╤Г╤А╤Б╤Л ╨┤╨╗╤П ╨┤╨╡╤В╨╡╨╣ ╨╛╤В 6 ╨┤╨╛ 18 ╨╗╨╡╤В. Scratch, Python, Roblox, Web-╤А╨░╨╖╤А╨░╨▒╨╛╤В╨║╨░ тАФ ╨▓╤Л╨▒╨╕╤А╨░╨╣ ╨╜╨░╨┐╤А╨░╨▓╨╗╨╡╨╜╨╕╨╡ ╨╕ ╨╜╨░╤З╨╜╨╕ ╤Г╨╢╨╡ ╤Б╨╡╨│╨╛╨┤╨╜╤П.">
+-          ╨Ж╨╜╤В╨╡╨╜╤Б╨╕╨▓╨╜╨╕╨╣ ╨║╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤В╨░ ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓: ╨╛╤Б╨╜╨╛╨▓╨╕ ╤Б╨╕╨╜╤В╨░╨║╤Б╨╕╤Б╤Г, ╨░╨╗╨│╨╛╤А╨╕╤В╨╝╨╕, Pygame, ╤Б╤В╨▓╨╛╤А╨╡╨╜╨╜╤П Telegram-╨▒╨╛╤В╤Ц╨▓ ╤В╨░ ╨▓╨╗╨░╤Б╨╜╨╛╨│╨╛ ╨┐╤А╨╛╤Ф╨║╤В╤Г. ╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ тАФ ╨┐╨╡╤А╤И╨╕╨╣ ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╕╨╣.
++        <p class="hero__subtitle" data-ru="╨а╨╡╨▒╨╡╨╜╨╛╨║ ╨╜╨░╤Г╤З╨╕╤В╤Б╤П ╤Б╨╛╨╖╨┤╨░╨▓╨░╤В╤М ╨╕╨│╤А╤Л, Telegram-╨▒╨╛╤В╨╛╨▓ ╨╕ ╤Б╨╛╨▒╤Б╤В╨▓╨╡╨╜╨╜╤Л╨╡ ╨┐╤А╨╛╨│╤А╨░╨╝╨╝╤Л, ╤А╨░╨╖╨╛╨▓╤М╨╡╤В ╨╗╨╛╨│╨╕╨║╤Г ╨╕ ╨░╨╗╨│╨╛╤А╨╕╤В╨╝╨╕╤З╨╡╤Б╨║╨╛╨╡ ╨╝╤Л╤И╨╗╨╡╨╜╨╕╨╡. ╨Я╨╡╤А╨▓╤Л╨╣ ╨┐╤А╨╛╨▒╨╜╤Л╨╣ ╤Г╤А╨╛╨║ тАУ ╨▒╨╡╤Б╨┐╨╗╨░╤В╨╜╨╛..">
++          ╨Ф╨╕╤В╨╕╨╜╨░ ╨╜╨░╨▓╤З╨╕╤В╤М╤Б╤П ╤Б╤В╨▓╨╛╤А╤О╨▓╨░╤В╨╕ ╤Ц╨│╤А╨╕, Telegram-╨▒╨╛╤В╤Ц╨▓ ╤В╨░ ╨▓╨╗╨░╤Б╨╜╤Ц ╨┐╤А╨╛╨│╤А╨░╨╝╨╕, ╤А╨╛╨╖╨▓╨╕╨╜╨╡ ╨╗╨╛╨│╤Ц╨║╤Г ╨╣ ╨░╨╗╨│╨╛╤А╨╕╤В╨╝╤Ц╤З╨╜╨╡ ╨╝╨╕╤Б╨╗╨╡╨╜╨╜╤П. ╨Я╨╡╤А╤И╨╕╨╣ ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ тАФ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛.
+         </p>
+         <div class="hero__actions">
+           <a href="#" class="btn btn--primary btn--lg open-modal" data-ru="╨Ч╨░╨┐╨╕╤Б╨░╤В╤М╤Б╤П ╨╜╨░ ╨┐╤А╨╛╨▒╨╜╤Л╨╣ ╤Г╤А╨╛╨║">
+@@ -162,21 +161,30 @@
+   <div class="container">
+     <p class="partners__label" data-ru="╨в╨╡╤Е╨╜╨╛╨╗╨╛╨│╨╕╨╕, ╨║╨╛╤В╨╛╤А╤Л╨╝ ╨╝╤Л ╨╛╨▒╤Г╤З╨░╨╡╨╝">╨в╨╡╤Е╨╜╨╛╨╗╨╛╨│╤Ц╤Ч, ╤П╨║╨╕╨╝ ╨╝╨╕ ╨╜╨░╨▓╤З╨░╤Ф╨╝╨╛</p>
+     <div class="partners__logos">
+-      <div class="partner-logo"><span class="partner-logo__icon">ЁЯзй</span><span>Scratch</span></div>
+-      <div class="partner-logo">
+-        <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#3776AB"/><path d="M16 6C11 6 11.3 8.2 11.3 8.2L11.3 10.5H16.1V11.2H9.4C9.4 11.2 6 10.8 6 16C6 21.2 9 21 9 21H10.7V18.6C10.7 18.6 10.6 15.7 13.6 15.7H18.4C18.4 15.7 21.2 15.7 21.2 13V9C21.2 9 21.6 6 16 6ZM13.4 7.8C14 7.3 15.4 7.3 16 8.5C16 9.2 15.4 9.8 14.7 9.8C14 9.8 13.4 9.2 13.4 8.5V7.8Z" fill="white"/><path d="M16 26C21 26 20.7 23.8 20.7 23.8L20.7 21.5H15.9V20.8H22.6C22.6 20.8 26 21.2 26 16C26 10.8 23 11 23 11H21.3V13.4C21.3 13.4 21.4 16.3 18.4 16.3H13.6C13.6 16.3 10.8 16.3 10.8 19V23C10.8 23 10.4 26 16 26Z" fill="#FFE873"/></svg>
++      <div class="partner-logo partner-logo--scratch">
++        <span class="partner-logo__icon">ЁЯзй</span>
++        <span>Scratch</span>
++      </div>
++      <div class="partner-logo partner-logo--python">
++        <span class="partner-logo__icon">ЁЯРН</span>
+         <span>Python</span>
+       </div>
+-      <div class="partner-logo"><span class="partner-logo__icon">ЁЯОо</span><span>Roblox</span></div>
+-      <div class="partner-logo">
+-        <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#E34F26"/><path d="M7 4L9.2 28L16 30L22.8 28L25 4H7Z" fill="#EF652A"/><path d="M16 27.5V9H9L9.9 20H16V15H12L11.7 12H16V9" fill="white"/><path d="M16 9V12H19.5L19.3 15H16V20L20 18.8L20.3 15H16" fill="#EBEBEB"/></svg>
++      <div class="partner-logo partner-logo--roblox">
++        <span class="partner-logo__icon">ЁЯОо</span>
++        <span>Roblox</span>
++      </div>
++      <div class="partner-logo partner-logo--htmlcss">
++        <span class="partner-logo__icon">&lt;/&gt;</span>
+         <span>HTML/CSS</span>
+       </div>
+-      <div class="partner-logo">
+-        <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="4" fill="#F7DF1E"/><path d="M19 21.7C19.3 22.4 19.8 22.9 20.8 22.9C21.6 22.9 22.1 22.5 22.1 21.9C22.1 21.2 21.6 21 20.6 20.5L20.1 20.3C18.6 19.6 17.6 18.8 17.6 17.1C17.6 15.5 18.8 14.3 20.7 14.3C22.1 14.3 23.1 14.8 23.7 15.9L22.1 16.9C21.8 16.4 21.4 16.1 20.7 16.1C20 16.1 19.5 16.5 19.5 17.1C19.5 17.8 20 18.1 20.9 18.5L21.4 18.7C23.2 19.5 24.2 20.3 24.2 22C24.2 23.9 22.7 25 20.7 25C18.8 25 17.5 24.1 16.9 22.7L19 21.7ZM10.5 21.9C10.8 22.5 11.1 22.9 11.9 22.9C12.7 22.9 13.1 22.6 13.1 21.4V14.4H15.2V21.5C15.2 23.7 13.9 24.8 12 24.8C10.3 24.8 9.3 23.9 8.8 22.8L10.5 21.9Z" fill="#323330"/></svg>
++      <div class="partner-logo partner-logo--js">
++        <span class="partner-logo__icon">JS</span>
+         <span>JavaScript</span>
+       </div>
+-      <div class="partner-logo"><span class="partner-logo__icon">ЁЯдЦ</span><span>AI / ML</span></div>
++      <div class="partner-logo partner-logo--ai">
++        <span class="partner-logo__icon">ЁЯдЦ</span>
++        <span>AI / ML</span>
++      </div>
+     </div>
+   </div>
+ </section>
+@@ -249,23 +257,31 @@
+         <div class="python-course-grid">
+           <div class="python-feature">
+             <div class="python-feature-icon">ЁЯУЪ</div>
+-            <h4>╨Ю╤Б╨╜╨╛╨▓╨╕ ╤Б╨╕╨╜╤В╨░╨║╤Б╨╕╤Б╤Г</h4>
+-            <p>╨Ч╨╝╤Ц╨╜╨╜╤Ц, ╤Д╤Г╨╜╨║╤Ж╤Ц╤Ч, ╤Ж╨╕╨║╨╗╨╕, ╤Г╨╝╨╛╨▓╨╜╤Ц ╨╛╨┐╨╡╤А╨░╤В╨╛╤А╨╕ ╤Ц ╨╗╨╛╨│╤Ц╨║╨░ тАФ ╨▓╤Б╨╡, ╤Й╨╛ ╨┐╨╛╤В╤А╤Ц╨▒╨╜╨╛ ╨┤╨╗╤П ╤Б╤В╨░╤А╤В╤Г.</p>
++            <div class="feature-text">
++              <h4>╨Ю╤Б╨╜╨╛╨▓╨╕ ╤Б╨╕╨╜╤В╨░╨║╤Б╨╕╤Б╤Г</h4>
++              <p>╨Ч╨╝╤Ц╨╜╨╜╤Ц, ╤Д╤Г╨╜╨║╤Ж╤Ц╤Ч, ╤Ж╨╕╨║╨╗╨╕, ╤Г╨╝╨╛╨▓╨╜╤Ц ╨╛╨┐╨╡╤А╨░╤В╨╛╤А╨╕ ╤Ц ╨╗╨╛╨│╤Ц╨║╨░ тАФ ╨▓╤Б╨╡, ╤Й╨╛ ╨┐╨╛╤В╤А╤Ц╨▒╨╜╨╛ ╨┤╨╗╤П ╤Б╤В╨░╤А╤В╤Г.</p>
++            </div>
+           </div>
+           <div class="python-feature">
+             <div class="python-feature-icon">ЁЯОо</div>
+-            <h4>Pygame тАФ ╤А╨╛╨╖╤А╨╛╨▒╨║╨░ ╤Ц╨│╨╛╤А</h4>
+-            <p>╨б╤В╨▓╨╛╤А╤Ц╤В╤М ╨▓╨╗╨░╤Б╨╜╤Г 2D ╨│╤А╤Г: ╨║╨╡╤А╤Г╨▓╨░╨╜╨╜╤П ╨┐╨╡╤А╤Б╨╛╨╜╨░╨╢╨╡╨╝, ╨║╨╛╨╗╤Ц╨╖╤Ц╤Ч, ╨╖╨▓╤Г╨║╨╕ ╤В╨░ ╨░╨╜╤Ц╨╝╨░╤Ж╤Ц╤П.</p>
++            <div class="feature-text">
++              <h4>Pygame тАФ ╤А╨╛╨╖╤А╨╛╨▒╨║╨░ ╤Ц╨│╨╛╤А</h4>
++              <p>╨б╤В╨▓╨╛╤А╤Ц╤В╤М ╨▓╨╗╨░╤Б╨╜╤Г 2D ╨│╤А╤Г: ╨║╨╡╤А╤Г╨▓╨░╨╜╨╜╤П ╨┐╨╡╤А╤Б╨╛╨╜╨░╨╢╨╡╨╝, ╨║╨╛╨╗╤Ц╨╖╤Ц╤Ч, ╨╖╨▓╤Г╨║╨╕ ╤В╨░ ╨░╨╜╤Ц╨╝╨░╤Ж╤Ц╤П.</p>
++            </div>
+           </div>
+           <div class="python-feature">
+             <div class="python-feature-icon">ЁЯдЦ</div>
+-            <h4>Telegram-╨▒╨╛╤В╨╕ ╤В╨░ ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╨╖╨░╤Ж╤Ц╤П</h4>
+-            <p>╨Э╨░╨┐╨╕╤И╤Ц╤В╤М ╨▒╨╛╤В╨░, ╤П╨║╨╕╨╣ ╨▓╨╕╨║╨╛╨╜╤Г╤Ф ╨║╨╛╤А╨╕╤Б╨╜╤Ц ╨╖╨░╨▓╨┤╨░╨╜╨╜╤П. ╨Я╨╛╨│╨╛╨▓╨╛╤А╤Ц╤В╤М ╨┐╤А╨╛ ╤В╨╡, ╤П╨║ ╤В╨╡╤Е╨╜╨╛╨╗╨╛╨│╤Ц╤П ╤Б╨╗╤Г╨╢╨╕╤В╤М ╨╗╤О╨┤╤П╨╝.</p>
++            <div class="feature-text">
++              <h4>Telegram-╨▒╨╛╤В╨╕ ╤В╨░ ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╨╖╨░╤Ж╤Ц╤П</h4>
++              <p>╨Э╨░╨┐╨╕╤И╤Ц╤В╤М ╨▒╨╛╤В╨░, ╤П╨║╨╕╨╣ ╨▓╨╕╨║╨╛╨╜╤Г╤Ф ╨║╨╛╤А╨╕╤Б╨╜╤Ц ╨╖╨░╨▓╨┤╨░╨╜╨╜╤П. ╨Я╨╛╨│╨╛╨▓╨╛╤А╤Ц╤В╤М ╨┐╤А╨╛ ╤В╨╡, ╤П╨║ ╤В╨╡╤Е╨╜╨╛╨╗╨╛╨│╤Ц╤П ╤Б╨╗╤Г╨╢╨╕╤В╤М ╨╗╤О╨┤╤П╨╝.</p>
++            </div>
+           </div>
+           <div class="python-feature">
+             <div class="python-feature-icon">ЁЯЪА</div>
+-            <h4>╨д╤Ц╨╜╨░╨╗╤М╨╜╨╕╨╣ ╨┐╤А╨╛╤Ф╨║╤В</h4>
+-            <p>╨б╤В╤Г╨┤╨╡╨╜╤В ╨╛╨▒╨╕╤А╨░╤Ф ╤Б╨▓╨╛╤Ф ╨╖╨░╨▓╨┤╨░╨╜╨╜╤П, ╤А╨╡╨░╨╗╤Ц╨╖╤Г╤Ф ╨╣╨╛╨│╨╛ ╨┐╤Ц╨┤ ╨║╨╡╤А╤Ц╨▓╨╜╨╕╤Ж╤В╨▓╨╛╨╝ ╨▓╨╕╨║╨╗╨░╨┤╨░╤З╨░ тАФ ╨▓╨╕╤Е╨╛╨┤╨╕╤В╤М ╨┐╨╛╤А╤В╤Д╨╛╨╗╤Ц╨╛.</p>
++            <div class="feature-text">
++              <h4>╨д╤Ц╨╜╨░╨╗╤М╨╜╨╕╨╣ ╨┐╤А╨╛╤Ф╨║╤В</h4>
++              <p>╨б╤В╤Г╨┤╨╡╨╜╤В ╨╛╨▒╨╕╤А╨░╤Ф ╤Б╨▓╨╛╤Ф ╨╖╨░╨▓╨┤╨░╨╜╨╜╤П, ╤А╨╡╨░╨╗╤Ц╨╖╤Г╤Ф ╨╣╨╛╨│╨╛ ╨┐╤Ц╨┤ ╨║╨╡╤А╤Ц╨▓╨╜╨╕╤Ж╤В╨▓╨╛╨╝ ╨▓╨╕╨║╨╗╨░╨┤╨░╤З╨░ тАФ ╨▓╨╕╤Е╨╛╨┤╨╕╤В╤М ╨┐╨╛╤А╤В╤Д╨╛╨╗╤Ц╨╛.</p>
++            </div>
+           </div>
+         </div>
+       </div>
+@@ -364,7 +380,7 @@
+           <div class="stats__card-label" data-ru="╨С╨╛╨╗╤М╤И╨╕╤Е ╨┐╤А╨╛╨╡╨║╤В╨╛╨▓">╨Т╨╡╨╗╨╕╨║╨╕╤Е ╨┐╤А╨╛╤Ф╨║╤В╤Ц╨▓</div>
+           <div class="stats__card-desc" data-ru="╨Ю╤В ╨┐╤А╨╛╤Б╤В╤Л╤Е ╨╕╨│╤А ╨┤╨╛ Telegram-╨▒╨╛╤В╨╛╨▓">╨Т╤Ц╨┤ ╨┐╤А╨╛╤Б╤В╨╕╤Е ╤Ц╨│╨╛╤А ╨┤╨╛ Telegram-╨▒╨╛╤В╤Ц╨▓</div>
+         </div>
+-        <div class="stats__card-tags"><span>Pygame</span><span>Bots</span><span>Automation</span><span>Web</span></div>
++        <div class="stats__card-tags"><span>Pygame</span><span>Bots</span><span>Automation</span><span>Python</span></div>
+       </div>
+       <div class="stats__card">
+         <div class="stats__card-top"><div class="stats__card-icon stats__card-icon--green">тЭдя╕П</div></div>
+@@ -484,34 +500,34 @@
+   </div>
+ </section>
+ 
+-<!-- ========== PAIN POINTS тАФ why parents choose us ========== -->
++<!-- ========== PAIN POINTS тАФ why parents choose us (moved up) ========== -->
+ <section class="pain-points" id="pain-points">
+   <div class="container">
+     <div class="section-header">
+       <div class="section-badge" data-ru="╨Я╤А╨╛╨▒╨╗╨╡╨╝╤Л ╤А╨╛╨┤╨╕╤В╨╡╨╗╨╡╨╣">╨Я╤А╨╛╨▒╨╗╨╡╨╝╨╕ ╨▒╨░╤В╤М╨║╤Ц╨▓</div>
+-      <h2 class="section-title" data-ru="╨Я╨╛╤З╨╡╨╝╤Г ╨┤╨╡╤В╨╕ ╨╜╤Г╨╢╨┤╨░╤О╤В╤Б╤П ╨▓ Python">╨з╨╛╨╝╤Г ╨┤╤Ц╤В╤П╨╝ ╨┐╨╛╤В╤А╤Ц╨▒╨╜╨░ Python?</h2>
+-      <p class="section-subtitle" data-ru="╨Ь╨╜╨╛╨│╨╕╨╡ ╤А╨╛╨┤╨╕╤В╨╡╨╗╨╕ ╤Б╤В╨░╨╗╨║╨╕╨▓╨░╤О╤В╤Б╤П ╤Б ╤Н╤В╨╕╨╝╨╕ ╨▓╤Л╨╖╨╛╨▓╨░╨╝╨╕">╨Ф╤Ц╨╖╨╜╨░╨╣╤В╨╡╤Б╤П, ╤П╨║ ╨╜╨░╤И ╨║╤Г╤А╤Б ╨▓╨╕╤А╤Ц╤И╤Г╤Ф ╨│╨╛╨╗╨╛╨▓╨╜╤Ц ╨┐╤А╨╛╨▒╨╗╨╡╨╝╨╕ ╨▒╨░╤В╤М╨║╤Ц╨▓</p>
++      <h2 class="section-title" data-ru="╨Я╨╛╤З╨╡╨╝╤Г ╨┤╨╡╤В╨╕ ╨╜╤Г╨╢╨┤╨░╤О╤В╤Б╤П ╨▓ Python">╨з╨╛╨╝╤Г Python ╨▓╨░╨╢╨╗╨╕╨▓╨╕╨╣ ╨┤╨╗╤П ╨┤╨╕╤В╨╕╨╜╨╕</h2>
++      <p class="section-subtitle" data-ru="╨Ь╨╜╨╛╨│╨╕╨╡ ╤А╨╛╨┤╨╕╤В╨╡╨╗╨╕ ╤Б╤В╨░╨╗╨║╨╕╨▓╨░╤О╤В╤Б╤П ╤Б ╤Н╤В╨╕╨╝╨╕ ╨▓╤Л╨╖╨╛╨▓╨░╨╝╨╕">╨Ь╨╕ ╨┤╨╛╨┐╨╛╨╝╨░╨│╨░╤Ф╨╝╨╛ ╤Б╨┐╤А╤П╨╝╤Г╨▓╨░╤В╨╕ ╤Ц╨╜╤В╨╡╤А╨╡╤Б ╨┤╨╕╤В╨╕╨╜╨╕ ╨▓ ╨║╨╛╤А╨╕╤Б╨╜╨╡ ╤А╤Г╤Б╨╗╨╛ тАФ ╨╜╨░╨▓╤З╨░╤В╨╕ ╤З╨╡╤А╨╡╨╖ ╨┐╤А╨╛╤Ф╨║╤В╨╕ ╤В╨░ ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨╕.</p>
+     </div>
+     <div class="pain-points-grid">
+       <div class="pain-point-card">
+         <div class="pain-icon">ЁЯЦея╕П</div>
+-        <h3>╨а╨╡╨▒╤С╨╜╨╛╨║ ╨╝╨╜╨╛╨│╨╛ ╤З╨░╤Б╨╛╨▓ ╨╖╨░ ╨║╨╛╨╝╨┐╤М╤О╤В╨╡╤А╨╛╨╝ ╨▒╨╡╨╖ ╨┐╨╛╨╗╤М╨╖╤Л</h3>
+-        <p>╨г ╨╜╨░╤Б ╨┤╨╕╤В╨╕╨╜╨░ ╨╜╨░╨┐╤А╨░╨▓╨╗╤П╤Ф ╤Ж╨╡╨╣ ╤З╨░╤Б ╨╜╨░ ╤А╨╛╨╖╨▓╨╕╤В╨╛╨║ ╤А╨╡╨░╨╗╤М╨╜╨╕╤Е ╨╜╨░╨▓╨╕╤З╨╛╨║ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П, ╤П╨║╤Ц ╨╝╨░╤О╤В╤М ╨┐╨╛╨┐╨╕╤В ╨╜╨░ ╤А╨╕╨╜╨║╤Г ╨┐╤А╨░╤Ж╤Ц.</p>
++        <h3>╨Ф╨╕╤В╨╕╨╜╨░ ╨▒╨░╨│╨░╤В╨╛ ╤З╨░╤Б╤Г ╨┐╤А╨╛╨▓╨╛╨┤╨╕╤В╤М ╨╖╨░ ╨║╨╛╨╝╨┐'╤О╤В╨╡╤А╨╛╨╝ ╨▒╨╡╨╖ ╨║╨╛╤А╨╕╤Б╤В╤Ц</h3>
++        <p>╨Я╨╡╤А╨╡╤В╨▓╨╛╤А╤О╤Ф╨╝╨╛ ╨╡╨║╤А╨░╨╜╨╜╨╕╨╣ ╤З╨░╤Б ╨╜╨░ ╤А╨╛╨╖╨▓╨╕╤В╨╛╨║: ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨░╤Ф ╨║╨╛╨╜╨║╤А╨╡╤В╨╜╤Ц ╨╜╨░╨▓╨╕╤З╨║╨╕ ╨╣ ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨╕.</p>
+       </div>
+       <div class="pain-point-card">
+         <div class="pain-icon">ЁЯдФ</div>
+-        <h3>╨ж╤Ц╨║╨░╨▓╨╕╤В╤М╤Б╤П ╤В╨╡╤Е╨╜╨╛╨╗╨╛╨│╤Ц╤П╨╝╨╕, ╨░╨╗╨╡ ╨╜╨╡ ╨╖╨╜╨░╤Ф, ╨╖ ╤З╨╛╨│╨╛ ╤А╨╛╨╖╨┐╨╛╤З╨░╤В╨╕</h3>
+-        <p>Python тАФ ╤Ц╨┤╨╡╨░╨╗╤М╨╜╨░ ╤В╨╛╤З╨║╨░ ╨▓╤Е╨╛╨┤╤Г. ╨б╨╕╨╜╤В╨░╨║╤Б╨╕╤Б ╨┐╤А╨╛╤Б╤В╨╕╨╣, ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨╕ ╨▓╨╕╨┤╨╜╨╛ ╤И╨▓╨╕╨┤╨║╨╛. ╨Ю╤В ╤Ц ╨┐╨╡╤А╤И╤Ц ╨┐╤А╨╛╤Ф╨║╤В╨╕!</p>
++        <h3>╨ж╤Ц╨║╨░╨▓╨╕╤В╤М╤Б╤П ╤В╨╡╤Е╨╜╨╛╨╗╨╛╨│╤Ц╤П╨╝╨╕, ╨░╨╗╨╡ ╨╜╨╡ ╨╖╨╜╨░╤Ф, ╨╖ ╤З╨╛╨│╨╛ ╨┐╨╛╤З╨░╤В╨╕</h3>
++        <p>Python тАФ ╨╗╨╛╨│╤Ц╤З╨╜╨░ ╤В╨░ ╨┤╤А╤Г╨╢╨╜╤П ╨╝╨╛╨▓╨░ ╨┤╨╗╤П ╤Б╤В╨░╤А╤В╤Г: ╤И╨▓╨╕╨┤╨║╤Ц ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В╨╕ ╨╝╨╛╤В╨╕╨▓╤Г╤О╤В╤М ╨┐╤А╨╛╨┤╨╛╨▓╨╢╤Г╨▓╨░╤В╨╕.</p>
+       </div>
+       <div class="pain-point-card">
+-        <div class="pain-icon">ЁЯШС</div>
+-        <h3>╨и╨▓╨╕╨┤╨║╨╛ ╨▓╤В╤А╨░╤З╨░╤Ф ╤Ц╨╜╤В╨╡╤А╨╡╤Б ╨┤╨╛ ╨║╤А╤Г╨╢╨║╤Ц╨▓</h3>
+-        <p>╨г ╨╜╨░╤Б ╨║╨╛╨╢╨╜╨╡ ╨╖╨░╨╜╤П╤В╤В╤П тАФ ╤Ж╨╡ ╨╜╨╛╨▓╤Ц ╨┐╤А╨╛╤Ф╨║╤В╨╕: ╤Ц╨│╤А╨╕, ╨▒╨╛╤В╨╕, ╨░╨╜╤Ц╨╝╨░╤Ж╤Ц╤П. ╨Ф╨╕╤В╨╕╨╜╨░ ╨▒╨░╤З╨╕╤В╤М ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В, ╤Е╨╛╤З╨╡ ╨▒╤Ц╨╗╤М╤И╨╡.</p>
++        <div class="pain-icon">ЁЯОп</div>
++        <h3>╨Т╤В╤А╨░╤В╨░ ╤Ц╨╜╤В╨╡╤А╨╡╤Б╤Г ╨┤╨╛ ╨╖╨░╨╜╤П╤В╤М</h3>
++        <p>╨Ъ╨╛╨╢╨╡╨╜ ╨║╤Г╤А╤Б тАФ ╤Б╨╡╤А╤Ц╤П ╨┐╤А╨╛╤Ф╨║╤В╤Ц╨▓ (╤Ц╨│╤А╨╕, ╨▒╨╛╤В╨╕, ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╨╖╨░╤Ж╤Ц╤П). ╨Ф╨╕╤В╨╕╨╜╨░ ╨▒╨░╤З╨╕╤В╤М ╤А╨╡╨╖╤Г╨╗╤М╤В╨░╤В ╨┐╤Ц╤Б╨╗╤П ╨║╨╛╨╢╨╜╨╛╨│╨╛ ╨╖╨░╨╜╤П╤В╤В╤П.</p>
+       </div>
+       <div class="pain-point-card">
+         <div class="pain-icon">тП░</div>
+-        <h3>╨Ю╤Д╨╗╨░╨╣╨╜-╨╖╨░╨╜╤П╤В╤В╤П ╨╜╨╡╤Г╨┤╨╛╨▒╨╜╤Л, ╤З╨╡╤А╨│╤Г╨▓╨░╨╜╨╜╤П ╨╜╤Г╨┤╨╜╨╡</h3>
+-        <p>╨Я╤А╨╛╨┐╨╛╨╜╤Г╤Ф╨╝╨╛ ╨│╤Ц╨▒╤А╨╕╨┤╨╜╨╕╨╣ ╤Д╨╛╤А╨╝╨░╤В: ╨╛╨╜╨╗╨░╨╣╨╜ ╨┐╨╛ ╨│╤А╨░╤Д╤Ц╨║╤Г ╨┤╨╕╤В╨╕╨╜╨╕ ╨░╨▒╨╛ ╨╛╤Д╨╗╨░╨╣╨╜ ╨│╤А╤Г╨┐╨╕ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц. ╨Т╨╕╨▒╨╕╤А╨░╨╣╤В╨╡ ╤Б╨░╨╝╨╕.</p>
++        <h3>╨Ю╤Д╨╗╨░╨╣╨╜ ╨╖╨░╨╜╤П╤В╤В╤П ╤Ц╨╜╨╛╨┤╤Ц ╨╜╨╡╨╖╤А╤Г╤З╨╜╤Ц</h3>
++        <p>╨У╤Ц╨▒╤А╨╕╨┤╨╜╨╕╨╣ ╤Д╨╛╤А╨╝╨░╤В: ╨╛╨╜╨╗╨░╨╣╨╜ ╨╖╤А╤Г╤З╨╜╤Ц╤И╨╡ ╨┤╨╗╤П ╤Б╤Ц╨╝'╤Ч, ╨╛╤Д╨╗╨░╨╣╨╜ тАФ ╨┤╨╗╤П ╨┐╤А╨░╨║╤В╨╕╨║╨╕. ╨Ю╨▒╨╕╤А╨░╨╣╤В╨╡ ╤Д╨╛╤А╨╝╨░╤В ╨┐╤Ц╨┤ ╨▓╨░╤И ╤А╨╛╨╖╨║╨╗╨░╨┤.</p>
+       </div>
+     </div>
+   </div>
+@@ -559,6 +575,17 @@
+             </div>
+           </div>
+         </div>
++        <div class="review-card">
++          <div class="review-card__stars">тШЕтШЕтШЕтШЕтШЕ</div>
++          <p class="review-card__text">╨Ф╨╕╤В╨╕╨╜╨░ ╨▓ ╨╖╨░╤Е╨▓╨░╤В╤Ц ╨▓╤Ц╨┤ ╨┐╨╡╤А╤И╨╛╨│╨╛ ╨╖╨░╨╜╤П╤В╤В╤П: ╨╝╨░╤В╨╡╤А╤Ц╨░╨╗ ╨┐╨╛╨┤╨░╨╜╨╕╨╣ ╨┐╤А╨╛╤Б╤В╨╛, ╨░ ╨┐╤А╨╛╤Ф╨║╤В╨╕ ╨╝╨╛╤В╨╕╨▓╤Г╤О╤В╤М. ╨Т╨╡╨╗╨╕╨║╨░ ╨▓╨┤╤П╤З╨╜╤Ц╤Б╤В╤М ╨║╨╛╨╝╨░╨╜╨┤╤Ц ╨▓╨╕╨║╨╗╨░╨┤╨░╤З╤Ц╨▓.</p>
++          <div class="review-card__author">
++            <div class="review-card__avatar">╨Ь.╨Ъ.</div>
++            <div>
++              <div class="review-card__name">╨Ь╨░╤А╤Ц╤П ╨Ъ╨╛╨▓╨░╨╗╨╡╨╜╨║╨╛</div>
++              <div class="review-card__meta">╨╝╨░╨╝╨░, ╨Ф╨╜╤Ц╨┐╤А╨╛</div>
++            </div>
++          </div>
++        </div>
+       </div>
+     </div>
+     <!-- Mobile dots -->
+@@ -581,7 +608,7 @@
+             <span data-ru="╨б ╨║╨░╨║╨╛╨│╨╛ ╨▓╨╛╨╖╤А╨░╤Б╤В╨░ ╨╝╨╛╨╢╨╜╨╛ ╨╜╨░╤З╨╕╨╜╨░╤В╤М?">╨Ч ╤П╨║╨╛╨│╨╛ ╨▓╤Ц╨║╤Г ╨╝╨╛╨╢╨╜╨░ ╨┐╨╛╤З╨╕╨╜╨░╤В╨╕?</span>
+             <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+           </button>
+-          <div class="faq-item__answer"><p data-ru="╨Я╤А╨╕╨╜╨╕╨╝╨░╨╡╨╝ ╨┤╨╡╤В╨╡╨╣ ╨╛╤В 6 ╨╗╨╡╤В. ╨Ф╨╗╤П ╨╝╨░╨╗╤Л╤И╨╡╨╣ тАФ Scratch, ╨┤╨╗╤П ╨┤╨╡╤В╨╡╨╣ ╨┐╨╛╤Б╤В╨░╤А╤И╨╡ (10+) тАФ Python, Roblox, Web. ╨Ъ╨╛╨╜╨║╤А╨╡╤В╨╜╤Л╨╣ ╨║╤Г╤А╤Б ╨┐╨╛╨┤╨▒╨╡╤А╤С╨╝ ╨╜╨░ ╨▒╨╡╤Б╨┐╨╗╨░╤В╨╜╨╛╨╣ ╨║╨╛╨╜╤Б╤Г╨╗╤М╤В╨░╤Ж╨╕╨╕.">╨Я╤А╨╕╨╣╨╝╨░╤Ф╨╝╨╛ ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╤А╨╛╨║╤Ц╨▓. ╨Ф╨╗╤П ╨╝╨░╨╗╤О╨║╤Ц╨▓ тАФ Scratch, ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤Б╤В╨░╤А╤И╨╛╨│╨╛ ╨▓╤Ц╨║╤Г (10+) тАФ Python, Roblox, Web. ╨Ъ╨╛╨╜╨║╤А╨╡╤В╨╜╨╕╨╣ ╨║╤Г╤А╤Б ╨┐╤Ц╨┤╨▒╨╡╤А╨╡╨╝╨╛ ╨╜╨░ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╤Ц╨╣ ╨║╨╛╨╜╤Б╤Г╨╗╤М╤В╨░╤Ж╤Ц╤Ч.</p></div>
++          <div class="faq-item__answer"><p data-ru="╨Я╤А╨╕╨╜╨╕╨╝╨░╨╡╨╝ ╨┤╨╡╤В╨╡╨╣ ╨╛╤В 6 ╨╗╨╡╤В. ╨Ф╨╗╤П ╨┤╨╡╤В╨╡╨╣ 10+ тАФ ╨║╤Г╤А╤Б Python ╤Б ╨┐╤А╨░╨║╤В╨╕╨║╨╛╨╣ ╨╕ ╨┐╤А╨╛╨╡╨║╤В╨░╨╝╨╕. ╨Ю╤Б╤В╨░╨▓╤М╤В╨╡ ╨╖╨░╤П╨▓╨║╤Г, ╨╝╤Л ╨┐╨╛╨┤╨▒╨╡╤А╤С╨╝ ╤Г╨┤╨╛╨▒╨╜╨╛╨╡ ╨▓╤А╨╡╨╝╤П.">╨Я╤А╨╕╨╣╨╝╨░╤Ф╨╝╨╛ ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╤А╨╛╨║╤Ц╨▓. ╨Ф╨╗╤П ╨┤╤Ц╤В╨╡╨╣ 10+ тАФ ╨║╤Г╤А╤Б Python ╨╖ ╨┐╤А╨░╨║╤В╨╕╨║╨╛╤О ╨╣ ╨┐╤А╨╛╤Ф╨║╤В╨░╨╝╨╕. ╨Ч╨░╨╗╨╕╤И ╨╖╨░╤П╨▓╨║╤Г, ╨╝╨╕ ╨┐╤Ц╨┤╨▒╨╡╤А╨╡╨╝╨╛ ╨╖╤А╤Г╤З╨╜╨╕╨╣ ╤З╨░╤Б.</p></div>
+         </div>
+         <div class="faq-item">
+           <button class="faq-item__question">
+@@ -660,9 +687,8 @@
+       <div class="contact__intro">
+         <h2 class="contact__title">
+           <span data-ru="╨Ч╨░╨┐╨╕╤И╨╕╤В╨╡╤Б╤М ╨╜╨░">╨Ч╨░╨┐╨╕╤И╤Ц╤В╤М╤Б╤П ╨╜╨░</span><br/>
+-          <span class="gradient-text" data-ru="╨┐╤А╨╛╨▒╨╜╤Л╨╣ ╤Г╤А╨╛╨║">╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║</span>
++          <span class="contact__highlight" data-ru="╨┐╤А╨╛╨▒╨╜╤Л╨╣ ╤Г╤А╨╛╨║">╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║</span>
+         </h2>
+-        <p class="contact__subtitle" data-ru="╨Ю╤Б╤В╨░╨▓╤М╤В╨╡ ╨╖╨░╤П╨▓╨║╤Г тАФ ╨┐╨╡╤А╨╡╨╖╨▓╨╛╨╜╨╕╨╝ ╨▓ ╤В╨╡╤З╨╡╨╜╨╕╨╡ 30 ╨╝╨╕╨╜╤Г╤В, ╨╖╨░╨┐╨╕╤И╨╡╨╝ ╤А╨╡╨▒╤С╨╜╨║╨░ ╨╜╨░ ╨▒╨╡╤Б╨┐╨╗╨░╤В╨╜╨╛╨╡ ╨┐╨╡╤А╨▓╨╛╨╡ ╨╖╨░╨╜╤П╤В╨╕╨╡.">╨Ч╨░╨╗╨╕╤И ╨╖╨░╤П╨▓╨║╤Г тАФ ╨┐╨╡╤А╨╡╨┤╨╖╨▓╨╛╨╜╨╕╨╝╨╛ ╨┐╤А╨╛╤В╤П╨│╨╛╨╝ 30 ╤Е╨▓╨╕╨╗╨╕╨╜, ╨╖╨░╨┐╨╕╤И╨╡╨╝╨╛ ╨┤╨╕╤В╨╕╨╜╤Г ╨╜╨░ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╡ ╨┐╨╡╤А╤И╨╡ ╨╖╨░╨╜╤П╤В╤В╤П.</p>
+       </div>
+ 
+       <!-- RIGHT: form -->
+@@ -679,14 +705,6 @@
+               <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18" />
+             </div>
+           </div>
+-          <div class="form-group">
+-            <label class="form-label" data-ru="╨Ъ╤Г╤А╤Б">╨Ъ╤Г╤А╤Б</label>
+-            <select class="form-input form-select" name="course">
+-              <option value="" disabled selected data-ru="╨Ъ╨░╨║╨╛╨╣ ╨║╤Г╤А╤Б ╨╕╨╜╤В╨╡╤А╨╡╤Б╤Г╨╡╤В?">╨п╨║╨╕╨╣ ╨║╤Г╤А╤Б ╤Ж╤Ц╨║╨░╨▓╨╕╤В╤М?</option>
+-              <option value="python"  data-ru="Python (10тАУ14 ╨╗╨╡╤В)">Python (10тАУ14 ╤А╨╛╨║╤Ц╨▓)</option>
+-              <option value="help"    data-ru="╨Я╨╛╨╝╨╛╨│╨╕╤В╨╡ ╨▓╤Л╨▒╤А╨░╤В╤М">╨Ф╨╛╨┐╨╛╨╝╨╛╨╢╤Ц╤В╤М ╨╛╨▒╤А╨░╤В╨╕</option>
+-            </select>
+-          </div>
+           <div class="form-group">
+             <label class="form-label" data-ru="╨Т╨░╤И ╤В╨╡╨╗╨╡╤Д╨╛╨╜">╨Т╨░╤И ╤В╨╡╨╗╨╡╤Д╨╛╨╜ *</label>
+             <div class="phone-wrap">
+@@ -706,11 +724,6 @@
+             </div>
+             <span class="field-error" aria-live="polite"></span>
+           </div>
+-          <div class="form-group">
+-            <label class="form-label" data-ru="╨Т╨░╤И email">╨Т╨░╤И email</label>
+-            <input type="email" class="form-input" name="email" placeholder="example@gmail.com" autocomplete="email" />
+-            <span class="field-error" aria-live="polite"></span>
+-          </div>
+           <button type="submit" class="btn btn--primary btn--full btn--lg" id="submitBtn">
+             <span class="btn-text" data-ru="╨Ч╨░╨┐╨╕╤Б╨░╤В╤М╤Б╤П ╨╜╨░ ╨┐╤А╨╛╨▒╨╜╤Л╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╤Б╨┐╨╗╨░╤В╨╜╨╛">╨Ч╨░╨┐╨╕╤Б╨░╤В╨╕╤Б╤П ╨╜╨░ ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛</span>
+             <span class="btn-loading" style="display:none" data-ru="╨Ю╤В╨┐╤А╨░╨▓╨║╨░...">╨Т╤Ц╨┤╨┐╤А╨░╨▓╨║╨░...</span>
+@@ -779,7 +792,7 @@
+ <!-- SEO text: hidden visually, visible to search engines -->
+ <div class="visually-hidden" aria-hidden="true">
+   <h2>╨и╨║╨╛╨╗╨░ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц тАФ My Computer Academy</h2>
+-  <p>My Computer Academy тАФ ╤Ж╨╡ ╨╛╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ ╤И╨║╨╛╨╗╨░ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╨┤╨╛ 16 ╤А╨╛╨║╤Ц╨▓ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц. Scratch, Python, Roblox Studio, ╨Т╨╡╨▒-╤А╨╛╨╖╤А╨╛╨▒╨║╨░ HTML CSS JS. ╨Я╨╡╤А╤И╨╕╨╣ ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛.</p>
++  <p>My Computer Academy тАФ ╤Ж╨╡ ╨╛╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ ╤И╨║╨╛╨╗╨░ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц. ╨д╨╛╨║╤Г╤Б ╨║╤Г╤А╤Б╤Г тАФ Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤В╨░ ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓: ╤Ц╨│╤А╨╕, ╨▒╨╛╤В╨╕, ╨░╨▓╤В╨╛╨╝╨░╤В╨╕╨╖╨░╤Ж╤Ц╤П. ╨Я╨╡╤А╤И╨╕╨╣ ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║ ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛.</p>
+ </div>
+ 
+ <!-- ========== COOKIE BANNER ========== -->
+@@ -810,7 +823,7 @@
+       "@id": "https://mycomputer.school/#organization",
+       "name": "My Computer Academy",
+       "alternateName": "╨Р╨║╨░╨┤╨╡╨╝╤Ц╤П My Computer",
+-      "description": "╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ ╤И╨║╨╛╨╗╨░ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╨┤╨╛ 16 ╤А╨╛╨║╤Ц╨▓ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц. ╨Ъ╤Г╤А╤Б╨╕ Scratch, Python, Roblox, ╨Т╨╡╨▒-╤А╨╛╨╖╤А╨╛╨▒╨║╨░.",
++      "description": "╨Ю╨╜╨╗╨░╨╣╨╜ ╤В╨░ ╨╛╤Д╨╗╨░╨╣╨╜ ╤И╨║╨╛╨╗╨░ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╨┤╨╛ 16 ╤А╨╛╨║╤Ц╨▓ ╤Г ╨Ф╨╜╤Ц╨┐╤А╤Ц. ╨Ю╤Б╨╜╨╛╨▓╨╜╨╕╨╣ ╨║╤Г╤А╤Б тАФ Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ ╤В╨░ ╨┐╤Ц╨┤╨╗╤Ц╤В╨║╤Ц╨▓.",
+       "url": "https://mycomputer.school",
+       "logo": "https://mycomputer.school/logo192.png",
+       "telephone": ["+380954624672", "+380682522876"],
+@@ -826,17 +839,8 @@
+       ],
+       "hasOfferCatalog": {
+         "@type": "OfferCatalog",
+-        "name": "╨Ъ╤Г╤А╤Б╨╕ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣",
++        "name": "╨Ъ╤Г╤А╤Б Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣",
+         "itemListElement": [
+-          {
+-            "@type": "Course",
+-            "name": "Scratch: ╨▓╤Ц╨╖╤Г╨░╨╗╤М╨╜╨╡ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П",
+-            "description": "╨Ъ╤Г╤А╤Б ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ 6тАУ10 ╤А╨╛╨║╤Ц╨▓. ╨б╤В╨▓╨╛╤А╨╡╨╜╨╜╤П ╤Ц╨│╨╛╤А ╤В╨░ ╨░╨╜╤Ц╨╝╨░╤Ж╤Ц╨╣ ╨╖╨░ ╨┤╨╛╨┐╨╛╨╝╨╛╨│╨╛╤О ╨▒╨╗╨╛╤З╨╜╨╛╨│╨╛ ╨║╨╛╨┤╤Г Scratch.",
+-            "provider": {"@id": "https://mycomputer.school/#organization"},
+-            "educationalLevel": "╨Я╨╛╤З╨░╤В╨║╨╛╨▓╨╕╨╣",
+-            "audience": {"@type": "Audience", "audienceType": "╨Ф╤Ц╤В╨╕ 6тАУ10 ╤А╨╛╨║╤Ц╨▓"},
+-            "timeRequired": "P3M"
+-          },
+           {
+             "@type": "Course",
+             "name": "Python ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣",
+@@ -845,24 +849,6 @@
+             "educationalLevel": "╨б╨╡╤А╨╡╨┤╨╜╤Ц╨╣",
+             "audience": {"@type": "Audience", "audienceType": "╨Ф╤Ц╤В╨╕ 10тАУ14 ╤А╨╛╨║╤Ц╨▓"},
+             "timeRequired": "P4M"
+-          },
+-          {
+-            "@type": "Course",
+-            "name": "Roblox Studio: ╤А╨╛╨╖╤А╨╛╨▒╨║╨░ ╤Ц╨│╨╛╤А",
+-            "description": "╨Ъ╤Г╤А╤Б ╤А╨╛╨╖╤А╨╛╨▒╨║╨╕ ╤Ц╨│╨╛╤А ╤Г Roblox Studio ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ 9тАУ14 ╤А╨╛╨║╤Ц╨▓. ╨Ь╨╛╨▓╨░ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П Lua, 3D-╨┤╨╕╨╖╨░╨╣╨╜.",
+-            "provider": {"@id": "https://mycomputer.school/#organization"},
+-            "educationalLevel": "╨Я╨╛╤З╨░╤В╨║╨╛╨▓╨╕╨╣",
+-            "audience": {"@type": "Audience", "audienceType": "╨Ф╤Ц╤В╨╕ 9тАУ14 ╤А╨╛╨║╤Ц╨▓"},
+-            "timeRequired": "P3M"
+-          },
+-          {
+-            "@type": "Course",
+-            "name": "╨Т╨╡╨▒-╤А╨╛╨╖╤А╨╛╨▒╨║╨░: HTML, CSS, JavaScript",
+-            "description": "╨Ъ╤Г╤А╤Б ╨▓╨╡╨▒-╤А╨╛╨╖╤А╨╛╨▒╨║╨╕ ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ 12тАУ16 ╤А╨╛╨║╤Ц╨▓. ╨б╤В╨▓╨╛╤А╨╡╨╜╨╜╤П ╤Б╨░╨╣╤В╤Ц╨▓ ╨╖ ╨╜╤Г╨╗╤П тАФ HTML5, CSS3, JavaScript.",
+-            "provider": {"@id": "https://mycomputer.school/#organization"},
+-            "educationalLevel": "╨б╨╡╤А╨╡╨┤╨╜╤Ц╨╣",
+-            "audience": {"@type": "Audience", "audienceType": "╨Ф╤Ц╤В╨╕ 12тАУ16 ╤А╨╛╨║╤Ц╨▓"},
+-            "timeRequired": "P5M"
+           }
+         ]
+       }
+@@ -873,7 +859,7 @@
+         {
+           "@type": "Question",
+           "name": "╨Ч ╤П╨║╨╛╨│╨╛ ╨▓╤Ц╨║╤Г ╨╝╨╛╨╢╨╜╨░ ╨┐╨╛╤З╨╕╨╜╨░╤В╨╕ ╨┐╤А╨╛╨│╤А╨░╨╝╤Г╨▓╨░╨╜╨╜╤П?",
+-          "acceptedAnswer": {"@type": "Answer", "text": "╨Я╤А╨╕╨╣╨╝╨░╤Ф╨╝╨╛ ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╤А╨╛╨║╤Ц╨▓. ╨Ф╨╗╤П ╨╝╨░╨╗╤О╨║╤Ц╨▓ тАФ Scratch, ╨┤╨╗╤П ╨┤╤Ц╤В╨╡╨╣ 10+ тАФ Python, Roblox, Web-╤А╨╛╨╖╤А╨╛╨▒╨║╨░."}
++          "acceptedAnswer": {"@type": "Answer", "text": "╨Я╤А╨╕╨╣╨╝╨░╤Ф╨╝╨╛ ╨┤╤Ц╤В╨╡╨╣ ╨▓╤Ц╨┤ 6 ╤А╨╛╨║╤Ц╨▓. ╨Ф╨╗╤П ╨┤╤Ц╤В╨╡╨╣ 10+ ╨┐╤А╨╛╨┐╨╛╨╜╤Г╤Ф╨╝╨╛ ╨║╤Г╤А╤Б Python ╨╖ ╨┐╤А╨░╨║╤В╨╕╤З╨╜╨╕╨╝╨╕ ╨┐╤А╨╛╤Ф╨║╤В╨░╨╝╨╕."}
+         },
+         {
+           "@type": "Question",
+@@ -911,10 +897,8 @@
+         <div class="footer__col">
+           <h4 data-ru="╨Ъ╤Г╤А╤Б╤Л">╨Ъ╤Г╤А╤Б╨╕</h4>
+           <ul>
+-            <li><a href="#courses" data-ru="Scratch (6тАУ10 ╨╗╨╡╤В)">Scratch (6тАУ10 ╤А╨╛╨║╤Ц╨▓)</a></li>
+             <li><a href="#courses" data-ru="Python (10тАУ14 ╨╗╨╡╤В)">Python (10тАУ14 ╤А╨╛╨║╤Ц╨▓)</a></li>
+-            <li><a href="#courses" data-ru="Roblox (9тАУ14 ╨╗╨╡╤В)">Roblox (9тАУ14 ╤А╨╛╨║╤Ц╨▓)</a></li>
+-            <li><a href="#courses" data-ru="Web-╤А╨░╨╖╤А╨░╨▒╨╛╤В╨║╨░">╨Т╨╡╨▒-╤А╨╛╨╖╤А╨╛╨▒╨║╨░</a></li>
++            <li><a href="#contact" data-ru="╨Ч╨░╨┐╨╕╤Б╨░╤В╤М╤Б╤П">╨Ч╨░╨┐╨╕╤Б╨░╤В╨╕╤Б╤П ╨╜╨░ ╨┐╤А╨╛╨▒╨╜╨╕╨╣ ╤Г╤А╨╛╨║</a></li>
+           </ul>
+         </div>
+         <div class="footer__col">
+@@ -998,17 +982,6 @@
+           <span class="field-error" aria-live="polite"></span>
+         </div>
+       </div>
+-      <div class="form-group">
+-        <label class="form-label" data-ru="╨Ъ╤Г╤А╤Б">╨Ъ╤Г╤А╤Б</label>
+-        <select class="form-input form-select" name="course">
+-          <option value="" disabled selected data-ru="╨Ъ╨░╨║╨╛╨╣ ╨║╤Г╤А╤Б ╨╕╨╜╤В╨╡╤А╨╡╤Б╤Г╨╡╤В?">╨п╨║╨╕╨╣ ╨║╤Г╤А╤Б ╤Ж╤Ц╨║╨░╨▓╨╕╤В╤М?</option>
+-          <option value="scratch" data-ru="Scratch (6тАУ10 ╨╗╨╡╤В)">Scratch (6тАУ10 ╤А╨╛╨║╤Ц╨▓)</option>
+-          <option value="python"  data-ru="Python (10тАУ14 ╨╗╨╡╤В)">Python (10тАУ14 ╤А╨╛╨║╤Ц╨▓)</option>
+-          <option value="roblox"  data-ru="Roblox (9тАУ14 ╨╗╨╡╤В)">Roblox (9тАУ14 ╤А╨╛╨║╤Ц╨▓)</option>
+-          <option value="web"     data-ru="Web-╤А╨░╨╖╤А╨░╨▒╨╛╤В╨║╨░ (12тАУ16 ╨╗╨╡╤В)">╨Т╨╡╨▒-╤А╨╛╨╖╤А╨╛╨▒╨║╨░ (12тАУ16 ╤А╨╛╨║╤Ц╨▓)</option>
+-          <option value="help"    data-ru="╨Я╨╛╨╝╨╛╨│╨╕╤В╨╡ ╨▓╤Л╨▒╤А╨░╤В╤М">╨Ф╨╛╨┐╨╛╨╝╨╛╨╢╤Ц╤В╤М ╨╛╨▒╤А╨░╤В╨╕</option>
+-        </select>
+-      </div>
+       <div class="form-group">
+         <label class="form-label" data-ru="╨Т╨░╤И ╤В╨╡╨╗╨╡╤Д╨╛╨╜">╨Т╨░╤И ╤В╨╡╨╗╨╡╤Д╨╛╨╜ *</label>
+         <div class="phone-wrap">
+@@ -1028,11 +1001,6 @@
+         </div>
+         <span class="field-error" aria-live="polite"></span>
+       </div>
+-      <div class="form-group">
+-        <label class="form-label" data-ru="╨Т╨░╤И email">╨Т╨░╤И email</label>
+-        <input type="email" class="form-input" name="email" placeholder="example@gmail.com" autocomplete="email" />
+-        <span class="field-error" aria-live="polite"></span>
+-      </div>
+       <button type="submit" class="btn btn--primary btn--full btn--lg" id="modalSubmitBtn">
+         <span class="btn-text" data-ru="╨Ч╨░╨┐╨╕╤Б╨░╤В╤М╤Б╤П ╨▒╨╡╤Б╨┐╨╗╨░╤В╨╜╨╛">╨Ч╨░╨┐╨╕╤Б╨░╤В╨╕╤Б╤П ╨▒╨╡╨╖╨║╨╛╤И╤В╨╛╨▓╨╜╨╛</span>
+         <span class="btn-loading" style="display:none" data-ru="╨Ю╤В╨┐╤А╨░╨▓╨║╨░...">╨Т╤Ц╨┤╨┐╤А╨░╨▓╨║╨░...</span>

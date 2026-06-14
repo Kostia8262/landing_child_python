@@ -1,4 +1,4 @@
-# SEO Keywords — My Computer Academy
+﻿# SEO Keywords — My Computer Academy
 
 > Дніпро, Україна | Children's coding school | Updated: 2026-06-08
 
@@ -176,4 +176,4 @@ Create supporting content that AI systems can cite:
 
 ---
 
-*Generated for My Computer Academy | mycomputer.education | Dnipro, Ukraine*
+*Generated for My Computer Academy | mycomputer.school | Dnipro, Ukraine*
