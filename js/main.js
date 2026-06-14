@@ -453,7 +453,7 @@ async function loadCourses() {
       const hStyle = hClass ? '' : `style="background:${esc(c.color || '#6C47FF')}"`;
       return `<div class="course-card" style="cursor:pointer" onclick="location.href='/courses/${esc(c.id)}'">
         <div class="course-card__header ${hClass}" ${hStyle}>
-          <div class="course-card__emoji">${c.emoji || ''}</div>
+          <div class="course-card__emoji">${esc(c.emoji || '')}</div>
           <div class="course-card__age-badge">${esc(c.age)}</div>
         </div>
         <div class="course-card__body">
@@ -462,7 +462,7 @@ async function loadCourses() {
           <div class="course-card__footer">
             <div class="course-card__info">
               <span>⏱ ${esc(c.duration)}</span>
-              <span>👥 Група до ${c.groupSize} осіб</span>
+              <span>👥 Група до ${esc(String(c.groupSize||''))} осіб</span>
             </div>
             <div style="display:flex;gap:8px;align-items:center">
               <a href="/courses/${esc(c.id)}" class="btn--ghost-sm" onclick="event.stopPropagation()">${currentLang === 'ru' ? 'Подробнее' : 'Детальніше'}</a>
@@ -481,7 +481,7 @@ async function loadCourses() {
     const navDrop = document.querySelector('#coursesNavItem .nav__dropdown');
     if (navDrop) {
       navDrop.innerHTML = active.map(c =>
-        `<a href="/courses/${esc(c.id)}"><span class="nav__dropdown-emoji">${c.emoji || ''}</span>${esc(c.name)}${c.age ? ` (${esc(c.age)})` : ''}</a>`
+        `<a href="/courses/${esc(c.id)}"><span class="nav__dropdown-emoji">${esc(c.emoji || '')}</span>${esc(c.name)}${c.age ? ` (${esc(c.age)})` : ''}</a>`
       ).join('');
     }
 
@@ -530,14 +530,14 @@ function renderPricing(cards) {
   if (!el || !cards.length) return;
   el.innerHTML = cards.map(c => `
     <div class="pricing-card${c.featured ? ' pricing-card--featured' : ''}">
-      <div class="pricing-card__badge">${t2(c.badge)}</div>
-      <h3 class="pricing-card__title">${t2(c.title)}</h3>
+      <div class="pricing-card__badge">${esc(t2(c.badge))}</div>
+      <h3 class="pricing-card__title">${esc(t2(c.title))}</h3>
       <ul class="pricing-card__features">
-        ${(c.features||[]).map(f => `<li>${t2(f)}</li>`).join('')}
+        ${(c.features||[]).map(f => `<li>${esc(t2(f))}</li>`).join('')}
       </ul>
       <div class="pricing-card__price">
         <div class="pricing-card__price-label">${t2({ua:'від',ru:'от'})}</div>
-        <div class="pricing-card__price-val">${c.price} <span>${t2(c.priceUnit)}</span>${c.oldPrice ? ` <del class="pricing-card__price-old">${c.oldPrice}</del>` : ''}</div>
+        <div class="pricing-card__price-val">${esc(String(c.price||''))} <span>${esc(t2(c.priceUnit))}</span>${c.oldPrice ? ` <del class="pricing-card__price-old">${esc(String(c.oldPrice))}</del>` : ''}</div>
       </div>
       <a href="#contact" class="pricing-card__btn open-modal">${t2({ua:'Записатись на пробне',ru:'Записаться на пробное'})}</a>
     </div>
@@ -551,18 +551,18 @@ function renderCourses(courses) {
   if (!el || !courses.length) return;
   el.innerHTML = courses.map(c => `
     <div class="course-card${c.popular ? ' course-card--popular' : ''}">
-      <div class="course-card__header ${c.headerClass}">
-        <div class="course-card__emoji">${c.emoji}</div>
-        <div class="course-card__age-badge">${t2(c.age)}</div>
+      <div class="course-card__header ${esc(c.headerClass||'')}">
+        <div class="course-card__emoji">${esc(c.emoji||'')}</div>
+        <div class="course-card__age-badge">${esc(t2(c.age))}</div>
       </div>
       <div class="course-card__body">
-        <h3 class="course-card__title">${t2(c.title)}</h3>
-        <p class="course-card__desc">${t2(c.desc)}</p>
-        <ul class="course-card__features">${(c.features||[]).map(f=>`<li>${t2(f)}</li>`).join('')}</ul>
+        <h3 class="course-card__title">${esc(t2(c.title))}</h3>
+        <p class="course-card__desc">${esc(t2(c.desc))}</p>
+        <ul class="course-card__features">${(c.features||[]).map(f=>`<li>${esc(t2(f))}</li>`).join('')}</ul>
         <div class="course-card__footer">
           <div class="course-card__info">
-            <span>${t2(c.duration)}</span>
-            <span>${t2(c.groupSize)}</span>
+            <span>${esc(t2(c.duration))}</span>
+            <span>${esc(t2(c.groupSize))}</span>
           </div>
           <a href="#" class="btn btn--primary btn--sm open-modal">${t2({ua:'Записатись',ru:'Записаться'})}</a>
         </div>
@@ -578,10 +578,10 @@ function renderFaq(items) {
   el.innerHTML = items.map(item => `
     <div class="faq-item">
       <button class="faq-item__question">
-        <span>${t2(item.question)}</span>
+        <span>${esc(t2(item.question))}</span>
         <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div class="faq-item__answer"><p>${t2(item.answer)}</p></div>
+      <div class="faq-item__answer"><p>${esc(t2(item.answer))}</p></div>
     </div>
   `).join('');
   // Re-attach FAQ accordion
@@ -615,9 +615,9 @@ async function loadArticles() {
     if (!active.length) { document.getElementById('articles')?.style.setProperty('display','none'); return; }
 
     slider.innerHTML = active.map(a => `
-      <a class="article-card" href="/articles/${a.slug}" aria-label="${esc(a.title)}">
+      <a class="article-card" href="/articles/${esc(a.slug)}" aria-label="${esc(a.title)}">
         <div class="article-card__top">
-          <span class="article-card__emoji">${a.coverEmoji || '📄'}</span>
+          <span class="article-card__emoji">${esc(a.coverEmoji || '📄')}</span>
           <span class="article-card__cat">${esc(a.category || '')}</span>
         </div>
         <div class="article-card__body">
@@ -644,7 +644,7 @@ async function loadArticles() {
   } catch(e) { /* silent fail */ }
 }
 
-function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function formatDate(d) { if (!d) return ''; try { return new Date(d).toLocaleDateString('uk-UA', {day:'numeric',month:'long',year:'numeric'}); } catch { return d; } }
 loadArticles();
 
