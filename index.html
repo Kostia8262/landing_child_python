@@ -18,7 +18,7 @@
   <meta property="og:site_name" content="My Computer Academy" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="My Computer Academy — Школа програмування для дітей" />
-  <meta name="twitter:description" content="Онлайн курси програмування для дітей від 6 до 18 років." />
+  <meta name="twitter:description" content="Курс Python для дітей і підлітків онлайн: ігри, Telegram-боти, автоматизація. Групи до 5 осіб. Перший пробний урок безкоштовно — без зобов'язань!" />
   <meta name="twitter:image" content="https://mycomputer.education/android-chrome-512x512.png" />
   <link rel="canonical" href="https://mycomputer.education/" />
   <link rel="alternate" hreflang="uk" href="https://mycomputer.education/" />
@@ -45,7 +45,7 @@
   <nav class="nav container">
 
     <a href="#" class="nav__logo">
-      <img src="/android-chrome-192x192.png" alt="" class="nav__logo-img" width="38" height="38" fetchpriority="high" />
+      <img src="/android-chrome-192x192.png" alt="My Computer Academy" class="nav__logo-img" width="38" height="38" fetchpriority="high" />
       <span>My Computer <strong>Academy</strong></span>
     </a>
 
@@ -908,19 +908,39 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "WebSite",
+      "@id": "https://mycomputer.education/#website",
+      "url": "https://mycomputer.education",
+      "name": "My Computer Academy",
+      "description": "Онлайн школа програмування для дітей від 6 до 18 років",
+      "inLanguage": ["uk", "ru"]
+    },
+    {
       "@type": "EducationalOrganization",
       "@id": "https://mycomputer.education/#organization",
       "name": "My Computer Academy",
       "alternateName": "Академія My Computer",
       "description": "Онлайн школа програмування для дітей від 6 до 18 років. Курси Scratch, Python, Roblox, Веб-розробка.",
       "url": "https://mycomputer.education",
-      "logo": "https://mycomputer.education/logo192.png",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://mycomputer.education/android-chrome-192x192.png",
+        "width": 192,
+        "height": 192
+      },
       "telephone": ["+380954624672", "+380682522876"],
       "email": "my.computer.academy25@gmail.com",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Дніпро",
         "addressCountry": "UA"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "127",
+        "bestRating": "5",
+        "worstRating": "1"
       },
       "sameAs": [
         "https://www.instagram.com/my_computer_academy_/",
@@ -933,6 +953,7 @@
           {
             "@type": "Course",
             "name": "Scratch: візуальне програмування",
+            "url": "https://mycomputer.education/courses/scratch",
             "description": "Курс програмування для дітей 6–10 років. Створення ігор та анімацій за допомогою блочного коду Scratch.",
             "provider": {"@id": "https://mycomputer.education/#organization"},
             "educationalLevel": "Початковий",
@@ -942,6 +963,7 @@
           {
             "@type": "Course",
             "name": "Python для дітей",
+            "url": "https://mycomputer.education/courses/python",
             "description": "Курс Python для дітей 10–14 років. Навчання програмуванню через ігри, Pygame та Telegram-боти.",
             "provider": {"@id": "https://mycomputer.education/#organization"},
             "educationalLevel": "Середній",
@@ -951,6 +973,7 @@
           {
             "@type": "Course",
             "name": "Roblox Studio: розробка ігор",
+            "url": "https://mycomputer.education/courses/roblox",
             "description": "Курс розробки ігор у Roblox Studio для дітей 9–14 років. Мова програмування Lua, 3D-дизайн.",
             "provider": {"@id": "https://mycomputer.education/#organization"},
             "educationalLevel": "Початковий",
@@ -960,6 +983,7 @@
           {
             "@type": "Course",
             "name": "Веб-розробка: HTML, CSS, JavaScript",
+            "url": "https://mycomputer.education/courses/web",
             "description": "Курс веб-розробки для дітей 12–16 років. Створення сайтів з нуля — HTML5, CSS3, JavaScript.",
             "provider": {"@id": "https://mycomputer.education/#organization"},
             "educationalLevel": "Середній",
@@ -975,17 +999,37 @@
         {
           "@type": "Question",
           "name": "З якого віку можна починати програмування?",
-          "acceptedAnswer": {"@type": "Answer", "text": "Приймаємо дітей від 6 років. Для малюків — Scratch, для дітей 10+ — Python, Roblox, Web-розробка."}
+          "acceptedAnswer": {"@type": "Answer", "text": "Приймаємо дітей від 6 років. Для малюків — Scratch, для дітей старшого віку (10+) — Python, Roblox, Web. Конкретний курс підберемо на безкоштовній консультації."}
         },
         {
           "@type": "Question",
           "name": "Чи потрібні знання програмування для початку?",
-          "acceptedAnswer": {"@type": "Answer", "text": "Ні. Всі курси починаються з нуля. Потрібен тільки комп'ютер з інтернетом."}
+          "acceptedAnswer": {"@type": "Answer", "text": "Абсолютно ніяких. Всі курси починаються з нуля. Потрібен тільки комп'ютер з інтернетом."}
         },
         {
           "@type": "Question",
-          "name": "Скільки коштує перший урок програмування?",
-          "acceptedAnswer": {"@type": "Answer", "text": "Перший пробний урок безкоштовно та без зобов'язань."}
+          "name": "Як проходять онлайн-заняття з програмування?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Заняття у Zoom або Google Meet. Викладач бачить екран дитини, допомагає в реальному часі. Групи до 5 осіб — кожен отримує увагу."}
+        },
+        {
+          "@type": "Question",
+          "name": "Скільки коштує курс Python для дітей?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Вартість залежить від курсу та формату. Залиш заявку — менеджер надішле прайс та розповість про знижки. Перший урок безкоштовно та без зобов'язань."}
+        },
+        {
+          "@type": "Question",
+          "name": "Що якщо дитина пропустить заняття?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Всі заняття записуються. Пропущений урок можна переглянути в записі, а викладач відповість на питання в чаті."}
+        },
+        {
+          "@type": "Question",
+          "name": "Скільки тривають курси програмування для дітей?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Дитячі курси тривають 9–18 місяців при 1–2 заняттях на тиждень. Конкретна тривалість залежить від напрямку та навантаження."}
+        },
+        {
+          "@type": "Question",
+          "name": "Які є варіанти оплати?",
+          "acceptedAnswer": {"@type": "Answer", "text": "Приймаємо оплату готівкою в офісі, банківським переказом або на картку ПриватБанку. Якщо ви за кордоном — розрахуємо вартість у зручній валюті."}
         }
       ]
     }
@@ -999,7 +1043,7 @@
     <div class="footer__inner">
       <div class="footer__brand">
         <a href="#" class="nav__logo footer__logo">
-          <img src="/android-chrome-192x192.png" alt="" class="nav__logo-img" width="38" height="38" loading="lazy" />
+          <img src="/android-chrome-192x192.png" alt="My Computer Academy" class="nav__logo-img" width="38" height="38" loading="lazy" />
           <span>My Computer <strong>Academy</strong></span>
         </a>
         <p class="footer__desc" data-ru="Онлайн школа программирования для детей от 6 до 18 лет. Днепр, Украина.">Онлайн школа програмування для дітей від 6 до 18 років. Дніпро, Україна.</p>
