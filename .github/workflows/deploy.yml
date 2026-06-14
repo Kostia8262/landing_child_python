@@ -26,6 +26,6 @@ jobs:
           set net:timeout 60
           set net:max-retries 5
           open -u $FTP_USER,$FTP_PASS $FTP_HOST
-          mirror -R --delete --verbose=1 --exclude-glob .github/ --exclude-glob DEPLOY.md --exclude-glob AGENTS.md --exclude-glob CLAUDE.md --exclude-glob SKILLS.md --exclude-glob diff.txt --exclude-glob tests/ --exclude-glob seo/ . public_html/
+          mirror -R --delete --transfer-all --verbose=1 --exclude-glob .github/ --exclude-glob DEPLOY.md --exclude-glob AGENTS.md --exclude-glob CLAUDE.md --exclude-glob SKILLS.md --exclude-glob diff.txt --exclude-glob tests/ --exclude-glob seo/ . public_html/
           quit
           FTPEOF
