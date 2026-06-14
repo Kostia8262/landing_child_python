@@ -1,5 +1,5 @@
 # robots.txt — My Computer Academy
-# https://mycomputer.education
+# https://YOUR_DOMAIN
 
 # ── Allow all compliant crawlers ──────────────────────────────────────────────
 User-agent: *
@@ -22,4 +22,4 @@ User-agent: DotBot
 Disallow: /
 
 # ── Sitemap ───────────────────────────────────────────────────────────────────
-Sitemap: https://mycomputer.education/sitemap.xml
+Sitemap: https://YOUR_DOMAIN/sitemap.xml

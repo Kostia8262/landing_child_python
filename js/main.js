@@ -70,14 +70,6 @@ const navMenu = document.getElementById('navMenu');
 burger.addEventListener('click', () => {
   const isOpen = navMenu.classList.toggle('open');
   burger.setAttribute('aria-expanded', String(isOpen));
-  const bars = burger.querySelectorAll('span');
-  if (isOpen) {
-    bars[0].style.transform = 'translateY(7px) rotate(45deg)';
-    bars[1].style.opacity   = '0';
-    bars[2].style.transform = 'translateY(-7px) rotate(-45deg)';
-  } else {
-    bars.forEach(b => { b.style.transform = ''; b.style.opacity = ''; });
-  }
 });
 
 document.querySelectorAll('.nav__link').forEach(link => {
@@ -93,7 +85,6 @@ document.querySelectorAll('.nav__link').forEach(link => {
     }
     navMenu.classList.remove('open');
     burger.setAttribute('aria-expanded', 'false');
-    burger.querySelectorAll('span').forEach(b => { b.style.transform = ''; b.style.opacity = ''; });
   });
 });
 
