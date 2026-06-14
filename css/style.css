@@ -596,13 +596,18 @@ a{color:inherit;text-decoration:none}
 
   /* Stats */
   .stats__grid{grid-template-columns:1fr 1fr;gap:12px}
-  .stats__number{font-size:40px}
+  .stats__number{font-size:32px}
+  .stats__unit{font-size:20px}
+  .stats__card-label{font-size:14px}
+  .step__number{width:44px;height:44px;font-size:14px}
+  .step__content h3{font-size:15px}
+  .step__content p{font-size:13px}
 
   /* FIX 6: Reviews slider on mobile */
   .reviews__track{overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -24px;padding:0 24px}
   .reviews__track::-webkit-scrollbar{display:none}
-  .reviews__grid{display:flex;flex-wrap:nowrap;gap:14px;width:max-content}
-  .review-card{min-width:78vw;max-width:78vw;scroll-snap-align:start;flex-shrink:0}
+  .reviews__grid{display:flex;flex-wrap:nowrap;gap:14px;width:max-content;align-items:flex-start}
+  .review-card{min-width:78vw;max-width:78vw;scroll-snap-align:start;flex-shrink:0;height:auto}
   .reviews__dots{display:flex}
 
   /* FAQ */
@@ -799,8 +804,8 @@ body.modal-open{overflow:hidden}
   .benefit-card__icon{font-size:24px;margin-bottom:0;flex-shrink:0;margin-top:2px}
   .benefit-card h3{font-size:15px;margin-bottom:4px}
   .benefit-card p{font-size:13px;line-height:1.5}
-  .benefit-card--featured{display:block;padding:20px;border-radius:var(--r-md)}
-  .benefit-card--featured .benefit-card__icon{font-size:28px;margin-bottom:10px}
+  .benefit-card--featured{display:flex;align-items:flex-start;gap:14px;padding:20px;border-radius:var(--r-md)}
+  .benefit-card--featured .benefit-card__icon{font-size:28px;margin-bottom:0;flex-shrink:0;margin-top:2px}
 }
 
 /* ===================================================
