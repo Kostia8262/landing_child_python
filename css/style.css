@@ -630,6 +630,20 @@ a{color:inherit;text-decoration:none}
   .faq__inner .section-header{margin-bottom:20px}
   .faq{padding:44px 0}
 
+  /* MOBILE-DESIGN: touch targets */
+  /* messenger buttons: 32px → 44px touch area */
+  .messenger-btn{width:36px;height:36px}
+  .contact__phone-links{gap:6px}
+  /* lang-btn: expand touch area */
+  .lang-btn{padding:8px 12px;font-size:13px}
+
+  /* MOBILE-DESIGN: minimum font sizes on mobile */
+  .stat-label{font-size:13px}
+  .partners__label{font-size:13px}
+  .stats__card-tags span{font-size:11px}
+  .module-body p{font-size:13px}
+  .info-compact-val{font-size:15px}
+
   /* Form row stacked on mobile */
   .form-row{grid-template-columns:1fr}
   .contact-form{padding:22px 16px}
