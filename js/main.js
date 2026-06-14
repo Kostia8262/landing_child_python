@@ -48,7 +48,7 @@ function applyLang(lang) {
 cacheUaTexts();
 applyLang(currentLang);
 
-document.getElementById('langSwitcher').addEventListener('click', e => {
+document.addEventListener('click', e => {
   const btn = e.target.closest('.lang-btn');
   if (btn) applyLang(btn.dataset.lang);
 });

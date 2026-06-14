@@ -100,6 +100,7 @@ a{color:inherit;text-decoration:none}
 .lang-btn{background:none;border:none;cursor:pointer;font-family:var(--font);font-size:12px;font-weight:700;color:var(--color-text-muted);padding:4px 10px;border-radius:var(--r-full);transition:all var(--t);letter-spacing:.5px}
 .lang-btn.active{background:var(--color-primary);color:#fff;box-shadow:0 2px 8px rgba(108,71,255,.35)}
 .lang-divider{width:1px;height:14px;background:var(--color-border)}
+.nav__lang-mobile{display:none}
 
 .nav__burger{
   display:none;width:44px;height:44px;
@@ -584,13 +585,16 @@ a{color:inherit;text-decoration:none}
     display:block;transition:all var(--t);
   }
   .nav__menu.open .nav__link:hover{color:var(--color-primary);background:var(--color-primary-light)}
-  .nav__menu.open li:last-child .nav__link{
+  .nav__menu.open li:nth-last-child(2) .nav__link{
     margin-top:6px;
     background:var(--color-primary);color:#fff;
     text-align:center;font-weight:700;
     border-radius:var(--r-full);
     box-shadow:0 4px 14px rgba(108,71,255,.4);
   }
+  /* Mobile lang switcher in burger */
+  .nav__lang-mobile{display:block;padding:10px 14px 2px;border-top:1px solid rgba(108,71,255,.12);margin-top:6px}
+  .lang-switcher--burger{display:flex;justify-content:center;align-items:center;gap:10px}
   /* Dropdown inline in mobile menu */
   .nav__dropdown{
     position:static;transform:none!important;opacity:1;pointer-events:auto;
@@ -613,12 +617,6 @@ a{color:inherit;text-decoration:none}
   .hero__trust{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .trust-item{background:rgba(255,255,255,.75);backdrop-filter:blur(8px);border:1px solid rgba(108,71,255,.15);border-radius:var(--r-md);padding:10px 12px;font-size:12px}
   .trust-item:last-child{grid-column:1/3}
-  /* Mobile hero stats bar */
-  .hero__mobile-stats{display:flex;align-items:center;justify-content:space-around;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(108,71,255,.12);border-radius:var(--r-xl);padding:16px 20px;margin-top:20px;box-shadow:0 4px 24px rgba(108,71,255,.1)}
-  .hero__mstat{text-align:center;flex:1}
-  .hero__mstat-value{display:block;font-size:22px;font-weight:800;color:var(--color-primary);line-height:1;letter-spacing:-.02em}
-  .hero__mstat-label{display:block;font-size:11px;color:var(--color-text-2);font-weight:500;margin-top:3px}
-  .hero__mstat-sep{width:1px;height:36px;background:var(--color-border);flex-shrink:0}
 
   /* Benefits bento → 1 col */
   .benefits__bento{grid-template-columns:1fr}
