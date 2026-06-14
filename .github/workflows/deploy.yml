@@ -11,22 +11,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .env
-            DEPLOY.md
-            AGENTS.md
-            CLAUDE.md
-            SKILLS.md
-            diff.txt
-            tests/**
-            seo/**
+        run: |
+          lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
+            -e "
+            set ftp:passive-mode true;
+            set ssl:verify-certificate no;
+            set net:timeout 30;
+            set net:max-retries 3;
+            mirror -R --delete --verbose \
+              --exclude-glob .git \
+              --exclude-glob .github \
+              --exclude-glob node_modules \
+              --exclude-glob .env \
+              --exclude-glob DEPLOY.md \
+              --exclude-glob AGENTS.md \
+              --exclude-glob CLAUDE.md \
+              --exclude-glob SKILLS.md \
+              --exclude-glob diff.txt \
+              --exclude-glob tests \
+              --exclude-glob seo \
+              ./ public_html/;
+            quit" \
+            ${{ secrets.FTP_HOST }}
