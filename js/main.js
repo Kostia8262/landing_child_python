@@ -611,9 +611,9 @@ async function loadArticles() {
   const dotsEl = document.getElementById('articlesDots');
   if (!slider) return;
   try {
-    const res = await fetch('/api/articles');
+    const res = await fetch('/data/articles.json');
     if (!res.ok) return;
-    const { articles } = await res.json();
+    const articles = await res.json();
     const active = (articles || []).filter(a => a.active !== false).slice(0, 6);
     if (!active.length) { document.getElementById('articles')?.style.setProperty('display','none'); return; }
 

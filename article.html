@@ -182,9 +182,9 @@ async function init() {
   if (!slug) { showNotFound(); return; }
 
   try {
-    const res = await fetch('/api/articles');
+    const res = await fetch('/data/articles.json');
     if (!res.ok) { showNotFound(); return; }
-    const { articles } = await res.json();
+    const articles = await res.json();
     const article = articles.find(a => a.slug === slug && a.active !== false);
     if (!article) { showNotFound(); return; }
     renderArticle(article, articles.filter(a => a.active !== false && a.id !== article.id).slice(0, 4));
@@ -249,7 +249,7 @@ function showNotFound() {
 // ── FAQ loader ────────────────────────────────────────────────────────────────
 async function loadFaq() {
   try {
-    const res = await fetch('/api/content');
+    const res = await fetch('/data/content.json');
     if (!res.ok) return;
     const data = await res.json();
     const items = (data.faq || []).slice(0, 6);

@@ -49,4 +49,40 @@
     <priority>0.5</priority>
   </url>
 
+  <!-- Articles -->
+  <url>
+    <loc>https://mycomputer.school/articles/chomu-vchyty-dytynu-prohramuvanniu-2026</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.school/articles/scratch-dlia-ditei-6-10-rokiv</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.school/articles/python-dlia-pidlitkiv-vid-nulia-do-bota</loc>
+    <lastmod>2026-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.school/articles/roblox-studio-yak-hra-peretvoriuietsia-na-navchannia</loc>
+    <lastmod>2026-06-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://mycomputer.school/articles/onlain-chy-oflain-yake-navchannia-krasche</loc>
+    <lastmod>2026-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
