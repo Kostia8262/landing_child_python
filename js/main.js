@@ -400,6 +400,15 @@ async function submitLeadForm(formEl, submitBtnEl) {
       const p = wrap.querySelector('[name="phone"]');
       if (p) p.placeholder = '(0__) ___-__-__';
     });
+    // Push conversion event to GTM dataLayer
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event:      'generate_lead',
+      form_name:  formEl.id || 'lead_form',
+      child_name: data.child_name,
+      phone:      data.phone,
+    });
+
     showResultNotify(
       'success',
       currentLang === 'ua' ? 'Заявку прийнято!' : 'Заявка принята!',
