@@ -100,6 +100,8 @@ const modalClose    = document.getElementById('modalClose');
 function openModal() {
   modal.classList.add('open');
   document.body.classList.add('modal-open');
+  window._uxa = window._uxa || [];
+  _uxa.push(['trackPageEvent', 'cta_modal_open']);
   setTimeout(() => {
     const first = modal.querySelector('input:not([type="hidden"])');
     if (first) first.focus();
@@ -327,6 +329,8 @@ async function submitLeadForm(formEl, submitBtnEl) {
     event:     'generate_lead',
     form_name: formEl.id || 'lead_form',
   });
+  window._uxa = window._uxa || [];
+  _uxa.push(['trackPageEvent', 'lead_form_submitted']);
 
   // Build full phone: code + digits
   const codeEl   = formEl.querySelector('[name="phone_code"]');
@@ -400,6 +404,7 @@ async function submitLeadForm(formEl, submitBtnEl) {
       } catch (tgErr) { console.warn('Telegram error:', tgErr); }
     }
 
+    _uxa.push(['trackPageEvent', 'lead_form_success']);
     formEl.reset();
     clearAllErrors(formEl);
     // Reset phone placeholder after reset
@@ -894,3 +899,52 @@ function showToast(msg, type = 'success') {
   toastEl.classList.add('show');
   toastTimer = setTimeout(() => toastEl.classList.remove('show'), 4500);
 }
+
+/* ===================================================
+   CONTENTSQUARE — CUSTOM EVENTS
+   =================================================== */
+(function () {
+  window._uxa = window._uxa || [];
+
+  // Phone call clicks
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('a[href^="tel:"]')) {
+      _uxa.push(['trackPageEvent', 'phone_call_click']);
+    }
+  });
+
+  // Messenger clicks (WhatsApp / Viber / Telegram)
+  document.addEventListener('click', function (e) {
+    const a = e.target.closest('a');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (href.includes('whatsapp'))   _uxa.push(['trackPageEvent', 'messenger_click_whatsapp']);
+    else if (href.includes('viber')) _uxa.push(['trackPageEvent', 'messenger_click_viber']);
+    else if (href.includes('t.me'))  _uxa.push(['trackPageEvent', 'messenger_click_telegram']);
+  });
+
+  // Form start — first time user touches any field
+  const _formStarted = {};
+  document.querySelectorAll('#contactForm, #modalForm').forEach(function (form) {
+    form.addEventListener('focusin', function () {
+      if (!_formStarted[form.id]) {
+        _formStarted[form.id] = true;
+        _uxa.push(['trackPageEvent', 'form_start_' + (form.id || 'form')]);
+      }
+    });
+  });
+
+  // Scroll depth milestones
+  const _depthReached = {};
+  window.addEventListener('scroll', function () {
+    const scrolled = window.scrollY + window.innerHeight;
+    const total    = document.body.scrollHeight;
+    const pct      = Math.floor((scrolled / total) * 100);
+    [25, 50, 75, 90].forEach(function (d) {
+      if (!_depthReached[d] && pct >= d) {
+        _depthReached[d] = true;
+        _uxa.push(['trackPageEvent', 'scroll_depth_' + d]);
+      }
+    });
+  }, { passive: true });
+})();
