@@ -463,6 +463,8 @@ async function loadSiteContent() {
 }
 
 async function loadCourses() {
+  const el = document.getElementById('coursesGrid');
+  if (!el) return;
   try {
     const res = await fetch('/api/courses');
     if (!res.ok) return;
@@ -598,7 +600,6 @@ function renderFaq(items) {
 }
 
 // Load content on page start (after lang is applied)
-loadSiteContent();
 loadCourses();
 loadReviews();
 
@@ -710,6 +711,17 @@ async function loadReviews() {
   const grid   = document.getElementById('reviewsGrid');
   const dotsEl = document.getElementById('reviewsDots');
   if (!grid) return;
+
+  // Use existing static HTML — no API fetch needed on static site
+  const existingCards = grid.querySelectorAll('.review-card');
+  if (existingCards.length > 0) {
+    if (dotsEl) {
+      dotsEl.innerHTML = [...existingCards].map((_, i) =>
+        `<span class="reviews__dot${i === 0 ? ' active' : ''}"></span>`).join('');
+      attachDots(document.getElementById('reviewsTrack'), [...dotsEl.querySelectorAll('.reviews__dot')]);
+    }
+    return;
+  }
 
   const staticHTML = grid.innerHTML;
 
