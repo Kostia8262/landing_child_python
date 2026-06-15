@@ -546,7 +546,8 @@ a{color:inherit;text-decoration:none}
 
   /* Restored simple mobile menu */
   .nav__menu,
-  .nav__actions .nav__cta{display:none}
+  .nav__actions .nav__cta,
+  #langSwitcher{display:none}
   .nav__burger{display:flex}
 
   /* Logo — 2 lines on mobile */
@@ -708,7 +709,6 @@ a{color:inherit;text-decoration:none}
   .stats__grid{grid-template-columns:1fr}
   .footer__links{grid-template-columns:1fr}
   .partners__logos{gap:20px}
-  #langSwitcher{display:none}
   .benefits__grid{grid-template-columns:1fr}
 }
 
