@@ -16,7 +16,7 @@
 /* ===================================================
    CONFIGURATION
    =================================================== */
-const GOOGLE_SHEETS_URL  = ''; // 'https://script.google.com/macros/d/.../exec'
+const GOOGLE_SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbw5UVnNZV5C5G1GYQA_B7k4vYtYz86zFNozmnwa_T7LAz0cQrDo9DGxtgY_1Z0nIXtFzA/exec';
 const TELEGRAM_BOT_TOKEN = ''; // Отримати у @BotFather у Telegram
 const TELEGRAM_CHAT_ID   = ''; // ID вашого чату (наприклад: '123456789')
 
