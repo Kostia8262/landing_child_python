@@ -191,9 +191,59 @@ async function init() {
   } catch { showNotFound(); }
 }
 
+function injectArticleSchema(a) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": "https://mycomputer.school/articles/" + a.slug + "#article",
+        "headline": a.title,
+        "description": a.excerpt || a.title,
+        "image": "https://mycomputer.school/og-image.png",
+        "datePublished": a.publishedAt,
+        "dateModified": a.publishedAt,
+        "inLanguage": "uk",
+        "author": {
+          "@type": "Organization",
+          "@id": "https://mycomputer.school/#organization",
+          "name": a.author || "My Computer Academy"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "My Computer Academy",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://mycomputer.school/android-chrome-192x192.png",
+            "width": 192,
+            "height": 192
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://mycomputer.school/articles/" + a.slug
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Головна", "item": "https://mycomputer.school/"},
+          {"@type": "ListItem", "position": 2, "name": "Статті", "item": "https://mycomputer.school/#articles"},
+          {"@type": "ListItem", "position": 3, "name": a.title, "item": "https://mycomputer.school/articles/" + a.slug}
+        ]
+      }
+    ]
+  };
+  const el = document.createElement('script');
+  el.type = 'application/ld+json';
+  el.textContent = JSON.stringify(schema);
+  document.head.appendChild(el);
+}
+
 function renderArticle(a, related) {
   document.title = a.title + ' — My Computer Academy';
   document.getElementById('pageDesc')?.setAttribute('content', a.excerpt || a.title);
+  injectArticleSchema(a);
 
   document.getElementById('pageContent').innerHTML = `
     <section class="article-hero">

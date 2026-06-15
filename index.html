@@ -924,11 +924,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       "inLanguage": ["uk", "ru"]
     },
     {
-      "@type": "EducationalOrganization",
+      "@type": ["EducationalOrganization", "LocalBusiness"],
       "@id": "https://mycomputer.school/#organization",
       "name": "My Computer Academy",
-      "alternateName": "Академія My Computer",
-      "description": "Онлайн школа програмування для дітей від 6 до 18 років. Курси Scratch, Python, Roblox, Веб-розробка.",
+      "alternateName": "Академія Мій Комп'ютер",
+      "description": "Онлайн школа програмування для дітей від 6 до 18 років. Курси Scratch, Python, Roblox, Веб-розробка. Групи до 5 осіб. Перший урок безкоштовно.",
       "url": "https://mycomputer.school",
       "logo": {
         "@type": "ImageObject",
@@ -936,13 +936,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         "width": 192,
         "height": 192
       },
+      "image": "https://mycomputer.school/og-image.png",
       "telephone": ["+380954624672", "+380682522876"],
       "email": "my.computer.academy25@gmail.com",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Дніпро",
+        "addressRegion": "Дніпропетровська область",
         "addressCountry": "UA"
       },
+      "openingHoursSpecification": [
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "20:00"},
+        {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday"], "opens": "10:00", "closes": "18:00"}
+      ],
+      "priceRange": "$$",
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "4.9",
@@ -953,7 +960,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       "sameAs": [
         "https://www.instagram.com/my_computer_academy_/",
         "https://www.facebook.com/MyComputerAcademy.Dnipro"
-      ],
+      ]
+    },
+    {
+      "@type": ["EducationalOrganization", "LocalBusiness"],
+      "@id": "https://mycomputer.school/#office-budivelnykiv",
+      "name": "My Computer Academy — вул. Будівельників",
+      "parentOrganization": {"@id": "https://mycomputer.school/#organization"},
+      "url": "https://mycomputer.school",
+      "telephone": "+380954624672",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "вулиця Будівельників, 25",
+        "addressLocality": "Дніпро",
+        "postalCode": "49000",
+        "addressCountry": "UA"
+      }
+    },
+    {
+      "@type": ["EducationalOrganization", "LocalBusiness"],
+      "@id": "https://mycomputer.school/#office-polia",
+      "name": "My Computer Academy — просп. Олександра Поля",
+      "parentOrganization": {"@id": "https://mycomputer.school/#organization"},
+      "url": "https://mycomputer.school",
+      "telephone": "+380682522876",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "проспект Олександра Поля, 28А",
+        "addressLocality": "Дніпро",
+        "postalCode": "49001",
+        "addressCountry": "UA"
+      }
     },
     {
       "@type": "FAQPage",
