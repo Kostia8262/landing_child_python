@@ -357,11 +357,12 @@ async function submitLeadForm(formEl, submitBtnEl) {
       try {
         const gsParams = new URLSearchParams();
         gsParams.append('child_name', data.child_name);
-        gsParams.append('age', data.age);
-        gsParams.append('course', data.course);
-        gsParams.append('phone', data.phone);
-        gsParams.append('email', data.email);
-        await fetch(GOOGLE_SHEETS_URL, { method: 'POST', body: gsParams, mode: 'no-cors' });
+        gsParams.append('age',        data.age);
+        gsParams.append('course',     data.course);
+        gsParams.append('phone',      data.phone);
+        gsParams.append('email',      data.email);
+        // GET + no-cors is a "simple" request — no preflight, no redirect issues
+        await fetch(GOOGLE_SHEETS_URL + '?' + gsParams.toString(), { mode: 'no-cors' });
       } catch (gsErr) { console.warn('Google Sheets error:', gsErr); }
     }
 
