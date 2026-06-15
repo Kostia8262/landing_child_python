@@ -14,18 +14,22 @@
 })();
 
 /* ===================================================
-   CONFIGURATION — GOOGLE SHEETS INTEGRATION
+   CONFIGURATION
    =================================================== */
-// Вставьте URL вашего Google Apps Script Web App здесь:
-// Інструкція: див. GOOGLE-SHEETS-SETUP.md
-const GOOGLE_SHEETS_URL = ''; // Приклад: 'https://script.google.com/macros/d/...../usercontent/exec'
+const GOOGLE_SHEETS_URL  = ''; // 'https://script.google.com/macros/d/.../exec'
+const TELEGRAM_BOT_TOKEN = ''; // Отримати у @BotFather у Telegram
+const TELEGRAM_CHAT_ID   = ''; // ID вашого чату (наприклад: '123456789')
 
 /* ===================================================
-   i18n — редактируйте текст прямо в index.html:
-   • Украинский: текст внутри тега
-   • Русский: атрибут data-ru="..." на том же элементе
+   i18n
    =================================================== */
-let currentLang = localStorage.getItem('mca-lang') || 'ua';
+function detectInitialLang() {
+  const saved = localStorage.getItem('mca-lang');
+  if (saved) return saved;
+  const nav = (navigator.languages?.[0] || navigator.language || 'uk').toLowerCase();
+  return nav.startsWith('ru') ? 'ru' : 'ua';
+}
+let currentLang = detectInitialLang();
 
 function cacheUaTexts() {
   document.querySelectorAll('[data-ru]').forEach(el => {
@@ -73,16 +77,7 @@ burger.addEventListener('click', () => {
 });
 
 document.querySelectorAll('.nav__link').forEach(link => {
-  link.addEventListener('click', (e) => {
-    // Toggle courses dropdown on mobile / click; anchor links close menu
-    if (link.classList.contains('nav__link--drop')) {
-      const li = link.closest('.nav__has-dropdown');
-      if (window.innerWidth <= 768) {
-        e.preventDefault();
-        li.classList.toggle('open');
-        return;
-      }
-    }
+  link.addEventListener('click', () => {
     navMenu.classList.remove('open');
     burger.setAttribute('aria-expanded', 'false');
   });
@@ -358,7 +353,6 @@ async function submitLeadForm(formEl, submitBtnEl) {
   };
 
   try {
-    // Try Google Sheets first (if URL is configured)
     if (GOOGLE_SHEETS_URL && GOOGLE_SHEETS_URL.includes('script.google.com')) {
       try {
         const gsParams = new URLSearchParams();
@@ -370,15 +364,19 @@ async function submitLeadForm(formEl, submitBtnEl) {
         await fetch(GOOGLE_SHEETS_URL, { method: 'POST', body: gsParams });
       } catch (gsErr) { console.warn('Google Sheets error:', gsErr); }
     }
-    
-    // Fallback to local API (if available)
-    const res = await fetch('/api/leads', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(data),
-    }).catch(() => null);
 
-    if (res && !res.ok) throw new Error(`HTTP ${res.status}`);
+    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+      const msg = `🎓 Нова заявка!\n👤 ${data.child_name}\n📱 ${data.phone}` +
+        (data.age    ? `\n🎂 Вік: ${data.age}`    : '') +
+        (data.course ? `\n📚 Курс: ${data.course}` : '');
+      try {
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: msg }),
+        });
+      } catch (tgErr) { console.warn('Telegram error:', tgErr); }
+    }
 
     formEl.reset();
     clearAllErrors(formEl);
