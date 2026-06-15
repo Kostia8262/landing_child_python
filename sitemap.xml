@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
@@ -13,73 +13,41 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/"/>
   </url>
 
-  <!-- Course pages (both URL formats supported) -->
+  <!-- Course pages -->
   <url>
-    <loc>https://mycomputer.school/courses/scratch</loc>
-    <lastmod>2026-06-09</lastmod>
+    <loc>https://mycomputer.school/courses/scratch.html</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/scratch"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/scratch"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/scratch.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/scratch.html"/>
   </url>
 
   <url>
-    <loc>https://mycomputer.school/courses/python</loc>
-    <lastmod>2026-06-09</lastmod>
+    <loc>https://mycomputer.school/courses/python.html</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/python"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/python"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/python.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/python.html"/>
   </url>
 
   <url>
-    <loc>https://mycomputer.school/courses/roblox</loc>
-    <lastmod>2026-06-09</lastmod>
+    <loc>https://mycomputer.school/courses/roblox.html</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/roblox"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/roblox"/>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/roblox.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/roblox.html"/>
   </url>
 
   <url>
-    <loc>https://mycomputer.school/courses/web</loc>
-    <lastmod>2026-06-09</lastmod>
+    <loc>https://mycomputer.school/courses/web.html</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/web"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/web"/>
-  </url>
-
-  <!-- Blog / Articles -->
-  <url>
-    <loc>https://mycomputer.school/articles/chomu-vchyty-dytynu-prohramuvanniu-2026</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mycomputer.school/articles/scratch-dlia-ditei-6-10-rokiv</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mycomputer.school/articles/python-dlia-pidlitkiv-vid-nulia-do-bota</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mycomputer.school/articles/roblox-studio-yak-hra-peretvoriuietsia-na-navchannia</loc>
-    <lastmod>2026-06-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://mycomputer.school/articles/onlain-chy-oflain-yake-navchannia-krasche</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://mycomputer.school/courses/web.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mycomputer.school/courses/web.html"/>
   </url>
 
   <!-- Legal / policy pages -->
