@@ -344,8 +344,13 @@ async function submitLeadForm(formEl, submitBtnEl) {
         gsParams.append('course',     data.course);
         gsParams.append('phone',      data.phone);
         gsParams.append('email',      data.email);
-        // GET + no-cors is a "simple" request — no preflight, no redirect issues
-        await fetch(GOOGLE_SHEETS_URL + '?' + gsParams.toString(), { mode: 'no-cors' });
+        // Image pixel trick: follows GAS auth redirects, ignores CORS entirely
+        await new Promise(resolve => {
+          const img = new Image();
+          img.onload = img.onerror = resolve;
+          img.src = GOOGLE_SHEETS_URL + '?' + gsParams.toString();
+          setTimeout(resolve, 4000);
+        });
       } catch (gsErr) { console.warn('Google Sheets error:', gsErr); }
     }
 
