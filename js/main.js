@@ -338,19 +338,44 @@ async function submitLeadForm(formEl, submitBtnEl) {
   try {
     if (GOOGLE_SHEETS_URL && GOOGLE_SHEETS_URL.includes('script.google.com')) {
       try {
-        const gsParams = new URLSearchParams();
-        gsParams.append('token',      'mca_lead_2026');
-        gsParams.append('child_name', data.child_name);
-        gsParams.append('age',        data.age);
-        gsParams.append('course',     data.course);
-        gsParams.append('phone',      data.phone);
-        gsParams.append('email',      data.email);
-        // Image pixel trick: follows GAS auth redirects, ignores CORS entirely
+        // Hidden iframe form submit — follows all GAS redirects, no CORS issues
         await new Promise(resolve => {
-          const img = new Image();
-          img.onload = img.onerror = resolve;
-          img.src = GOOGLE_SHEETS_URL + '?' + gsParams.toString();
-          setTimeout(resolve, 4000);
+          const frameName = '_gas_' + Date.now();
+          const iframe = document.createElement('iframe');
+          iframe.name = frameName;
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+
+          const form = document.createElement('form');
+          form.method = 'GET';
+          form.action = GOOGLE_SHEETS_URL;
+          form.target = frameName;
+
+          [
+            ['token',      'mca_lead_2026'],
+            ['child_name', data.child_name],
+            ['age',        data.age],
+            ['course',     data.course],
+            ['phone',      data.phone],
+            ['email',      data.email],
+          ].forEach(([name, value]) => {
+            const inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = name; inp.value = value;
+            form.appendChild(inp);
+          });
+
+          document.body.appendChild(form);
+
+          const cleanup = () => {
+            try { document.body.removeChild(form); } catch(_) {}
+            try { document.body.removeChild(iframe); } catch(_) {}
+            resolve();
+          };
+
+          iframe.addEventListener('load', cleanup, { once: true });
+          setTimeout(cleanup, 5000);
+
+          form.submit();
         });
       } catch (gsErr) { console.warn('Google Sheets error:', gsErr); }
     }
