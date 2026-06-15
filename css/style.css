@@ -311,7 +311,7 @@ a{color:inherit;text-decoration:none}
    FIX 6: REVIEWS — slider on mobile
    =================================================== */
 .reviews{padding:88px 0;background:var(--color-bg-soft)}
-.reviews__track{overflow:visible;padding-top:4px;margin-top:-4px}
+.reviews__track{overflow:visible}
 .reviews__grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
 .review-card{background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--r-xl);padding:26px;transition:all var(--t)}
 .review-card:hover{box-shadow:var(--sh-md);border-color:var(--color-primary);transform:translateY(-2px)}
@@ -1122,6 +1122,6 @@ body.modal-open{overflow:hidden}
 .courses{content-visibility:auto;contain-intrinsic-size:0 900px}
 .how-it-works{content-visibility:auto;contain-intrinsic-size:0 480px}
 .stats{content-visibility:auto;contain-intrinsic-size:0 320px}
-.reviews{content-visibility:auto;contain-intrinsic-size:0 480px}
+.reviews{content-visibility:auto;contain-intrinsic-size:0 480px;overflow:visible}
 .faq{content-visibility:auto;contain-intrinsic-size:0 640px}
 .contact{content-visibility:auto;contain-intrinsic-size:0 680px}
