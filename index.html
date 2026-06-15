@@ -72,15 +72,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </a>
 
     <ul class="nav__menu" id="navMenu">
-      <li class="nav__has-dropdown">
-        <a href="#courses" class="nav__link nav__link--drop" data-ru="Подробнее о курсе">Детальніше про курс</a>
-        <div class="nav__dropdown">
-          <a href="courses/scratch.html" data-ru="Scratch (6–10 лет)"><span class="nav__dropdown-emoji">🐱</span>Scratch — 6–10 років</a>
-          <a href="courses/python.html"  data-ru="Python (10–14 лет)"><span class="nav__dropdown-emoji">🐍</span>Python — 10–14 років</a>
-          <a href="courses/roblox.html"  data-ru="Roblox (9–14 лет)"><span class="nav__dropdown-emoji">🎮</span>Roblox — 9–14 років</a>
-          <a href="courses/web.html"     data-ru="Веб-разработка"><span class="nav__dropdown-emoji">💻</span>Веб-розробка — 12–16 років</a>
-        </div>
-      </li>
+      <li><a href="#courses" class="nav__link" data-ru="Курсы">Курси</a></li>
       <li><a href="#how-it-works" class="nav__link" data-ru="Как это работает">Як це працює</a></li>
       <li><a href="#about"        class="nav__link" data-ru="О нас">Про нас</a></li>
       <li><a href="#reviews"      class="nav__link" data-ru="Отзывы">Відгуки</a></li>
@@ -812,7 +804,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18" />
             </div>
           </div>
-          <input type="hidden" name="course" value="help" />
           <div class="form-group">
             <label class="form-label" data-ru="Ваш телефон">Ваш телефон *</label>
             <div class="phone-wrap">
@@ -965,52 +956,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         "https://www.instagram.com/my_computer_academy_/",
         "https://www.facebook.com/MyComputerAcademy.Dnipro"
       ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Курси програмування для дітей",
-        "itemListElement": [
-          {
-            "@type": "Course",
-            "name": "Scratch: візуальне програмування",
-            "url": "https://mycomputer.school/courses/scratch.html",
-            "description": "Курс програмування для дітей 6–10 років. Створення ігор та анімацій за допомогою блочного коду Scratch.",
-            "provider": {"@id": "https://mycomputer.school/#organization"},
-            "educationalLevel": "Початковий",
-            "audience": {"@type": "Audience", "audienceType": "Діти 6–10 років"},
-            "timeRequired": "P3M"
-          },
-          {
-            "@type": "Course",
-            "name": "Python для дітей",
-            "url": "https://mycomputer.school/courses/python.html",
-            "description": "Курс Python для дітей 10–14 років. Навчання програмуванню через ігри, Pygame та Telegram-боти.",
-            "provider": {"@id": "https://mycomputer.school/#organization"},
-            "educationalLevel": "Середній",
-            "audience": {"@type": "Audience", "audienceType": "Діти 10–14 років"},
-            "timeRequired": "P4M"
-          },
-          {
-            "@type": "Course",
-            "name": "Roblox Studio: розробка ігор",
-            "url": "https://mycomputer.school/courses/roblox.html",
-            "description": "Курс розробки ігор у Roblox Studio для дітей 9–14 років. Мова програмування Lua, 3D-дизайн.",
-            "provider": {"@id": "https://mycomputer.school/#organization"},
-            "educationalLevel": "Початковий",
-            "audience": {"@type": "Audience", "audienceType": "Діти 9–14 років"},
-            "timeRequired": "P3M"
-          },
-          {
-            "@type": "Course",
-            "name": "Веб-розробка: HTML, CSS, JavaScript",
-            "url": "https://mycomputer.school/courses/web.html",
-            "description": "Курс веб-розробки для дітей 12–16 років. Створення сайтів з нуля — HTML5, CSS3, JavaScript.",
-            "provider": {"@id": "https://mycomputer.school/#organization"},
-            "educationalLevel": "Середній",
-            "audience": {"@type": "Audience", "audienceType": "Діти 12–16 років"},
-            "timeRequired": "P5M"
-          }
-        ]
-      }
     },
     {
       "@type": "FAQPage",
@@ -1162,17 +1107,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18" />
           <span class="field-error" aria-live="polite"></span>
         </div>
-      </div>
-      <div class="form-group" style="display:none">
-        <label class="form-label" data-ru="Курс">Курс</label>
-        <select class="form-input form-select" name="course">
-          <option value="" disabled selected data-ru="Какой курс интересует?">Який курс цікавить?</option>
-          <option value="scratch" data-ru="Scratch (6–10 лет)">Scratch (6–10 років)</option>
-          <option value="python"  data-ru="Python (10–14 лет)">Python (10–14 років)</option>
-          <option value="roblox"  data-ru="Roblox (9–14 лет)">Roblox (9–14 років)</option>
-          <option value="web"     data-ru="Web-разработка (12–16 лет)">Веб-розробка (12–16 років)</option>
-          <option value="help"    data-ru="Помогите выбрать">Допоможіть обрати</option>
-        </select>
       </div>
       <div class="form-group">
         <label class="form-label" data-ru="Ваш телефон">Ваш телефон *</label>

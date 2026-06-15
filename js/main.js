@@ -16,7 +16,7 @@
 /* ===================================================
    CONFIGURATION
    =================================================== */
-const GOOGLE_SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbw5UVnNZV5C5G1GYQA_B7k4vYtYz86zFNozmnwa_T7LAz0cQrDo9DGxtgY_1Z0nIXtFzA/exec';
+const GOOGLE_SHEETS_URL  = 'https://script.google.com/macros/s/AKfycbyH_g1d3HeslxdWBYxJZILtc0KLAJbpnMFuiqmWdUkafdmyJApESfGPULn0VvnVPdfaXw/exec';
 const TELEGRAM_BOT_TOKEN = ''; // Отримати у @BotFather у Telegram
 const TELEGRAM_CHAT_ID   = ''; // ID вашого чату (наприклад: '123456789')
 
@@ -97,15 +97,9 @@ const modal         = document.getElementById('signupModal');
 const modalBackdrop = document.getElementById('modalBackdrop');
 const modalClose    = document.getElementById('modalClose');
 
-function openModal(courseValue) {
+function openModal() {
   modal.classList.add('open');
   document.body.classList.add('modal-open');
-  // Pre-select course if provided
-  if (courseValue) {
-    const sel = modal.querySelector('select[name="course"]');
-    if (sel) sel.value = courseValue;
-  }
-  // Focus first input
   setTimeout(() => {
     const first = modal.querySelector('input:not([type="hidden"])');
     if (first) first.focus();
@@ -123,18 +117,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 
 // All "Записаться" buttons with .open-modal class
 document.querySelectorAll('.open-modal').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    // Try to detect course from nearest course card
-    const card  = btn.closest('.course-card');
-    const title = card?.querySelector('.course-card__title')?.textContent || '';
-    let course = '';
-    if (/scratch/i.test(title)) course = 'scratch';
-    else if (/python/i.test(title)) course = 'python';
-    else if (/roblox/i.test(title)) course = 'roblox';
-    else if (/web|веб/i.test(title)) course = 'web';
-    openModal(course);
-  });
+  btn.addEventListener('click', e => { e.preventDefault(); openModal(); });
 });
 
 /* ===================================================
@@ -454,7 +437,7 @@ async function loadCourses() {
     el.innerHTML = active.map(c => {
       const hClass = COLOR_CLASS[c.id] || '';
       const hStyle = hClass ? '' : `style="background:${esc(c.color || '#6C47FF')}"`;
-      return `<div class="course-card" style="cursor:pointer" onclick="location.href='/courses/${esc(c.id)}'">
+      return `<div class="course-card">
         <div class="course-card__header ${hClass}" ${hStyle}>
           <div class="course-card__emoji">${esc(c.emoji || '')}</div>
           <div class="course-card__age-badge">${esc(c.age)}</div>
@@ -467,36 +450,14 @@ async function loadCourses() {
               <span>⏱ ${esc(c.duration)}</span>
               <span>👥 Група до ${esc(String(c.groupSize||''))} осіб</span>
             </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <a href="/courses/${esc(c.id)}" class="btn--ghost-sm" onclick="event.stopPropagation()">${currentLang === 'ru' ? 'Подробнее' : 'Детальніше'}</a>
-              <a href="#" class="btn btn--primary btn--sm open-modal" data-course="${esc(c.id)}" onclick="event.stopPropagation()">${currentLang === 'ru' ? 'Записаться' : 'Записатись'}</a>
-            </div>
+            <a href="#" class="btn btn--primary btn--sm open-modal">${currentLang === 'ru' ? 'Записаться' : 'Записатись'}</a>
           </div>
         </div>
       </div>`;
     }).join('');
     el.querySelectorAll('.open-modal').forEach(btn => btn.addEventListener('click', e => {
-      e.preventDefault();
-      openModal(btn.dataset.course || '');
+      e.preventDefault(); openModal();
     }));
-
-    // Update nav dropdown
-    const navDrop = document.querySelector('#coursesNavItem .nav__dropdown');
-    if (navDrop) {
-      navDrop.innerHTML = active.map(c =>
-        `<a href="/courses/${esc(c.id)}"><span class="nav__dropdown-emoji">${esc(c.emoji || '')}</span>${esc(c.name)}${c.age ? ` (${esc(c.age)})` : ''}</a>`
-      ).join('');
-    }
-
-    // Update all course selects in forms (lead forms + modal)
-    const courseOpts = `<option value="" disabled selected>${currentLang === 'ru' ? 'Какой курс интересует?' : 'Який курс цікавить?'}</option>` +
-      active.map(c => `<option value="${esc(c.id)}">${c.emoji || ''} ${esc(c.name)}${c.age ? ` (${esc(c.age)})` : ''}</option>`).join('') +
-      `<option value="help">${currentLang === 'ru' ? 'Помогите выбрать' : 'Допоможіть обрати'}</option>`;
-    document.querySelectorAll('select[name="course"]').forEach(sel => {
-      const cur = sel.value;
-      sel.innerHTML = courseOpts;
-      if (cur && [...sel.options].some(o => o.value === cur)) sel.value = cur;
-    });
   } catch (e) { /* keep static fallback */ }
 }
 
@@ -572,7 +533,7 @@ function renderCourses(courses) {
       </div>
     </div>
   `).join('');
-  el.querySelectorAll('.open-modal').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); const card=btn.closest('.course-card'); const title=card?.querySelector('.course-card__title')?.textContent||''; let course=''; if(/scratch/i.test(title))course='scratch'; else if(/python/i.test(title))course='python'; else if(/roblox/i.test(title))course='roblox'; else if(/web|веб/i.test(title))course='web'; openModal(course); }));
+  el.querySelectorAll('.open-modal').forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); openModal(); }));
 }
 
 function renderFaq(items) {
