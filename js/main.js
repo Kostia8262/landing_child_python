@@ -361,7 +361,7 @@ async function submitLeadForm(formEl, submitBtnEl) {
         gsParams.append('course', data.course);
         gsParams.append('phone', data.phone);
         gsParams.append('email', data.email);
-        await fetch(GOOGLE_SHEETS_URL, { method: 'POST', body: gsParams });
+        await fetch(GOOGLE_SHEETS_URL, { method: 'POST', body: gsParams, mode: 'no-cors' });
       } catch (gsErr) { console.warn('Google Sheets error:', gsErr); }
     }
 
