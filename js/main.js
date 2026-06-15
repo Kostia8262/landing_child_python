@@ -339,6 +339,7 @@ async function submitLeadForm(formEl, submitBtnEl) {
     if (GOOGLE_SHEETS_URL && GOOGLE_SHEETS_URL.includes('script.google.com')) {
       try {
         const gsParams = new URLSearchParams();
+        gsParams.append('token',      'mca_lead_2026');
         gsParams.append('child_name', data.child_name);
         gsParams.append('age',        data.age);
         gsParams.append('course',     data.course);
