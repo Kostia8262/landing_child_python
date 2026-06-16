@@ -966,6 +966,7 @@ body.modal-open{overflow:hidden}
 .articles .section-header{position:relative;z-index:1}
 .articles .section-badge{background:rgba(108,71,255,.18);color:#A78BFA;border:1px solid rgba(108,71,255,.3)}
 .articles .section-title{color:#fff}
+.articles .section-desc{color:rgba(255,255,255,.55)}
 .articles__slider{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;position:relative;z-index:1}
 .article-card{display:flex;flex-direction:column;background:rgba(255,255,255,.04);border-radius:20px;overflow:hidden;border:1px solid var(--dark-border);text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
 .article-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.5);background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
