@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Всі статті про програмування для дітей — My Computer Academy</title>
+  <meta name="description" content="Корисні статті про програмування для дітей: Python, Scratch, Roblox, веб-розробка. Поради батькам і відповіді на запитання від My Computer Academy."/>
+  <link rel="canonical" href="https://mycomputer.school/articles"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="icon" href="/favicon.ico"/>
+  <style>
+    /* ── Listing hero ── */
+    .listing-hero{padding:calc(68px + 48px) 0 52px;background:linear-gradient(160deg,#0e0620 0%,#1e0d52 35%,#3d1a80 70%,#5b21b6 100%);position:relative;overflow:hidden;text-align:center}
+    .listing-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+    .listing-hero .container{position:relative;z-index:1}
+    .listing-breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;flex-wrap:wrap}
+    .listing-breadcrumb a{color:rgba(255,255,255,.75);font-weight:500;text-decoration:none}
+    .listing-breadcrumb a:hover{color:#fff}
+    .listing-breadcrumb-sep{opacity:.4}
+    .listing-hero__badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:13px;font-weight:700;padding:6px 16px;border-radius:100px;margin-bottom:16px}
+    .listing-hero__title{font-size:clamp(26px,5vw,44px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:10px}
+    .listing-hero__sub{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:32px}
+    .listing-search{display:flex;align-items:center;max-width:480px;margin:0 auto;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:100px;padding:4px 4px 4px 20px;backdrop-filter:blur(8px)}
+    .listing-search input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:15px;font-family:inherit;min-width:0;padding:8px 0}
+    .listing-search input::placeholder{color:rgba(255,255,255,.4)}
+    .listing-search-btn{flex-shrink:0;background:#fff;color:#6C47FF;border:none;padding:10px 22px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s,transform .15s}
+    .listing-search-btn:hover{background:#f0eeff;transform:scale(1.03)}
+    /* ── Filters ── */
+    .listing-filters{background:#0D0C1A;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:68px;z-index:90;padding:14px 0}
+    .listing-filters__inner{display:flex;align-items:center;gap:8px}
+    .filter-pill{display:inline-flex;align-items:center;gap:4px;padding:7px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.55);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit;line-height:1}
+    .filter-pill:hover{border-color:rgba(167,139,250,.45);color:#A78BFA}
+    .filter-pill.active{background:rgba(108,71,255,.22);border-color:rgba(167,139,250,.55);color:#A78BFA}
+    /* ── Grid ── */
+    .listing-body{background:#0D0C1A;padding:40px 0 88px;min-height:50vh}
+    .listing-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    .listing-count{font-size:13px;color:rgba(255,255,255,.35)}
+    .listing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .listing-empty{text-align:center;padding:80px 20px}
+    .listing-empty__icon{font-size:52px;margin-bottom:20px}
+    .listing-empty h3{font-size:20px;font-weight:800;color:rgba(255,255,255,.65);margin-bottom:8px}
+    .listing-empty p{font-size:14px;color:rgba(255,255,255,.35)}
+    @media(max-width:960px){.listing-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){
+      .listing-grid{grid-template-columns:1fr}
+      .listing-hero{padding:calc(68px + 28px) 0 40px}
+      .listing-filters__inner{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+      .listing-filters__inner::-webkit-scrollbar{display:none}
+    }
+    /* ── Modal ── */
+    .art-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+    .art-modal.open{opacity:1;pointer-events:all}
+    .art-modal__backdrop{position:absolute;inset:0;background:rgba(15,10,40,.55);backdrop-filter:blur(4px)}
+    .art-modal__dialog{position:relative;z-index:1;background:#fff;border-radius:24px;padding:36px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(108,71,255,.2);transform:translateY(16px);transition:transform .25s}
+    .art-modal.open .art-modal__dialog{transform:translateY(0)}
+    .art-modal__close{position:absolute;top:16px;right:16px;width:32px;height:32px;border:none;background:#f0eeff;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6C47FF;transition:background .2s}
+    .art-modal__close:hover{background:#e0d8ff}
+    .art-modal__badge{display:inline-flex;align-items:center;gap:6px;background:#f0eeff;color:#6C47FF;font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;margin-bottom:12px}
+    .art-modal__badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#22c55e;animation:blink 1.4s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+    .art-modal__title{font-size:22px;font-weight:800;color:#1a1a2e;margin-bottom:6px}
+    .art-modal__sub{font-size:14px;color:#666;margin-bottom:24px}
+    @media(max-width:540px){.art-modal__dialog{padding:24px 20px;border-radius:16px;max-width:calc(100% - 32px)}}
+  </style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="header" id="header">
+  <nav class="nav container">
+    <a href="/" class="nav__logo">
+      <img src="/android-chrome-192x192.png" alt="" class="nav__logo-img" width="38" height="38" fetchpriority="high"/>
+      <span>My Computer <strong>Academy</strong></span>
+    </a>
+    <ul class="nav__menu" id="navMenu">
+      <li><a href="/#courses" class="nav__link">Курси</a></li>
+      <li><a href="/#how-it-works" class="nav__link">Як це працює</a></li>
+      <li><a href="/#reviews" class="nav__link">Відгуки</a></li>
+      <li><a href="/#faq" class="nav__link">FAQ</a></li>
+    </ul>
+    <div class="nav__actions">
+      <a href="tel:+380954624672" class="nav__phone">+38 (095) 462-46-72</a>
+      <button type="button" class="btn btn--primary btn--sm nav__cta" onclick="openModal()">Записатись</button>
+    </div>
+    <button class="nav__burger" id="navBurger" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="listing-hero">
+  <div class="container">
+    <nav class="listing-breadcrumb" aria-label="Навігація">
+      <a href="/">Головна</a>
+      <span class="listing-breadcrumb-sep">›</span>
+      <span>Статті</span>
+    </nav>
+    <div class="listing-hero__badge">📚 Бібліотека статей</div>
+    <h1 class="listing-hero__title">Статті про програмування<br/>для дітей та батьків</h1>
+    <p class="listing-hero__sub" id="heroSub">Завантаження…</p>
+    <div class="listing-search">
+      <input type="search" id="searchInput" placeholder="Пошук за назвою або темою…" autocomplete="off" aria-label="Пошук статей"/>
+      <button class="listing-search-btn" onclick="applyFilters()">Знайти</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FILTERS ========== -->
+<div class="listing-filters">
+  <div class="container">
+    <div class="listing-filters__inner" id="filterPills">
+      <button class="filter-pill active" data-cat="" onclick="setFilter(this,'')">Всі</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== GRID ========== -->
+<section class="listing-body">
+  <div class="container">
+    <div class="listing-meta">
+      <span class="listing-count" id="listingCount"></span>
+    </div>
+    <div class="listing-grid" id="listingGrid"></div>
+    <div class="listing-empty" id="listingEmpty" style="display:none">
+      <div class="listing-empty__icon">🔍</div>
+      <h3>Нічого не знайдено</h3>
+      <p>Спробуйте змінити запит або вибрати іншу категорію</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <a href="/" class="nav__logo footer__logo">
+          <img src="/android-chrome-192x192.png" alt="My Computer Academy" class="nav__logo-img" width="38" height="38" loading="lazy"/>
+          <span>My Computer <strong>Academy</strong></span>
+        </a>
+        <p class="footer__desc">Онлайн школа програмування для дітей від 6 до 18 років. Дніпро, Україна.</p>
+        <div class="footer__social">
+          <a href="https://www.instagram.com/my_computer_academy_/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.facebook.com/MyComputerAcademy.Dnipro" target="_blank" rel="noopener" class="social-link" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          <a href="https://t.me/Artist8262" target="_blank" class="social-link" aria-label="Telegram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+      <div class="footer__links">
+        <div class="footer__col">
+          <h4>Курси</h4>
+          <ul>
+            <li><a href="#" onclick="openModal();return false;">Scratch (6–10 років)</a></li>
+            <li><a href="#" onclick="openModal();return false;">Python (7–18 років)</a></li>
+            <li><a href="#" onclick="openModal();return false;">Roblox (9–14 років)</a></li>
+            <li><a href="#" onclick="openModal();return false;">Веб-розробка (10–18 років)</a></li>
+            <li><a href="#" onclick="openModal();return false;">Minecraft (8–14 років)</a></li>
+            <li><a href="#" onclick="openModal();return false;">Веб-дизайн (6–18 років)</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Академія</h4>
+          <ul>
+            <li><a href="/#about">Про нас</a></li>
+            <li><a href="/#how-it-works">Як це працює</a></li>
+            <li><a href="/#reviews">Відгуки</a></li>
+            <li><a href="/#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Контакти</h4>
+          <ul>
+            <li><a href="tel:+380954624672">+38 (095) 462-46-72</a></li>
+            <li><a href="tel:+380682522876">+38 (068) 252-28-76</a></li>
+            <li><a href="mailto:my.computer.academy25@gmail.com">my.computer.academy25@gmail.com</a></li>
+            <li><a href="https://mycomputer.school" target="_blank">mycomputer.school</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer__payments">
+      <span class="footer__payments-label">Оплата:</span>
+      <div class="footer__payment-icons">
+        <span class="pay-badge">WayForPay</span>
+        <span class="pay-badge">Google Pay</span>
+        <span class="pay-badge">Apple Pay</span>
+        <span class="pay-badge">Visa</span>
+        <span class="pay-badge">Mastercard</span>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <a href="/docs/privacy-policy.html" target="_blank" rel="noopener">Політика конфіденційності</a>
+      <a href="/docs/public-offer.html"   target="_blank" rel="noopener">Публічна оферта</a>
+      <a href="/docs/terms.html"          target="_blank" rel="noopener">Правила та умови</a>
+      <a href="/docs/refund-policy.html"  target="_blank" rel="noopener">Правила повернення</a>
+      <a href="/docs/cookie-policy.html"  target="_blank" rel="noopener">Політика куків</a>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__bottom-left">
+        <p>© 2026 My Computer Academy. Всі права захищені.</p>
+        <p class="footer__fop">ФОП Піменов К.Ю., ІПН 3498404577, м. Дніпро, пр. О. Поля 28а,
+          <a href="tel:+380954624672">+38 (095) 462-46-72</a>,
+          <a href="mailto:my.computer.academy25@gmail.com">my.computer.academy25@gmail.com</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== MODAL ========== -->
+<div class="art-modal" id="artModal" role="dialog" aria-modal="true" aria-labelledby="artModalTitle">
+  <div class="art-modal__backdrop" id="artModalBackdrop"></div>
+  <div class="art-modal__dialog">
+    <button class="art-modal__close" id="artModalClose" aria-label="Закрити">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 2L2 12M2 2L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="art-modal__badge">Пробний урок безкоштовно</div>
+    <h3 class="art-modal__title" id="artModalTitle">Записатися на урок</h3>
+    <p class="art-modal__sub">Передзвонимо протягом 30 хвилин і підберемо зручний час.</p>
+    <form class="modal-form" id="artModalForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ім'я дитини *</label>
+          <input type="text" class="form-input" name="child_name" placeholder="Артем" autocomplete="off"/>
+          <span class="field-error" aria-live="polite"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Вік</label>
+          <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ваш телефон *</label>
+        <div class="phone-wrap">
+          <select class="form-input phone-code-sel" name="phone_code" aria-label="Код країни">
+            <option value="+380">🇺🇦 +380</option><option value="+48">🇵🇱 +48</option>
+            <option value="+49">🇩🇪 +49</option><option value="+420">🇨🇿 +420</option>
+            <option value="+44">🇬🇧 +44</option><option value="+1">🇺🇸 +1</option>
+            <option value="+972">🇮🇱 +972</option><option value="+33">🇫🇷 +33</option>
+          </select>
+          <input type="tel" class="form-input" name="phone" placeholder="(95) ___-__-__" autocomplete="tel"/>
+        </div>
+        <span class="field-error" aria-live="polite"></span>
+      </div>
+      <button type="submit" class="btn btn--primary btn--full btn--lg" id="artModalSubmit">
+        <span class="btn-text">Записатися безкоштовно</span>
+        <span class="btn-loading" style="display:none">Відправка...</span>
+      </button>
+      <p class="form-note">Натискаючи кнопку, ви погоджуєтесь з <a href="/docs/privacy-policy.html" target="_blank" rel="noopener">політикою конфіденційності</a>.</p>
+    </form>
+    <div class="form-success modal-success" id="artModalSuccess" style="display:none">
+      <div class="form-success__icon">🎉</div>
+      <h3>Заявку прийнято!</h3>
+      <p>Передзвонимо протягом 30 хвилин. Дитину чекає безкоштовний пробний урок!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ── Header scroll ─────────────────────────────────────────────────────────────
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+// ── Burger ────────────────────────────────────────────────────────────────────
+const burger = document.getElementById('navBurger');
+const navMenu = document.getElementById('navMenu');
+burger.addEventListener('click', () => {
+  const open = navMenu.classList.toggle('open');
+  burger.setAttribute('aria-expanded', String(open));
+});
+
+// ── Label map (same as main.js) ───────────────────────────────────────────────
+const LABEL_MAP = {
+  '🐍': {label:'Python',            cls:'cat-python',  cat:'Python'},
+  '🧩': {label:'Scratch',           cls:'cat-scratch', cat:'Scratch'},
+  '🎮': {label:'Roblox',            cls:'cat-roblox',  cat:'Roblox'},
+  '🌐': {label:'Веб-розробка',      cls:'cat-web',     cat:'Веб'},
+  '💡': {label:'Для батьків',       cls:'cat-parents', cat:'Батькам'},
+  '🧮': {label:'Математика і код',  cls:'cat-parents', cat:'Батькам'},
+  '🎯': {label:'Вибір курсу',       cls:'cat-tips',    cat:'Поради'},
+  '🔀': {label:'Scratch vs Python', cls:'cat-tips',    cat:'Поради'},
+  '💪': {label:'Мотивація',         cls:'cat-parents', cat:'Батькам'},
+  '🖥': {label:'Формат навчання',   cls:'cat-tips',    cat:'Поради'},
+};
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let ALL_ARTICLES = [];
+let activeFilter = '';
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function formatDate(d) {
+  if (!d) return '';
+  try { return new Date(d).toLocaleDateString('uk-UA',{day:'numeric',month:'long',year:'numeric'}); } catch { return d; }
+}
+function countLabel(str) {
+  return str === '1 стаття' ? str : (str === '' ? '' : str);
+}
+function pluralArticles(n) {
+  if (n === 0) return 'статей не знайдено';
+  const m = n % 10, m100 = n % 100;
+  if (m === 1 && m100 !== 11) return n + ' стаття';
+  if (m >= 2 && m <= 4 && (m100 < 10 || m100 >= 20)) return n + ' статті';
+  return n + ' статей';
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderCards(list) {
+  const grid  = document.getElementById('listingGrid');
+  const empty = document.getElementById('listingEmpty');
+  const count = document.getElementById('listingCount');
+
+  count.textContent = pluralArticles(list.length);
+
+  if (!list.length) {
+    grid.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = list.map(a => {
+    const lbl = LABEL_MAP[a.coverEmoji] || {label: esc(a.category||'стаття'), cls:''};
+    return `
+    <a class="article-card" href="/articles/${esc(a.slug)}" aria-label="${esc(a.title)}">
+      <div class="article-card__top">
+        <span class="article-card__emoji">${esc(a.coverEmoji||'📄')}</span>
+        <span class="article-card__cat ${lbl.cls}">${lbl.label}</span>
+      </div>
+      <div class="article-card__body">
+        <h2 class="article-card__title">${esc(a.title)}</h2>
+        <p class="article-card__excerpt">${esc(a.excerpt||'')}</p>
+      </div>
+      <div class="article-card__footer">
+        <span class="article-card__date">${formatDate(a.publishedAt)}</span>
+        <span class="article-card__read">Читати →</span>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+// ── Filter & search ───────────────────────────────────────────────────────────
+function applyFilters() {
+  const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+  let list = ALL_ARTICLES.filter(a => a.active !== false);
+
+  if (activeFilter) {
+    list = list.filter(a => {
+      const lbl = LABEL_MAP[a.coverEmoji];
+      return lbl && lbl.cat === activeFilter;
+    });
+  }
+  if (q) {
+    list = list.filter(a =>
+      (a.title||'').toLowerCase().includes(q) ||
+      (a.excerpt||'').toLowerCase().includes(q) ||
+      (a.category||'').toLowerCase().includes(q)
+    );
+  }
+  renderCards(list);
+}
+
+function setFilter(btn, cat) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = cat;
+  applyFilters();
+}
+
+// ── Build filter pills ────────────────────────────────────────────────────────
+function buildFilters(articles) {
+  const seen = new Set();
+  const cats = [];
+  articles.forEach(a => {
+    const lbl = LABEL_MAP[a.coverEmoji];
+    if (lbl && lbl.cat && !seen.has(lbl.cat)) {
+      seen.add(lbl.cat);
+      cats.push({cat: lbl.cat, emoji: a.coverEmoji});
+    }
+  });
+
+  const pillsEl = document.getElementById('filterPills');
+  cats.forEach(({cat, emoji}) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-pill';
+    btn.dataset.cat = cat;
+    btn.textContent = emoji + ' ' + cat;
+    btn.onclick = () => setFilter(btn, cat);
+    pillsEl.appendChild(btn);
+  });
+}
+
+// ── Load articles ─────────────────────────────────────────────────────────────
+async function init() {
+  try {
+    const res = await fetch('/data/articles.json');
+    if (!res.ok) throw new Error('fetch failed');
+    ALL_ARTICLES = await res.json();
+
+    const active = ALL_ARTICLES.filter(a => a.active !== false);
+    document.getElementById('heroSub').textContent =
+      pluralArticles(active.length) + ' — Python, Scratch, Roblox, веб-розробка та поради батькам';
+
+    buildFilters(active);
+    renderCards(active);
+  } catch {
+    document.getElementById('heroSub').textContent = 'Не вдалось завантажити статті';
+    document.getElementById('listingCount').textContent = '';
+  }
+}
+
+// Search on input (debounced)
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(applyFilters, 250);
+});
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { clearTimeout(searchTimer); applyFilters(); }
+});
+
+init();
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+const artModal    = document.getElementById('artModal');
+const artBackdrop = document.getElementById('artModalBackdrop');
+const artClose    = document.getElementById('artModalClose');
+
+function openModal() {
+  artModal.classList.add('open');
+  document.body.classList.add('modal-open');
+  const first = artModal.querySelector('input:not([type="hidden"])');
+  if (first) setTimeout(() => first.focus(), 80);
+}
+function closeModal() {
+  artModal.classList.remove('open');
+  document.body.classList.remove('modal-open');
+}
+artBackdrop.addEventListener('click', closeModal);
+artClose.addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Form ──────────────────────────────────────────────────────────────────────
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyiXop44yUyrE1EwWLvr3jzAg41VmRxN20raHe0NRo3uZWdk28mUck0EGVzVOG10OeJVw/exec';
+
+function getFieldError(inp){ return inp.parentElement?.querySelector('.field-error')||null; }
+function setFieldError(inp,msg){ inp.classList.add('form-input--error'); const e=getFieldError(inp); if(e) e.textContent=msg; }
+function clearFieldError(inp){ inp.classList.remove('form-input--error'); const e=getFieldError(inp); if(e) e.textContent=''; }
+
+function validateForm(form) {
+  let ok = true;
+  const name = form.querySelector('[name="child_name"]');
+  const phone = form.querySelector('[name="phone"]');
+  if (name && !name.value.trim()) { setFieldError(name, 'Введіть ім\'я дитини'); ok = false; }
+  if (phone && phone.value.replace(/\D/g,'').length < 7) { setFieldError(phone, 'Введіть номер телефону'); ok = false; }
+  return ok;
+}
+
+function applyPhoneMask(input, codeEl) {
+  if (codeEl && codeEl.value !== '+380') return;
+  let v = input.value.replace(/\D/g,'');
+  if (v.startsWith('380')) v = v.slice(3);
+  else if (v.startsWith('38')) v = v.slice(2);
+  else if (v.startsWith('0')) v = v.slice(1);
+  v = v.slice(0,9);
+  let f = '';
+  if (v.length > 0) f = '(' + v.substring(0,2);
+  if (v.length >= 2) f += ') ' + v.substring(2,5);
+  if (v.length >= 5) f += '-' + v.substring(5,7);
+  if (v.length >= 7) f += '-' + v.substring(7,9);
+  input.value = f;
+}
+
+document.querySelectorAll('.phone-wrap').forEach(wrap => {
+  const codeEl = wrap.querySelector('.phone-code-sel');
+  const phoneEl = wrap.querySelector('[name="phone"]');
+  if (!phoneEl) return;
+  phoneEl.addEventListener('input', () => applyPhoneMask(phoneEl, codeEl));
+  if (codeEl) codeEl.addEventListener('change', () => {
+    phoneEl.value = '';
+    phoneEl.placeholder = codeEl.value === '+380' ? '(95) ___-__-__' : 'XXX XXX XXXX';
+  });
+});
+
+async function submitForm(form, submitBtn, successEl) {
+  if (!validateForm(form)) return;
+  const btnText = submitBtn.querySelector('.btn-text');
+  const btnLoad = submitBtn.querySelector('.btn-loading');
+  submitBtn.disabled = true;
+  btnText.style.display = 'none';
+  btnLoad.style.display = 'inline';
+
+  const codeEl = form.querySelector('[name="phone_code"]');
+  const code   = codeEl ? codeEl.value : '+380';
+  const phone  = (form.querySelector('[name="phone"]')?.value||'').replace(/\D/g,'');
+  const data   = {
+    child_name: form.querySelector('[name="child_name"]')?.value.trim()||'',
+    age:        form.querySelector('[name="age"]')?.value||'',
+    phone:      code + phone,
+    source:     'articles_listing',
+  };
+
+  try {
+    if (GAS_URL) {
+      await new Promise(resolve => {
+        const fn = '_gas_' + Date.now();
+        const iframe = document.createElement('iframe');
+        iframe.name = fn; iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        const f = document.createElement('form');
+        f.method = 'GET'; f.action = GAS_URL; f.target = fn;
+        [['token','mca_lead_2026'],['child_name',data.child_name],['age',data.age],['phone',data.phone],['email',''],['course',data.source]].forEach(([n,v]) => {
+          const inp = document.createElement('input'); inp.type='hidden'; inp.name=n; inp.value=v; f.appendChild(inp);
+        });
+        document.body.appendChild(f);
+        const cleanup = () => { try{document.body.removeChild(f);}catch(_){} try{document.body.removeChild(iframe);}catch(_){} resolve(); };
+        iframe.addEventListener('load', cleanup, {once:true});
+        setTimeout(cleanup, 5000);
+        f.submit();
+      });
+    }
+    form.reset();
+    form.style.display = 'none';
+    if (successEl) successEl.style.display = '';
+    else setTimeout(() => { form.style.display=''; closeModal(); }, 2400);
+  } catch(err) {
+    console.error(err);
+  } finally {
+    submitBtn.disabled = false;
+    btnText.style.display = 'inline';
+    btnLoad.style.display = 'none';
+  }
+}
+
+const modalForm    = document.getElementById('artModalForm');
+const modalSubmit  = document.getElementById('artModalSubmit');
+const modalSuccess = document.getElementById('artModalSuccess');
+if (modalForm) {
+  modalForm.addEventListener('input', e => { if (e.target.classList.contains('form-input')) clearFieldError(e.target); });
+  modalForm.addEventListener('submit', e => { e.preventDefault(); submitForm(modalForm, modalSubmit, modalSuccess); });
+}
+</script>
+</body>
+</html>
