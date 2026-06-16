@@ -40,14 +40,43 @@
     .sidebar-cta{background:linear-gradient(135deg,#6C47FF,#9333ea);color:#fff;border-radius:16px;padding:24px;text-align:center}
     .sidebar-cta h3{font-size:16px;font-weight:800;margin-bottom:10px;color:#fff}
     .sidebar-cta p{font-size:13px;color:rgba(255,255,255,.8);margin-bottom:16px;line-height:1.5}
-    .sidebar-cta a{display:block;background:#fff;color:#6C47FF;font-weight:700;font-size:14px;padding:12px;border-radius:10px;text-decoration:none;transition:transform .2s}
-    .sidebar-cta a:hover{transform:translateY(-2px)}
+    .sidebar-cta button{display:block;width:100%;background:#fff;color:#6C47FF;font-weight:700;font-size:14px;padding:12px;border-radius:10px;text-decoration:none;transition:transform .2s;border:none;cursor:pointer;font-family:inherit}
+    .sidebar-cta button:hover{transform:translateY(-2px)}
     .article-not-found{text-align:center;padding:100px 20px;color:#888}
     .article-not-found h1{font-size:32px;font-weight:800;margin-bottom:12px;color:#1a1a2e}
     @media(max-width:768px){
       .article-container{grid-template-columns:1fr}
       .article-sidebar{position:static}
       .article-hero{padding:60px 0 40px}
+    }
+    /* Article contact section — simplified 2-col grid */
+    .art-contact{padding:32px 0 88px;background:#f8f7ff}
+    .art-contact__grid{display:grid;grid-template-columns:1fr 1.1fr;gap:72px;align-items:start}
+    .art-contact__title{font-size:clamp(24px,4vw,36px);font-weight:800;line-height:1.2;margin:8px 0 14px;color:#1a1a2e}
+    .art-contact__title .gradient-text{background:linear-gradient(135deg,#6C47FF,#9333ea);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .art-contact__sub{font-size:15px;color:#666;line-height:1.6;margin-bottom:24px}
+    .art-contact__phones{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+    .art-contact__phone{font-size:16px;font-weight:700;color:#1a1a2e;text-decoration:none}
+    .art-contact__phone:hover{color:#6C47FF}
+    @media(max-width:768px){
+      .art-contact__grid{grid-template-columns:1fr;gap:32px}
+      .art-contact{padding:48px 0 64px}
+    }
+    /* Modal */
+    .art-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+    .art-modal.open{opacity:1;pointer-events:all}
+    .art-modal__backdrop{position:absolute;inset:0;background:rgba(15,10,40,.55);backdrop-filter:blur(4px)}
+    .art-modal__dialog{position:relative;z-index:1;background:#fff;border-radius:24px;padding:36px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(108,71,255,.2);transform:translateY(16px);transition:transform .25s}
+    .art-modal.open .art-modal__dialog{transform:translateY(0)}
+    .art-modal__close{position:absolute;top:16px;right:16px;width:32px;height:32px;border:none;background:#f0eeff;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6C47FF;transition:background .2s}
+    .art-modal__close:hover{background:#e0d8ff}
+    .art-modal__badge{display:inline-flex;align-items:center;gap:6px;background:#f0eeff;color:#6C47FF;font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;margin-bottom:12px}
+    .art-modal__badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#22c55e;animation:blink 1.4s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+    .art-modal__title{font-size:22px;font-weight:800;color:#1a1a2e;margin-bottom:6px}
+    .art-modal__sub{font-size:14px;color:#666;margin-bottom:24px}
+    @media(max-width:540px){
+      .art-modal__dialog{padding:24px 20px;border-radius:16px;max-width:calc(100% - 32px)}
     }
   </style>
 </head>
@@ -89,6 +118,62 @@
         <h2 class="section-title">Відповіді на ваші запитання</h2>
       </div>
       <div class="faq__list" id="articleFaqList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="art-contact" id="articleContact">
+  <div class="container">
+    <div class="art-contact__grid">
+      <div>
+        <div class="section-badge" style="display:inline-flex;margin-bottom:16px">Запис на курс</div>
+        <h2 class="art-contact__title">Запишіть дитину на<br/><span class="gradient-text">пробний урок</span></h2>
+        <p class="art-contact__sub">Залишіть заявку — передзвонимо протягом 30 хвилин і підберемо зручний час. Перший урок безкоштовно і без зобов'язань.</p>
+        <div class="art-contact__phones">
+          <a href="tel:+380954624672" class="art-contact__phone">+38 (095) 462-46-72</a>
+          <a href="tel:+380682522876" class="art-contact__phone">+38 (068) 252-28-76</a>
+        </div>
+      </div>
+      <div class="contact__form-wrap">
+        <form class="contact-form" id="artContactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Ім'я дитини *</label>
+              <input type="text" class="form-input" name="child_name" placeholder="Наприклад: Артем" autocomplete="off"/>
+              <span class="field-error" aria-live="polite"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Вік</label>
+              <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ваш телефон *</label>
+            <div class="phone-wrap">
+              <select class="form-input phone-code-sel" name="phone_code" aria-label="Код країни">
+                <option value="+380">🇺🇦 +380</option><option value="+48">🇵🇱 +48</option>
+                <option value="+49">🇩🇪 +49</option><option value="+420">🇨🇿 +420</option>
+                <option value="+44">🇬🇧 +44</option><option value="+1">🇺🇸 +1</option>
+                <option value="+972">🇮🇱 +972</option><option value="+33">🇫🇷 +33</option>
+                <option value="+49">🇩🇪 +49</option>
+              </select>
+              <input type="tel" class="form-input" name="phone" placeholder="(95) ___-__-__" autocomplete="tel"/>
+            </div>
+            <span class="field-error" aria-live="polite"></span>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full btn--lg" id="artContactSubmit">
+            <span class="btn-text">Записатися на пробний урок безкоштовно</span>
+            <span class="btn-loading" style="display:none">Відправка...</span>
+          </button>
+          <p class="form-note">Натискаючи кнопку, ви погоджуєтесь з <a href="/docs/privacy-policy.html" target="_blank" rel="noopener">політикою конфіденційності</a>.</p>
+        </form>
+        <div class="form-success" id="artContactSuccess" style="display:none">
+          <div class="form-success__icon">🎉</div>
+          <h3>Заявку прийнято!</h3>
+          <p>Передзвонимо протягом 30 хвилин. Дитину чекає безкоштовний пробний урок!</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -147,6 +232,55 @@
     </div>
   </div>
 </footer>
+
+<!-- ========== MODAL ========== -->
+<div class="art-modal" id="artModal" role="dialog" aria-modal="true" aria-labelledby="artModalTitle">
+  <div class="art-modal__backdrop" id="artModalBackdrop"></div>
+  <div class="art-modal__dialog">
+    <button class="art-modal__close" id="artModalClose" aria-label="Закрити">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 2L2 12M2 2L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="art-modal__badge">Пробний урок безкоштовно</div>
+    <h3 class="art-modal__title" id="artModalTitle">Записатися на урок</h3>
+    <p class="art-modal__sub">Передзвонимо протягом 30 хвилин і підберемо зручний час.</p>
+    <form class="modal-form" id="artModalForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ім'я дитини *</label>
+          <input type="text" class="form-input" name="child_name" placeholder="Артем" autocomplete="off"/>
+          <span class="field-error" aria-live="polite"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Вік</label>
+          <input type="number" class="form-input" name="age" placeholder="9" min="5" max="18"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ваш телефон *</label>
+        <div class="phone-wrap">
+          <select class="form-input phone-code-sel" name="phone_code" aria-label="Код країни">
+            <option value="+380">🇺🇦 +380</option><option value="+48">🇵🇱 +48</option>
+            <option value="+49">🇩🇪 +49</option><option value="+420">🇨🇿 +420</option>
+            <option value="+44">🇬🇧 +44</option><option value="+1">🇺🇸 +1</option>
+            <option value="+972">🇮🇱 +972</option><option value="+33">🇫🇷 +33</option>
+          </select>
+          <input type="tel" class="form-input" name="phone" placeholder="(95) ___-__-__" autocomplete="tel"/>
+        </div>
+        <span class="field-error" aria-live="polite"></span>
+      </div>
+      <button type="submit" class="btn btn--primary btn--full btn--lg" id="artModalSubmit">
+        <span class="btn-text">Записатися безкоштовно</span>
+        <span class="btn-loading" style="display:none">Відправка...</span>
+      </button>
+      <p class="form-note">Натискаючи кнопку, ви погоджуєтесь з <a href="/docs/privacy-policy.html" target="_blank" rel="noopener">політикою конфіденційності</a>.</p>
+    </form>
+    <div class="form-success modal-success" id="artModalSuccess" style="display:none">
+      <div class="form-success__icon">🎉</div>
+      <h3>Заявку прийнято!</h3>
+      <p>Передзвонимо протягом 30 хвилин. Дитину чекає безкоштовний пробний урок!</p>
+    </div>
+  </div>
+</div>
 
 <script>
 'use strict';
@@ -273,7 +407,7 @@ function renderArticle(a, related) {
           <div class="sidebar-cta">
             <h3>Запишіть дитину на курс</h3>
             <p>Перший урок безкоштовно — спробуйте без зобов'язань!</p>
-            <a href="/#contact">Записатись зараз →</a>
+            <button type="button" onclick="openArtModal()">Записатись зараз →</button>
           </div>
           ${related.length ? `
           <div class="sidebar-card">
@@ -330,6 +464,141 @@ async function loadFaq() {
 
 init();
 loadFaq();
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+const artModal   = document.getElementById('artModal');
+const artBackdrop= document.getElementById('artModalBackdrop');
+const artClose   = document.getElementById('artModalClose');
+
+function openArtModal() {
+  artModal.classList.add('open');
+  document.body.classList.add('modal-open');
+  const first = artModal.querySelector('input:not([type="hidden"])');
+  if (first) setTimeout(() => first.focus(), 80);
+}
+function closeArtModal() {
+  artModal.classList.remove('open');
+  document.body.classList.remove('modal-open');
+}
+if (artBackdrop) artBackdrop.addEventListener('click', closeArtModal);
+if (artClose)    artClose.addEventListener('click', closeArtModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeArtModal(); });
+
+// ── Form helpers ──────────────────────────────────────────────────────────────
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyiXop44yUyrE1EwWLvr3jzAg41VmRxN20raHe0NRo3uZWdk28mUck0EGVzVOG10OeJVw/exec';
+
+function getFieldError(inp) { return inp.parentElement?.querySelector('.field-error') || null; }
+function setFieldError(inp, msg) {
+  inp.classList.add('form-input--error');
+  const el = getFieldError(inp); if (el) el.textContent = msg;
+}
+function clearFieldError(inp) {
+  inp.classList.remove('form-input--error');
+  const el = getFieldError(inp); if (el) el.textContent = '';
+}
+
+function validateArtForm(form) {
+  let ok = true;
+  const nameEl  = form.querySelector('[name="child_name"]');
+  const phoneEl = form.querySelector('[name="phone"]');
+  if (nameEl && !nameEl.value.trim()) { setFieldError(nameEl, 'Введіть ім\'я дитини'); ok = false; }
+  if (phoneEl) {
+    const digits = phoneEl.value.replace(/\D/g,'');
+    if (digits.length < 7) { setFieldError(phoneEl, 'Введіть номер телефону'); ok = false; }
+  }
+  return ok;
+}
+
+function applyArtPhoneMask(input, codeEl) {
+  if (codeEl && codeEl.value !== '+380') return;
+  let v = input.value.replace(/\D/g, '');
+  if (v.startsWith('380')) v = v.slice(3);
+  else if (v.startsWith('38')) v = v.slice(2);
+  else if (v.startsWith('0'))  v = v.slice(1);
+  v = v.slice(0, 9);
+  let f = '';
+  if (v.length > 0) f = '(' + v.substring(0,2);
+  if (v.length >= 2) f += ') ' + v.substring(2,5);
+  if (v.length >= 5) f += '-' + v.substring(5,7);
+  if (v.length >= 7) f += '-' + v.substring(7,9);
+  input.value = f;
+}
+
+document.querySelectorAll('.phone-wrap').forEach(wrap => {
+  const codeEl  = wrap.querySelector('.phone-code-sel');
+  const phoneEl = wrap.querySelector('[name="phone"]');
+  if (!phoneEl) return;
+  phoneEl.addEventListener('input', () => applyArtPhoneMask(phoneEl, codeEl));
+  if (codeEl) codeEl.addEventListener('change', () => { phoneEl.value=''; phoneEl.placeholder = codeEl.value==='+380' ? '(95) ___-__-__' : 'XXX XXX XXXX'; });
+});
+
+async function submitArtForm(form, submitBtn, successEl) {
+  if (!validateArtForm(form)) return;
+  const btnText    = submitBtn.querySelector('.btn-text');
+  const btnLoading = submitBtn.querySelector('.btn-loading');
+  submitBtn.disabled = true;
+  btnText.style.display    = 'none';
+  btnLoading.style.display = 'inline';
+
+  const codeEl   = form.querySelector('[name="phone_code"]');
+  const code     = codeEl ? codeEl.value : '+380';
+  const rawPhone = (form.querySelector('[name="phone"]')?.value || '').replace(/\D/g,'');
+  const data = {
+    child_name: form.querySelector('[name="child_name"]')?.value.trim() || '',
+    age:        form.querySelector('[name="age"]')?.value || '',
+    phone:      code + rawPhone,
+    source:     'article_' + (window.location.pathname.split('/').pop() || 'unknown'),
+  };
+
+  try {
+    if (GAS_URL) {
+      await new Promise(resolve => {
+        const frameName = '_gas_' + Date.now();
+        const iframe = document.createElement('iframe');
+        iframe.name = frameName; iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        const gasForm = document.createElement('form');
+        gasForm.method = 'GET'; gasForm.action = GAS_URL; gasForm.target = frameName;
+        [['token','mca_lead_2026'],['child_name',data.child_name],['age',data.age],['phone',data.phone],['email',''],['course',data.source]].forEach(([n,v]) => {
+          const inp = document.createElement('input'); inp.type='hidden'; inp.name=n; inp.value=v;
+          gasForm.appendChild(inp);
+        });
+        document.body.appendChild(gasForm);
+        const cleanup = () => { try{document.body.removeChild(gasForm);}catch(_){} try{document.body.removeChild(iframe);}catch(_){} resolve(); };
+        iframe.addEventListener('load', cleanup, {once:true});
+        setTimeout(cleanup, 5000);
+        gasForm.submit();
+      });
+    }
+    form.reset();
+    if (successEl) { form.style.display = 'none'; successEl.style.display = ''; }
+    else { form.style.display = 'none'; setTimeout(() => { form.style.display=''; closeArtModal(); }, 2400); }
+  } catch(err) {
+    console.error('Form submit error:', err);
+  } finally {
+    submitBtn.disabled = false;
+    btnText.style.display    = 'inline';
+    btnLoading.style.display = 'none';
+  }
+}
+
+// Modal form submit
+const artModalForm   = document.getElementById('artModalForm');
+const artModalSubmit = document.getElementById('artModalSubmit');
+const artModalSuccess= document.getElementById('artModalSuccess');
+if (artModalForm) {
+  artModalForm.addEventListener('input', e => { if (e.target.classList.contains('form-input')) clearFieldError(e.target); });
+  artModalForm.addEventListener('submit', e => { e.preventDefault(); submitArtForm(artModalForm, artModalSubmit, artModalSuccess); });
+}
+
+// Contact form submit
+const artContactForm   = document.getElementById('artContactForm');
+const artContactSubmit = document.getElementById('artContactSubmit');
+const artContactSuccess= document.getElementById('artContactSuccess');
+if (artContactForm) {
+  artContactForm.addEventListener('input', e => { if (e.target.classList.contains('form-input')) clearFieldError(e.target); });
+  artContactForm.addEventListener('submit', e => { e.preventDefault(); submitArtForm(artContactForm, artContactSubmit, artContactSuccess); });
+}
 </script>
 </body>
 </html>

@@ -609,8 +609,21 @@ loadCourses();
 loadReviews();
 
 /* ===================================================
-   ARTICLES — loads from /api/articles
+   ARTICLES — loads from /data/articles.json
    =================================================== */
+const ARTICLE_LABEL_MAP = {
+  '🐍': {label:'Python',         cls:'cat-python'},
+  '🧩': {label:'Scratch',        cls:'cat-scratch'},
+  '🎮': {label:'Roblox',         cls:'cat-roblox'},
+  '🌐': {label:'Веб-розробка',   cls:'cat-web'},
+  '💡': {label:'Для батьків',    cls:'cat-parents'},
+  '🧮': {label:'Математика і код',cls:'cat-parents'},
+  '🎯': {label:'Вибір курсу',    cls:'cat-tips'},
+  '🔀': {label:'Scratch vs Python',cls:'cat-tips'},
+  '💪': {label:'Мотивація',      cls:'cat-parents'},
+  '🖥': {label:'Формат навчання', cls:'cat-tips'},
+};
+
 async function loadArticles() {
   const slider = document.getElementById('articlesSlider');
   const dotsEl = document.getElementById('articlesDots');
@@ -622,11 +635,13 @@ async function loadArticles() {
     const active = (articles || []).filter(a => a.active !== false).slice(0, 6);
     if (!active.length) { document.getElementById('articles')?.style.setProperty('display','none'); return; }
 
-    slider.innerHTML = active.map(a => `
+    slider.innerHTML = active.map(a => {
+      const lbl = ARTICLE_LABEL_MAP[a.coverEmoji] || {label: esc(a.category || 'стаття'), cls: ''};
+      return `
       <a class="article-card" href="/articles/${esc(a.slug)}" aria-label="${esc(a.title)}">
         <div class="article-card__top">
           <span class="article-card__emoji">${esc(a.coverEmoji || '📄')}</span>
-          <span class="article-card__cat">${esc(a.category || '')}</span>
+          <span class="article-card__cat ${lbl.cls}">${lbl.label}</span>
         </div>
         <div class="article-card__body">
           <h3 class="article-card__title">${esc(a.title)}</h3>
@@ -636,8 +651,8 @@ async function loadArticles() {
           <span class="article-card__date">${formatDate(a.publishedAt)}</span>
           <span class="article-card__read">Читати →</span>
         </div>
-      </a>
-    `).join('');
+      </a>`;
+    }).join('');
 
     // Mobile dots
     if (dotsEl && active.length > 1) {
