@@ -44,6 +44,7 @@
     .listing-empty h3{font-size:20px;font-weight:800;color:rgba(255,255,255,.65);margin-bottom:8px}
     .listing-empty p{font-size:14px;color:rgba(255,255,255,.35)}
     @media(max-width:960px){.listing-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:768px){.listing-grid .article-card{width:auto;flex-shrink:1;scroll-snap-align:none}}
     @media(max-width:640px){
       .listing-grid{grid-template-columns:1fr}
       .listing-hero{padding:calc(68px + 28px) 0 40px}
@@ -288,6 +289,12 @@ const LABEL_MAP = {
   '🔀': {label:'Scratch vs Python', cls:'cat-tips',    cat:'Поради'},
   '💪': {label:'Мотивація',         cls:'cat-parents', cat:'Батькам'},
   '🖥': {label:'Формат навчання',   cls:'cat-tips',    cat:'Поради'},
+  '💬': {label:'Гайди',             cls:'cat-guide',   cat:'Гайди'},
+  '📁': {label:'Гайди',             cls:'cat-guide',   cat:'Гайди'},
+  '💻': {label:'Гайди',             cls:'cat-guide',   cat:'Гайди'},
+  '🧹': {label:'Гайди',             cls:'cat-guide',   cat:'Гайди'},
+  '🔒': {label:'Гайди',             cls:'cat-guide',   cat:'Гайди'},
+  '📖': {label:'Словник',           cls:'cat-dict',    cat:'Словник'},
 };
 
 // ── State ─────────────────────────────────────────────────────────────────────

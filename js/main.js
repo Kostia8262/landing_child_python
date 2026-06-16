@@ -612,16 +612,22 @@ loadReviews();
    ARTICLES — loads from /data/articles.json
    =================================================== */
 const ARTICLE_LABEL_MAP = {
-  '🐍': {label:'Python',         cls:'cat-python'},
-  '🧩': {label:'Scratch',        cls:'cat-scratch'},
-  '🎮': {label:'Roblox',         cls:'cat-roblox'},
-  '🌐': {label:'Веб-розробка',   cls:'cat-web'},
-  '💡': {label:'Для батьків',    cls:'cat-parents'},
-  '🧮': {label:'Математика і код',cls:'cat-parents'},
-  '🎯': {label:'Вибір курсу',    cls:'cat-tips'},
-  '🔀': {label:'Scratch vs Python',cls:'cat-tips'},
-  '💪': {label:'Мотивація',      cls:'cat-parents'},
-  '🖥': {label:'Формат навчання', cls:'cat-tips'},
+  '🐍': {label:'Python',            cls:'cat-python'},
+  '🧩': {label:'Scratch',           cls:'cat-scratch'},
+  '🎮': {label:'Roblox',            cls:'cat-roblox'},
+  '🌐': {label:'Веб-розробка',      cls:'cat-web'},
+  '💡': {label:'Для батьків',       cls:'cat-parents'},
+  '🧮': {label:'Математика і код',  cls:'cat-parents'},
+  '🎯': {label:'Вибір курсу',       cls:'cat-tips'},
+  '🔀': {label:'Scratch vs Python', cls:'cat-tips'},
+  '💪': {label:'Мотивація',         cls:'cat-parents'},
+  '🖥': {label:'Формат навчання',   cls:'cat-tips'},
+  '💬': {label:'Гайди',             cls:'cat-guide'},
+  '📁': {label:'Гайди',             cls:'cat-guide'},
+  '💻': {label:'Гайди',             cls:'cat-guide'},
+  '🧹': {label:'Гайди',             cls:'cat-guide'},
+  '🔒': {label:'Гайди',             cls:'cat-guide'},
+  '📖': {label:'Словник',           cls:'cat-dict'},
 };
 
 async function loadArticles() {

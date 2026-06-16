@@ -979,6 +979,8 @@ body.modal-open{overflow:hidden}
 .article-card__cat.cat-web    {background:rgba(34,197,94,.18);color:#86efac}
 .article-card__cat.cat-parents{background:rgba(245,158,11,.18);color:#fcd34d}
 .article-card__cat.cat-tips   {background:rgba(14,165,233,.18);color:#7dd3fc}
+.article-card__cat.cat-guide  {background:rgba(20,184,166,.18);color:#2dd4bf}
+.article-card__cat.cat-dict   {background:rgba(168,85,247,.18);color:#c084fc}
 .article-card__body{padding:16px 20px;flex:1}
 .article-card__title{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:10px;color:#fff}
 .article-card__excerpt{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
