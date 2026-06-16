@@ -11,8 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <link rel="icon" href="/favicon.ico"/>
   <style>
-    .article-hero{padding:calc(68px + 48px) 0 56px;background:linear-gradient(135deg,#6C47FF 0%,#9333ea 100%);color:#fff}
-    .article-hero__badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.18);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:13px;font-weight:700;padding:6px 16px;border-radius:100px;margin-bottom:20px}
+    .article-hero{padding:calc(68px + 48px) 0 56px;background:linear-gradient(160deg,#0e0620 0%,#1e0d52 35%,#3d1a80 70%,#5b21b6 100%);color:#fff;position:relative;overflow:hidden}
+    .article-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+    .article-hero .container{position:relative;z-index:1}
+    .article-hero__badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:13px;font-weight:700;padding:6px 16px;border-radius:100px;margin-bottom:20px}
     .article-hero__title{font-size:clamp(26px,5vw,44px);font-weight:900;line-height:1.15;margin-bottom:20px;max-width:780px}
     .article-hero__meta{display:flex;align-items:center;gap:16px;font-size:14px;color:rgba(255,255,255,.75);flex-wrap:nowrap;white-space:nowrap}
     .article-hero__meta span{white-space:nowrap}
@@ -46,6 +48,7 @@
     .article-not-found{text-align:center;padding:100px 20px;color:#888}
     .article-not-found h1{font-size:32px;font-weight:800;margin-bottom:12px;color:#1a1a2e}
     @media(max-width:768px){
+      .article-body{padding:40px 0 24px}
       .article-container{grid-template-columns:1fr}
       .article-sidebar{position:static}
       .article-hero{padding:calc(68px + 32px) 0 40px}
