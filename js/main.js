@@ -628,6 +628,10 @@ const ARTICLE_LABEL_MAP = {
   '🧹': {label:'Гайди',             cls:'cat-guide'},
   '🔒': {label:'Гайди',             cls:'cat-guide'},
   '📖': {label:'Словник',           cls:'cat-dict'},
+  '🎨': {label:'Дизайн',            cls:'cat-design'},
+  '🎭': {label:'Дизайн',            cls:'cat-design'},
+  '🧭': {label:'Дизайн',            cls:'cat-design'},
+  '🤖': {label:'Дизайн',            cls:'cat-design'},
 };
 
 async function loadArticles() {
