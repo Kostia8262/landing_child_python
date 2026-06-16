@@ -122,9 +122,16 @@ const adminLimiter = rateLimit({
 
 // ── STATIC FILES ──────────────────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, '..'), {
-  maxAge: '1d',           // cache static assets 1 day
+  maxAge: '1d',           // cache versioned assets (css?v=, js?v=) 1 day
   etag: true,
   index: 'index.html',
+  setHeaders(res, filePath) {
+    // HTML files must never be cached so browsers always fetch the latest
+    // version with updated ?v= query params pointing to new CSS/JS
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
+  },
 }));
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────

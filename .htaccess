@@ -1,3 +1,28 @@
+# ── CACHE CONTROL ─────────────────────────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # HTML: never cache — browser always fetches fresh HTML with latest ?v= links
+  ExpiresByType text/html                 "access plus 0 seconds"
+  # Versioned assets (css?v=, js?v=) — cache 1 year
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  # Images and fonts
+  ExpiresByType image/webp                "access plus 1 year"
+  ExpiresByType image/png                 "access plus 1 year"
+  ExpiresByType image/jpeg                "access plus 1 year"
+  ExpiresByType image/svg+xml             "access plus 1 year"
+  ExpiresByType font/woff2                "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Force no-cache for HTML
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+</IfModule>
+
 # Redirect /index.html → / (clean URL)
 RewriteEngine On
 RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
