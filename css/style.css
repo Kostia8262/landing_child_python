@@ -58,7 +58,7 @@ a{color:inherit;text-decoration:none}
 /* ===================================================
    HEADER
    =================================================== */
-.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid transparent;border-radius:0 0 16px 16px;transition:border-color var(--t),box-shadow var(--t)}
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid transparent;border-radius:0 0 16px 16px;transition:border-color var(--t),box-shadow var(--t)}
 .header.scrolled{border-color:var(--color-border);box-shadow:0 4px 24px rgba(108,71,255,.08),0 1px 4px rgba(0,0,0,.04)}
 .nav{display:flex;align-items:center;height:68px;gap:12px}
 .nav__logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;flex-shrink:0;z-index:102;position:relative}
