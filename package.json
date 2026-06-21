@@ -2,10 +2,10 @@
   "name": "my-computer-academy",
   "version": "1.0.0",
   "description": "Landing page + backend for My Computer Academy",
-  "main": "vps_backup/server/server.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node vps_backup/server/server.js",
-    "dev": "nodemon vps_backup/server/server.js"
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
