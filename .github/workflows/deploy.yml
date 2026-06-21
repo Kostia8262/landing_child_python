@@ -2,7 +2,7 @@ name: Deploy Python Landing to VPS
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 concurrency:
   group: deploy-python-landing
